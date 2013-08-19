@@ -21,10 +21,10 @@ Chances are you have at least one page that acts as your 'confirmation' or 'than
 = Automatically Promote Winners =
 When you have completed your test, and there is a clear winner, just click the 'Promote' button. This replaces the old page with the content from the winning variation automatically. 
 = Adjustable Multi-Armed Bandit =
-The 'Multi-Armed Bandit', or Epsilon Greedy, method of rotating variations has been proven to be the very fastest way to determine a winner. Not only that, but it’s also, by far, the most profitable way to display your test pages. Here’s how it works: the page with the highest conversion rate gets 90% of the traffic ('Exploitation’), and the other variations are randomly rotated through the remaining 10% of the time ('Exploration’). In other words, 90% of the time the system chooses the best version of your page. The rest of the time it explores new variations in the hopes that they will prove to be a better solution.
+The 'Multi-Armed Bandit', or Epsilon Greedy, method of rotating variations has been proven to be the very fastest way to determine a winner. Not only that, but it's also, by far, the most profitable way to display your test pages. Here's how it works: the page with the highest conversion rate gets 90% of the traffic ('Exploitation'), and the other variations are randomly rotated through the remaining 10% of the time ('Exploration'). In other words, 90% of the time the system chooses the best version of your page. The rest of the time it explores new variations in the hopes that they will prove to be a better solution.
 Since sometimes it makes more sense to explore more than 10%, you have the ability to simply move the slider to explore between  10% and 100%. 
 = Create Variations Quickly =
-To make things easier and faster we have built-in the ability to clone either the control (original version of your page) or a variation as a new test. Take this copy of your existing page and make any changes you think might improve conversion rates. You don’t have to start from scratch, but you have the freedom to make any changes you want. 
+To make things easier and faster we have built-in the ability to clone either the control (original version of your page) or a variation as a new test. Take this copy of your existing page and make any changes you think might improve conversion rates. You don't have to start from scratch, but you have the freedom to make any changes you want. 
 Some common changes that have been shown to increase conversion rates are:
 
 * Changes to headlines
