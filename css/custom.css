@@ -1,0 +1,27 @@
+.mo-variation-id{
+	display: inline-block;
+
+	font-size: 20px;
+	min-width: 16px;
+	min-height: 20px;
+	border-radius: 3px;
+	background: #f3f3f3;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#fefefe),to(#f4f4f4));
+	background-image: -webkit-linear-gradient(top,#fefefe,#f4f4f4);
+	background-image: -moz-linear-gradient(top,#fefefe,#f4f4f4);
+	background-image: -o-linear-gradient(top,#fefefe,#f4f4f4);
+	background-image: linear-gradient(to bottom,#fefefe,#f4f4f4);
+	border-color: #bbb;
+	color: #333;
+	text-shadow: 0 1px 0 #fff;
+	font-family: sans-serif;
+	cursor: pointer;
+	border-width: 1px;
+	border-style: solid;
+	padding: 1px;
+	padding-left: 4px;
+	text-align: center;
+	padding-right: 5px;
+	padding-top: 6px;
+	margin-right: 5px;
+}
