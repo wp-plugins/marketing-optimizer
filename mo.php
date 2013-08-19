@@ -13,7 +13,7 @@
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
 define ( 'MO_CURRENT_VERSION', '2013.08.15' );
 define ( 'MO_CURRENT_BUILD', '1' );
-define ( 'MO_PLUGIN_DIRECTORY', 'mo');
+define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
 define ( 'MO_DEBUG', true ); // never use debug mode on productive systems
 define ( 'EMU2_I18N_DOMAIN', 'mo' ); // i18n plugin domain for language files
@@ -62,10 +62,10 @@ add_action ( 'admin_init', 'mo_register_scripts' );
 add_action ( 'admin_notices', 'custom_error_notice' );
 function custom_error_notice() {
 	if (get_option ( 'mo_marketing_optimizer' ) == 'true' && ! strlen ( get_option ( 'mo_account_id' ) )) {
-		echo '<div class="error" style="font-size:16px;font-weight:bold;font-style:italic;padding:10px;">The Marketing Optimizer plugin setting "Account Id" has not been set, none of the Marketing Optimizer plugin functionality will work until this option is configured. Click <a href="/wp-admin/admin.php?page=mo/mo_settings_page.php">Here</a> to configure.</div>';
+		echo '<div class="error" style="font-size:16px;font-weight:bold;font-style:italic;padding:10px;">The Marketing Optimizer plugin setting "Account Id" has not been set, none of the Marketing Optimizer plugin functionality will work until this option is configured. Click <a href="/wp-admin/admin.php?page='.MO_PLUGIN_DIRECTORY.'/mo_settings_page.php">Here</a> to configure.</div>';
 	}
 	if (get_option ( 'mo_google_analytics' ) == 'true' && ! strlen ( get_option ( 'mo_google_analytics_account_id' ) )) {
-		echo '<div class="error" style="font-size:16px;font-weight:bold;font-style:italic;padding:10px;">The Marketing Optimizer plugin setting "Google Analytics Account Id" has not been set, Google analytics functionality will work until this option is configured. Click <a href="/wp-admin/admin.php?page=mo/mo_settings_page.php">Here</a> to configure.</div>';
+		echo '<div class="error" style="font-size:16px;font-weight:bold;font-style:italic;padding:10px;">The Marketing Optimizer plugin setting "Google Analytics Account Id" has not been set, Google analytics functionality will work until this option is configured. Click <a href="/wp-admin/admin.php?page='.MO_PLUGIN_DIRECTORY.'/mo_settings_page.php">Here</a> to configure.</div>';
 	}
 }
 // add shortcodes
@@ -188,7 +188,7 @@ function mo_phone_shortcode($attributes, $content = null) {
 			return '<span class="phonePublishCls">' . $defaultPhone . '</span>';
 		}
 	} else {
-		return '<span style="color:red;">(Phone tracking is currently disabled, enable phone tracking <a href="/wp-admin/admin.php?page=mo/mo_settings_page.php">here</a> to use phone tracking short codes.)';
+		return '<span style="color:red;">(Phone tracking is currently disabled, enable phone tracking <a href="/wp-admin/admin.php?page='.MO_PLUGIN_DIRECTORY.'/mo_settings_page.php">here</a> to use phone tracking short codes.)';
 	}
 }
 // register items to be output by the wp_head() function

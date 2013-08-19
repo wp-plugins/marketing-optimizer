@@ -38,9 +38,9 @@ if ($_POST) {
 	</div>
 	<div style="width:80%">
 	<h2 class="nav-tab-wrapper">  
-    <a href="?page=mo/mo_settings_page.php&tab=mo_general_settings" class="nav-tab <?php echo $active_tab == 'mo_general_settings' ? 'nav-tab-active' : ''; ?>">General Settings</a>  
-    <a href="?page=mo/mo_settings_page.php&tab=mo_integration_settings" class="nav-tab  <?php echo $active_tab == 'mo_integration_settings' ? 'nav-tab-active' : ''; ?>">Marketing Optimizer Integration</a>  
-    <a href="?page=mo/mo_settings_page.php&tab=mo_shortcodes" class="nav-tab <?php echo $active_tab == 'mo_shortcodes' ? 'nav-tab-active' : ''; ?>">Shortcodes</a>  
+    <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_general_settings" class="nav-tab <?php echo $active_tab == 'mo_general_settings' ? 'nav-tab-active' : ''; ?>">General Settings</a>  
+    <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_integration_settings" class="nav-tab  <?php echo $active_tab == 'mo_integration_settings' ? 'nav-tab-active' : ''; ?>">Marketing Optimizer Integration</a>  
+    <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_shortcodes" class="nav-tab <?php echo $active_tab == 'mo_shortcodes' ? 'nav-tab-active' : ''; ?>">Shortcodes</a>  
 </h2>  
 	<div style="padding:20px;background-color:#ECECEC;">
 		<form method="post" action="">
