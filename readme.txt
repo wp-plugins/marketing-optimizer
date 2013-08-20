@@ -74,6 +74,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 Screenshots coming soon...
 
 == Changelog ==
+Version 2013.08.20
+-- #bugFix fixed an issue when getting a variation on an experiment with only one variation was causing an error.
 Version 2013.08.09
 -- Initial Release
 
