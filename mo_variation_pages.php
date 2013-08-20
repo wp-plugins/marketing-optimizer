@@ -285,7 +285,11 @@ function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array())
 					$variationArr [$postid] = $metaDataArr;
 				}
 			}
-			return array_rand ( $variationArr, 1 );
+			if (count ( $variationArr) > 1 ) {
+				return array_rand ( $variationArr, 1 );
+			} else {
+				return key ( $variationArr );
+			}
 		} else {
 			return key ( $conversionRateVariationArr );
 		}
@@ -367,7 +371,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$preview_link = '<a href="' . post_permalink ( $k ) . '">Preview</a> ';
 			$pause_link = '<a href="admin.php?action=mo_pause_variation&post=' . $k . '" ' . (! $is_paused ? 'style="color:red;font-style:italic;font-weight:bold;"' : '') . '>' . ($is_paused ? 'Pause' : 'Unpause') . '</a>';
 			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
-			$trash_link  = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
+			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
 			$promote_link = '<a href="admin.php?action=mo_promote_variation&post=' . $k . '">Promote</a>';
 			if ($k == $post_id) {
 				$control_conversion_rate = $conversion_rate;
@@ -375,7 +379,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 						'conversion_rate' => $control_conversion_rate,
 						'visitors' => $visitors 
 				);
-				$controlRow .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />['.$edit_link.' | '.$preview_link.' | '.$duplicate_link.']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>NA</td><td>NA</td><td>' . $variation_id . '</td></tr>';
+				$controlRow .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' | ' . $duplicate_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>NA</td><td>NA</td><td>' . $variation_id . '</td></tr>';
 			} else {
 				$variationZscoreArr = array (
 						'conversion_rate' => $conversion_rate,
@@ -390,7 +394,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 				} else {
 					$conversion_rate_diff = '<span style="color:green;">+' . number_format ( ($control_conversion_rate - $conversion_rate) * 100, 2 ) * (- 1) . '%</span>';
 				}
-				$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />['.$edit_link.' | '.$preview_link.' |  '.$pause_link .' | '.$duplicate_link.' | '.$trash_link.' | '.$promote_link.']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
+				$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
 			}
 		}
 		$variationStatsTable .= $controlRow . $variationRows . '</table>';
@@ -507,7 +511,6 @@ function mo_promote_variation($post_id = false) {
 			update_post_meta ( $post_id, $k, $v [0] );
 			update_post_meta ( $post_id, 'mo_variation_parent', $control_post_id );
 		}
-		
 	}
 	if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 		wp_redirect ( admin_url ( 'admin.php?page=edit.php?post_type=variation-page' ) );
