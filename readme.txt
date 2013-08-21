@@ -71,10 +71,11 @@ You should create variations of your pages in the following order:
 You should test as many pages as possible as soon as possible, and all at once. The system will accurately track any experiments you want to run, all concurrently. This will allow you to start accumulating data more quickly, which will show you the winner more quickly.
 
 == Screenshots ==
-1.
-2.
-3.
-4.
+
+1. General Settings
+2. Marketing Optimizer Integration
+3. Shortcodes
+4. Experiments
 
 == Changelog ==
 = Version 2013.08.21 =
