@@ -185,7 +185,7 @@ function mo_render_list_page(){
 	<div id="icon-users" class="icon32">
 		<br />
 	</div>
-	<h2 style="width:25%;float:left;">Experiments</h2><p style="float:left;"><form action="admin.php?action=mo_create_experiment" method="post" ><label for="mo_variation_parent">Select Control Page: </label><?php wp_dropdown_pages( $args ); ?><input type="submit" value="Add New Experiment"  class="button-primary"/></form></p>
+	<h2 style="width:25%;float:left;">Experiments</h2><p style="float:left;"><form action="admin.php?action=mo_create_experiment" method="post" ><label for="mo_variation_parent">Select Control Page: </label><?php wp_dropdown_pages( $args ); ?><input type="submit" value="Add New Experiment"  class="button-primary"/></form>
 	<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 	<form id="movies-filter" method="get">
 		<!-- For plugins, we also need to ensure that the form posts back to our current page -->

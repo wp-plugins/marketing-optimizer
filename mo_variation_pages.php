@@ -74,7 +74,6 @@ function admin_init_variation_page_meta_boxes() {
 function variation_settings() {
 	global $post;
 	$custom = get_post_custom ( $post->ID );
-	$variation_page_title = isset ( $custom ["mo_variation_page_title"] [0] ) ? $custom ["mo_variation_page_title"] [0] : '';
 	$variation_name = isset ( $custom ["mo_variation_name"] [0] ) ? $custom ["mo_variation_name"] [0] : '';
 	$variation_id = isset ( $custom ["mo_variation_id"] [0] ) ? $custom ["mo_variation_id"] [0] : '';
 	$variation_parent = isset ( $custom ['mo_variation_parent'] [0] ) ? $custom ['mo_variation_parent'] [0] : '';
@@ -84,11 +83,6 @@ function variation_settings() {
 	);
 	?>
 <table>
-	<tr>
-		<td><label>Use Variation Page Title :</label></td>
-		<td><input type="checkbox" name="mo_variation_page_title" value="true"
-			<?php echo $variation_page_title == 'true'?'checked':'';?> /></td>
-	</tr>
 	<tr>
 		<td><label>Variation Description:</label></td>
 		<td><input name="mo_variation_name"
@@ -146,7 +140,6 @@ function mo_save_variation_settings($data, $postArr) {
 			return;
 		
 		if ($post->post_type == 'variation-page') {
-			update_post_meta ( $post->ID, "mo_variation_page_title", $postArr ['mo_variation_page_title'] );
 			update_post_meta ( $post->ID, "mo_variation_name", $postArr ['mo_variation_name'] );
 			update_post_meta ( $post->ID, "mo_variation_id", $postArr ['mo_variation_id'] );
 			update_post_meta ( $post->ID, "mo_variation_parent", $postArr ['mo_variation_parent'] );
@@ -227,9 +220,6 @@ function get_variation_template_for_template_loader() {
 				$variation_post_id = $variationPostId;
 				update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
 				$variationContent = get_post ( $variationPostId );
-				if ($variationMetaDataArr [$variationPostId] ['mo_variation_page_title'] [0] == 'true') {
-					$post->post_title = $variationContent->post_title;
-				}
 				$post->post_content = $variationContent->post_content;
 				$post->post_variation = get_post_meta ( $variationPostId, 'mo_variation_id', true );
 				if (isset ( $variationMetaDataArr [$variationPostId] ['_post_template'] [0] ) && $variationMetaDataArr [$variationPostId] ['_post_template'] [0] != 'default') {
@@ -481,9 +471,6 @@ function mo_promote_variation($post_id = false) {
 		// get the variation being promoted post meta array
 		$newControlVariationMetaDataArr = get_post_meta ( $post_id );
 		
-		if ($newControlVariationMetaDataArr ['mo_variation_page_title'] [0] == 'true') {
-			$newControlPostArr ['post_title'] = $newControlArr ['post_title'];
-		}
 		foreach ( $oldControlArr as $k => $v ) {
 			if ($k == 'post_content' || $k == 'post_title') {
 				$oldControlPostArr [$k] = $v;
@@ -531,7 +518,7 @@ add_action ( 'admin_action_mo_pause_variation', 'mo_pause_variation' );
 function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
-	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true );
+	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true )? get_post_meta ( $variation_post_id, 'mo_variation_id', true ):0;
 	if (is_array ( $variationMetaDataArr )) {
 		echo '<script>
 				jQuery(document).ready(function($) {
@@ -687,7 +674,7 @@ function mo_get_conversion_rate($visitors, $conversions) {
 	}
 }
 function mo_get_zscore($c, $t) {
-	if (! $t ['visitors'] || ! $t ['visitors']) {
+	if ( $t ['visitors'] &&  $c ['visitors'] && $t ['conversion_rate'] && $c ['conversion_rate'] ) {
 		$z = $t ['conversion_rate'] - $c ['conversion_rate'];
 		$s = ($t ['conversion_rate'] * (1 - $t ['conversion_rate'])) / $t ['visitors'] + ($c ['conversion_rate'] * (1 - $c ['conversion_rate'])) / $c ['visitors'];
 		return $z / sqrt ( $s );
