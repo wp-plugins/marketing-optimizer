@@ -52,9 +52,9 @@ case 'mo_general_settings':?>		      <div id="tabs-1">
     			<legend><b>A/B Testing:</b></legend>
     			<table class="form-table">
 					<tr valign="top">
-						<td style="width:20%">Enable A/B Testing:</td>
+						<td style="width:20%">A/B Testing:</td>
 						<td style="width:30%"><div class="toggle-abtesting toggle-modern"></div><input type="hidden" name="variation_pages" value="<?php echo get_option ( 'mo_variation_pages' ) == 'true'?'true':''; ?>"  /></td>
-						<td style="width:50%"><p style="font-style: italic;">Check this box to enable A/B testing.</p></td>
+						<td style="width:50%"><p style="font-style: italic;">Turn on/off A/B testing.</p></td>
 					</tr>
 					<tr>
 					<td style="width:20%" colspan="2" ><label for="amount">Set Exploitation/Exploration Percentage for Variations</label></td>
@@ -79,7 +79,7 @@ case 'mo_integration_settings' :?>
     			<legend><b>Account Settings:</b></legend>
 				<table class="form-table">
 				<tr valign="top">
-						<td style="width:20%">Enable Marketing Optimizer Integration:</td>
+						<td style="width:20%">Marketing Optimizer Integration:</td>
 						<td style="width:30%"><div class="toggle-mointegration toggle-modern"></div><input type="hidden" name="marketing_optimizer" value="<?php echo get_option ( 'mo_marketing_optimizer' ) == 'true'?'true':''; ?>"  /></td>
 						<td style="width:50%"><p style="font-style: italic;"><a href="http://www.marketingoptimizer.com" >Learn more about Marketing Optimizer</a></p></td>
 					</tr>
@@ -96,9 +96,9 @@ case 'mo_integration_settings' :?>
     			<legend><b>Phone Tracking Settings:</b></legend>
     			<table class="form-table">
 					<tr valign="top">
-						<td style="width:20%">Enable Phone Tracking:</td>
+						<td style="width:20%">Phone Tracking:</td>
 						<td style="width:30%"><div class="toggle-phonetracking toggle-modern"></div><input type="hidden" name="phone_tracking" value="<?php echo get_option ( 'mo_phone_tracking' ) == 'true'?'true':''; ?>"  /></td>
-						<td style="width:50%"><p style="font-style: italic;">Check this box to enable phone number tracking.</p></td>
+						<td style="width:50%"><p style="font-style: italic;">Turn on/off phone number tracking.</p></td>
 					</tr>
 					<tr valign="top">
 						<td style="width:20%">Phone Publish Class:</td>

@@ -262,6 +262,9 @@ function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
 function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array()) {
 	if ($post_id > 0 && ! empty ( $variationMetaDataArr )) {
 		foreach ( $variationMetaDataArr as $postid => $metaDataArr ) {
+			if (array_key_exists ( 'mo_variation_id_' . $postid, $_COOKIE )) {
+				return $postid;
+			}
 			$conversionRateVariationArr [$postid] = mo_get_conversion_rate ( $metaDataArr ['mo_unique_page_views_count'] [0], $metaDataArr ['mo_conversion_count'] [0] );
 		}
 		arsort ( $conversionRateVariationArr );
@@ -275,7 +278,7 @@ function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array())
 					$variationArr [$postid] = $metaDataArr;
 				}
 			}
-			if (count ( $variationArr) > 1 ) {
+			if (count ( $variationArr ) > 1) {
 				return array_rand ( $variationArr, 1 );
 			} else {
 				return key ( $variationArr );
@@ -285,6 +288,7 @@ function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array())
 		}
 	}
 }
+
 function get_remaining_show_percentage($post_id) {
 	global $wpdb;
 	$variations = $wpdb->get_results ( "SELECT post_id from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id", ARRAY_A );
@@ -518,7 +522,7 @@ add_action ( 'admin_action_mo_pause_variation', 'mo_pause_variation' );
 function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
-	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true )? get_post_meta ( $variation_post_id, 'mo_variation_id', true ):0;
+	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true ) ? get_post_meta ( $variation_post_id, 'mo_variation_id', true ) : 0;
 	if (is_array ( $variationMetaDataArr )) {
 		echo '<script>
 				jQuery(document).ready(function($) {
@@ -674,7 +678,7 @@ function mo_get_conversion_rate($visitors, $conversions) {
 	}
 }
 function mo_get_zscore($c, $t) {
-	if ( $t ['visitors'] &&  $c ['visitors'] && $t ['conversion_rate'] && $c ['conversion_rate'] ) {
+	if ($t ['visitors'] && $c ['visitors'] && $t ['conversion_rate'] && $c ['conversion_rate']) {
 		$z = $t ['conversion_rate'] - $c ['conversion_rate'];
 		$s = ($t ['conversion_rate'] * (1 - $t ['conversion_rate'])) / $t ['visitors'] + ($c ['conversion_rate'] * (1 - $c ['conversion_rate'])) / $c ['visitors'];
 		return $z / sqrt ( $s );

@@ -78,6 +78,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 2013.08.22 =
+* #bugFix fixed an issue with variation sometimes being tracked incorrectly.
+* Removed some unnecessary text from the settings ui.
 = Version 2013.08.21 =
 * #bugFix fixed an error division by zero when viewing experiments with no stats.
 * removed use page title from variation pages.
