@@ -542,7 +542,6 @@ function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true ) ? get_post_meta ( $variation_post_id, 'mo_variation_id', true ) : 0;
-	mo_writelog($variation_id);
 	if (is_array ( $variationMetaDataArr )) {
 		echo '<script>
 				jQuery(document).ready(function($) {
