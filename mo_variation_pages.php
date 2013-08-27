@@ -237,6 +237,19 @@ function get_variation_template_for_template_loader() {
 	}
 }
 add_action ( 'template_redirect', 'get_variation_template_for_template_loader' );
+function mo_get_variation_metadata($metadata,$object_id,$meta_key,$single){
+	global $post,$variation_post_id;
+	if($object_id == $post->ID && $variation_post_id != $object_id){
+		return get_post_meta($variation_post_id,$meta_key,true);
+	}
+	
+}
+add_filter('get_post_metadata','mo_get_variation_metadata',1,4);
+// function mo_get_metaboxes(){
+// 	global $wp_meta_boxes;
+// 	print_r($wp_meta_boxes);
+// }
+// add_action('admin_head','mo_get_metaboxes');
 function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
 	global $wpdb;
 	if ($post_id) {
@@ -338,6 +351,8 @@ function mo_get_variation_page_stats_table($post_id = false) {
 		$variationMetaDataArr = array (
 				$post_id => get_post_meta ( $post_id ) 
 		) + $variationMetaDataArr;
+		$total_visitors = 0;
+		$total_conversions = 0;
 		foreach ( $variationMetaDataArr as $k => $v ) {
 			// set title
 			$title = substr ( get_the_title ( $k ), 0, 30 );
@@ -358,7 +373,8 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
 			$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
 			$conversion_rate = mo_get_conversion_rate ( ( float ) $visitors, ( float ) $conversions );
-			
+			$total_visitors = $total_visitors + $visitors;
+			$total_conversions = $total_conversions + $conversions;
 			$is_paused = ((get_post_meta ( $k, 'mo_variation_active', true ) == 'true') ? true : false);
 			
 			$edit_link = '<a title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . '&action=edit\'>Edit</a>';
@@ -391,7 +407,9 @@ function mo_get_variation_page_stats_table($post_id = false) {
 				$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
 			}
 		}
-		$variationStatsTable .= $controlRow . $variationRows . '</table>';
+		$totalRows = '<tr style="background-color:#ECECEC;"><th></th><th style="font-size:14px;"></th><th style="font-size:14px;">Visitors</th><th style="font-size:14px;">Conversions</th><th style="font-size:14px;">Conversion Rate</th><th></th><th></th><th></th></tr>';
+		$totalRows .= '<tr ><td></td><td style="font-size:14px;"><b>Totals</b></td><td style="font-size:14px;"><b>' . $total_visitors . '</b></td><td style="font-size:14px;"><b>' . $total_conversions . '</b></td><td style="font-size:14px;"><b>' . number_format ( mo_get_conversion_rate($total_visitors, $total_conversions) * 100, 2 ) . '%</b></td><td></td><td></td><td></td></tr>';
+		$variationStatsTable .= $controlRow . $variationRows .$totalRows. '</table>';
 		return $variationStatsTable;
 	}
 }
@@ -444,7 +462,8 @@ add_shortcode ( 'mo_conversion', 'mo_conversion' );
 function mo_reset_ab_stats() {
 	if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 		$post_id = $_GET ['post'];
-		$variationMetaDataArr = mo_get_variation_meta_data ( $post_id );
+		$variationMetaDataArr = mo_get_variation_meta_data ( $post_id,true );
+		$variationMetaDataArr [$post_id] = get_post_meta ( $post_id );
 		foreach ( $variationMetaDataArr as $k => $v ) {
 			update_post_meta ( $k, 'mo_page_views_count', 0 );
 			update_post_meta ( $k, 'mo_unique_page_views_count', 0 );
@@ -523,6 +542,7 @@ function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true ) ? get_post_meta ( $variation_post_id, 'mo_variation_id', true ) : 0;
+	mo_writelog($variation_id);
 	if (is_array ( $variationMetaDataArr )) {
 		echo '<script>
 				jQuery(document).ready(function($) {
