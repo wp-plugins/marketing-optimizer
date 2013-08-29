@@ -239,7 +239,7 @@ function get_variation_template_for_template_loader() {
 add_action ( 'template_redirect', 'get_variation_template_for_template_loader' );
 function mo_get_variation_metadata($metadata,$object_id,$meta_key,$single){
 	global $post,$variation_post_id;
-	if($object_id == $post->ID && $variation_post_id != $object_id){
+	if($object_id == $post->ID && $variation_post_id != $object_id && !is_admin()){
 		return get_post_meta($variation_post_id,$meta_key,true);
 	}
 	
@@ -247,7 +247,9 @@ function mo_get_variation_metadata($metadata,$object_id,$meta_key,$single){
 add_filter('get_post_metadata','mo_get_variation_metadata',1,4);
 // function mo_get_metaboxes(){
 // 	global $wp_meta_boxes;
-// 	print_r($wp_meta_boxes);
+// 	if(is_array($wp_meta_boxes['page']) && is_array($wp_meta_boxes['page']['advanced']) && is_array($wp_meta_boxes['page']['advanced']['default'])){
+		
+// 	}
 // }
 // add_action('admin_head','mo_get_metaboxes');
 function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
@@ -407,7 +409,6 @@ function mo_get_variation_page_stats_table($post_id = false) {
 				$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
 			}
 		}
-		$totalRows = '<tr style="background-color:#ECECEC;"><th></th><th style="font-size:14px;"></th><th style="font-size:14px;">Visitors</th><th style="font-size:14px;">Conversions</th><th style="font-size:14px;">Conversion Rate</th><th></th><th></th><th></th></tr>';
 		$totalRows .= '<tr ><td></td><td style="font-size:14px;"><b>Totals</b></td><td style="font-size:14px;"><b>' . $total_visitors . '</b></td><td style="font-size:14px;"><b>' . $total_conversions . '</b></td><td style="font-size:14px;"><b>' . number_format ( mo_get_conversion_rate($total_visitors, $total_conversions) * 100, 2 ) . '%</b></td><td></td><td></td><td></td></tr>';
 		$variationStatsTable .= $controlRow . $variationRows .$totalRows. '</table>';
 		return $variationStatsTable;
