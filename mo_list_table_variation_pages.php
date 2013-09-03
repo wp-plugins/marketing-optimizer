@@ -37,13 +37,13 @@ class MO_List_Table extends WP_List_Table {
     
         
     function column_title($item){
-        
+        $last_reset = get_post_meta($item['ID'],'mo_last_stat_reset',true)?'Last Reset: '.date('n/j/y h:ia',get_post_meta($item['ID'],'mo_last_stat_reset',true)):'Last Reset: '.'Never';
         //Build row actions
         $actions = array(
             'edit'      => sprintf('<a href="post.php?action=%s&post=%s">Edit</a>','edit',$item['ID']),
            // 'delete'    => sprintf('<a href="post.php?action=%s&post=%s">Delete</a>','delete',$item['ID']),
             'view'    => '<a href="'.get_permalink($item['ID']).'">View</a>',
-            'mo_reset_ab_stats'    => sprintf('<a href="admin.php?action=%s&post=%s">Reset All Stats</a>','mo_reset_ab_stats',$item['ID']),
+            'mo_reset_ab_stats'    => sprintf('<a href="admin.php?action=%s&post=%s">Reset All Stats</a> <i>('.$last_reset,'mo_reset_ab_stats',$item['ID']).')</i>'
         );
         
         //Return the title contents
