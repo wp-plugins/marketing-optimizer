@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer
  *  Plugin URI: http://www.marketingoptimizer.com 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 2013.03.03
+ *  Version: 2013.09.03
  *  Author: Stephen R. Croskey, steve@activeinternetmarketing.com 
  *  Author URI: http://www.activeinternetmarketing.com
  */
