@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer
  *  Plugin URI: http://www.marketingoptimizer.com 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 2013.09.03
+ *  Version: 2013.09.11
  *  Author: Stephen R. Croskey, steve@activeinternetmarketing.com 
  *  Author URI: http://www.activeinternetmarketing.com
  */
@@ -11,7 +11,7 @@
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '2013.09.03' );
+define ( 'MO_CURRENT_VERSION', '2013.09.11' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -21,7 +21,7 @@ define ( 'DS', '/' );
 define('USING_GF', class_exists('GFForms')?true:false);
 
 if(USING_GF){
-	//require_once('class.mogravityforms.php');
+	require_once('class.mogravityforms.php');
 }
 include_once ('mo_config.php');
 
@@ -196,7 +196,7 @@ function mo_phone_shortcode($attributes, $content = null) {
 // register items to be output by the wp_head() function
 function mo_register_head_items() {
 	global $post;
-	if (get_option ( 'mo_account_id' )) {
+	if (get_option ( 'mo_account_id' ) && $_GET['preview'] != true) {
 		$moObj = new marketingoptimizer ( get_option ( 'mo_account_id' ) );
 		if ($post->post_variation) {
 			$moObj->setVariationId ( $post->post_variation );
@@ -249,6 +249,7 @@ function mo_jquery_tabs_init() {
 	$marketingOptimizer = get_option('mo_marketing_optimizer')=='true'?'true':'false';
 	$phoneTracking = get_option('mo_phone_tracking')=='true'?'true':'false';
 	$sliderStartValue = get_option('mo_variation_percentage')?get_option('mo_variation_percentage'):90;
+	$cacheCompatible = get_option('mo_cache_compatible') == 'true'?'true':'false';
 	echo '<script>
 			  jQuery(function() {
 			    jQuery( "#slider-range-max" ).slider({
@@ -291,6 +292,14 @@ function mo_jquery_tabs_init() {
 				        			jQuery(\'[name="phone_tracking"]\').val("");
 				        		}
 			        		});
+				jQuery(\'.toggle-cachecompatible\').toggles({on:'.$cacheCompatible.'});
+			   jQuery(\'.toggle-cachecompatible\').on(\'toggle\',function(e,active){
+				        		if(active){
+				        			jQuery(\'[name="cache_compatible"]\').val("true");
+				        		}else{
+				        			jQuery(\'[name="cache_compatible"]\').val("");
+				        		}
+			        		});
 			jQuery(document).ready(function($) {
 
 $(\'#mo_gf_form\').change(function(){
@@ -298,11 +307,11 @@ var data = {
 						action: \'mo_gf_form_field_mapping\',
 						form_id: $(\'#mo_gf_form\').val()
 };
-console.log($(\'#mo_gf_form\').val());
-	// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+	if(data.form_id > 0){					
 	$.post(\'' . admin_url ( 'admin-ajax.php' ) . '\', data, function(response) {
 		alert(\'Got this from the server: \' + response);
 	});
+				        					}
 })
 });
   </script>';

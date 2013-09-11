@@ -25,6 +25,9 @@ if (isset ( $_POST['action'] ) && ! isset ( $_POST ['phone_tracking'] ) ) {
 if (isset ( $_POST['action'] ) && ! isset ( $_POST ['variation_pages'] ) && $active_tab == 'mo_general_settings' ) {
 	update_option ( 'mo_variation_pages', 'false' );
 }
+if (isset ( $_POST['action'] ) && ! isset ( $_POST ['cache_compatible'] ) && $active_tab == 'mo_general_settings' ) {
+	update_option ( 'mo_cache_compatible', 'false' );
+}
 if ($_POST) {
 	echo '<div class="updated" style="float:left;" >The Marketing Optimizer plugin settings updated</div>';
 }
@@ -40,6 +43,9 @@ if ($_POST) {
 	<h2 class="nav-tab-wrapper">  
     <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_general_settings" class="nav-tab <?php echo $active_tab == 'mo_general_settings' ? 'nav-tab-active' : ''; ?>">General Settings</a>  
     <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_integration_settings" class="nav-tab  <?php echo $active_tab == 'mo_integration_settings' ? 'nav-tab-active' : ''; ?>">Marketing Optimizer Integration</a>  
+    <?php if(USING_GF):?>
+    <!--  <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_gf_integration" class="nav-tab  <?php echo $active_tab == 'mo_gf_integration' ? 'nav-tab-active' : ''; ?>">Gravity Forms Integration</a> --> 
+    <?php endif;?>
     <a href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_shortcodes" class="nav-tab <?php echo $active_tab == 'mo_shortcodes' ? 'nav-tab-active' : ''; ?>">Shortcodes</a>  
 </h2>  
 	<div style="padding:20px;background-color:#ECECEC;">
@@ -55,6 +61,11 @@ case 'mo_general_settings':?>		      <div id="tabs-1">
 						<td style="width:20%">A/B Testing:</td>
 						<td style="width:30%"><div class="toggle-abtesting toggle-modern"></div><input type="hidden" name="variation_pages" value="<?php echo get_option ( 'mo_variation_pages' ) == 'true'?'true':''; ?>"  /></td>
 						<td style="width:50%"><p style="font-style: italic;">Turn on/off A/B testing.</p></td>
+					</tr>
+					<tr valign="top">
+						<td style="width:20%">Cache Compatability:</td>
+						<td style="width:30%"><div class="toggle-cachecompatible toggle-modern"></div><input type="hidden" name="cache_compatible" value="<?php echo get_option ( 'mo_cache_compatible' ) == 'true'?'true':''; ?>"  /></td>
+						<td style="width:50%"><p style="font-style: italic;">Turn on/off Cache compatability.</p></td>
 					</tr>
 					<tr>
 					<td style="width:20%" colspan="2" ><label for="amount">Set Exploitation/Exploration Percentage for Variations</label></td>
@@ -154,6 +165,26 @@ case 'mo_shortcodes':?>
 	</tr>
 	</table>
 	</fieldset>
+<?php break;
+case 'mo_gf_integration':
+	?>
+ <div id="tabs-4">
+    			
+    			<fieldset style="border-top:1px solid black;margin-bottom:20px;">
+    			<legend><b>Gravity Forms Integration:</b></legend>
+				<table class="form-table">
+				<tr valign="top">
+						<td style="width:20%">Select Form to Map Fields:</td>
+						<td style="width:30%"><?php echo mogravityforms::mo_get_gf_dropdown(); ?></td>
+					</tr>
+				</table>
+				</fieldset>
+				
+				<p class="submit">
+					<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+				</p>
+			</div>
+			</form>
 <?php break;
 default: echo "There is no content for this tab.";}?>
 		</form>

@@ -15,6 +15,7 @@ class marketingoptimizer {
 	public $variation_conversion_page;
 	public $variation_id;
 	public $variation_percentage;
+	public $cache_compatible;
 	public function __construct($acct_id = 0) {
 		if ($acct_id > 0) {
 			$this->account_id = $acct_id;
@@ -26,6 +27,7 @@ class marketingoptimizer {
 			$this->setUsingPhoneTracking(get_option('mo_phone_tracking'));
 			$this->setVariationPages(get_option('mo_variation_pages'));
 			$this->setVariationPercentage(get_option('mo_variation_percentage'));
+			$this->setCacheCompatible(get_option('mo_cache_compatible'));
 		}
 	}
 	public function _getWebsiteTrackingCode() {
@@ -161,6 +163,12 @@ class marketingoptimizer {
 	}
 	public function setVariationPercentage($variation_percentage) {
 		return $this->variation_percentage = $variation_percentage;
+	}
+	public function getCacheCompatible() {
+		return $this->cache_compatible;
+	}
+	public function setCacheCompatible($cache_compatible) {
+		return $this->cache_compatible = $cache_compatible;
 	}
 }
 // <!-- Start of Asynchronous Tracking Code -->
