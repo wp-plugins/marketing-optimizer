@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer
  *  Plugin URI: http://www.marketingoptimizer.com 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 20130911.1
+ *  Version: 20130913
  *  Author: Stephen R. Croskey, steve@activeinternetmarketing.com 
  *  Author URI: http://www.activeinternetmarketing.com
  */
@@ -11,7 +11,7 @@
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20130911.1' );
+define ( 'MO_CURRENT_VERSION', '20130913' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -309,7 +309,9 @@ var data = {
 };
 	if(data.form_id > 0){					
 	$.post(\'' . admin_url ( 'admin-ajax.php' ) . '\', data, function(response) {
-		alert(\'Got this from the server: \' + response);
+		$("#form_field_mapping_table").empty();		        					
+		$("#form_field_mapping_table").html(response);		        					
+		//alert(\'Got this from the server: \' + response);
 	});
 				        					}
 })

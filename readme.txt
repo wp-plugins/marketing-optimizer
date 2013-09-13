@@ -78,6 +78,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 20130913 =
+* Added Marketing Optimizer integration with Gravity Forms 
+= Version 20130911 =
+* Added cache compatible A/B testing 
 = Version 2013.08.27 =
 * #bugFix fixed an issue with all testing stats were not being reset when resetting all stats.
 * Added total columns to experiments page.
