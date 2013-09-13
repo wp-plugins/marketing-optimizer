@@ -19,7 +19,7 @@ if (count ( $_POST ) > 0 && $_POST ['action'] == 'mo_plugin_settings') {
 	if (isset ( $_POST ['action'] ) && ! isset ( $_POST ['marketing_optimizer'] ) && $active_tab == 'mo_integration_settings') {
 		update_option ( 'mo_marketing_optimizer', 'false' );
 	}
-	if (isset ( $_POST ['action'] ) && ! isset ( $_POST ['phone_tracking'] )) {
+	if (isset ( $_POST ['action'] ) && ! isset ( $_POST ['phone_tracking'] )&& $active_tab == 'mo_integration_settings') {
 		update_option ( 'mo_phone_tracking', 'false' );
 	}
 	if (isset ( $_POST ['action'] ) && ! isset ( $_POST ['variation_pages'] ) && $active_tab == 'mo_general_settings') {
@@ -57,7 +57,7 @@ if ($_POST) {
    <a
 				href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_gf_integration"
 				class="nav-tab  <?php echo $active_tab == 'mo_gf_integration' ? 'nav-tab-active' : ''; ?>">Gravity
-				Forms Integration</a>
+				Forms</a>
     <?php endif;?>
     <a
 				href="?page=<?php echo MO_PLUGIN_DIRECTORY ?>/mo_settings_page.php&tab=mo_shortcodes"
