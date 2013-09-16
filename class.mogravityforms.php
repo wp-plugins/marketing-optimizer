@@ -33,6 +33,7 @@ class mogravityforms {
 			$form_meta_arr = GFFormsModel::get_form_meta ( $form_id );
 			$form_fields_arr = array ();
 			foreach ( $form_meta_arr ['fields'] as $field ) {
+				if($field['type'] != 'section' && $field['type'] != 'page' && $field['type'] != 'captcha' && $field['type'] != 'post_title' && $field['type'] != 'post_excerpt' && $field['type'] != 'post_content' && $field['type'] != 'post_tags' && $field['type'] != 'post_category' && $field['type'] != 'post_image' && $field['type'] != 'post_custom_field' )
 				if (is_array ( $field ['inputs'] )) {
 					foreach ( $field ['inputs'] as $v ) {
 						if ($field ['label'] == 'Name') {
