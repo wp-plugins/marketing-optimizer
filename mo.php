@@ -1,17 +1,17 @@
 <?php
 /*
  * Plugin Name: Marketing Optimizer
- *  Plugin URI: http://www.marketingoptimizer.com 
+ *  Plugin URI: http://www.marketingoptimizer.com/wordpress/ 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 20130918
- *  Author: Stephen R. Croskey, steve@activeinternetmarketing.com 
- *  Author URI: http://www.activeinternetmarketing.com
+ *  Version: 20130918.1
+ *  Author: Marketing Optimizer, customercare@marketingoptimizer.com 
+ *  Author URI: http://www.marketingoptimizer.com/
  */
 ?>
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20130918' );
+define ( 'MO_CURRENT_VERSION', '20130918.1' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
