@@ -78,6 +78,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 20130918 =
+* #bugFix fixed an issue with A/B testing cache compatibility and Internet Explorer.
+* #bugFix removed html field type form gravity forms field mapping.
 = Version 20130916 =
 * #bugFix fixed an issue with the gravity forms integration where non form fields were showing up in the field mapping.
 = Version 20130913 =
