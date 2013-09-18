@@ -11,7 +11,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Optimize conversion rates by A/B testing your Wordpress site: test all your content for its effect on conversions, including landing pages.
 
 == Description ==
-
+= *New* Gravity Forms Integration = 
+Now you can use the awesome Gravity Forms form builder on your WordPress site, and easily post all your form data directly into your Marketing Optimizer web application. 
 = Conversion Rate Optimization Plugin =
 A/B testing is the process of showing visitors one of two (or more) versions of the same web page, and then tracking which one created the most revenue, leads, signups, downloads, purchases, registrations, or comments. Every page on your Wordpress site contributes to conversion rates, not just the landing page or pages with a feedback form. To really bring your marketing 'A-Game', you need to test every important page to see how it contributes to your bottom line. 
 = A/B Test Multiple Pages =
@@ -39,7 +40,9 @@ Some common changes that have been shown to increase conversion rates are:
 
 = Marketing Optimizer Integration =
 This plugin is a must for current subscribers to the Marketing Optimizer software. It includes automatic Marketing Optimizer javascript publishing code, phone tracking integration, and more. 
-
+= 100% Cache Compatible =
+Tested to be compatible with W3 Total Cache, WP Super Cache, Quick Cache, and probably all WordPress caching plugins.
+Tested to be compatible with WordPress hosting services, like WP Engine and Pagely, which cache your content on the server level. This plugin doesn't just 'bust' your caching, but utilizes your caching solution to retain the performance enhancements from them.
 
 **Related Links:**
 
