@@ -66,7 +66,7 @@ class mogravityforms {
 			if ($formFieldMappingArr) {
 				$table .= '<tr><td>' . $v . '</td><td><img src="'. plugins_url().DS.MO_PLUGIN_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" value="' . $formFieldMappingArr [$k] . '" /></td></tr>';
 			} else {
-				$table .= '<tr><td>' . $v . '</td><td>--></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
+				$table .= '<tr><td>' . $v . '</td><td><img src="'. plugins_url().DS.MO_PLUGIN_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
 			}
 		}
 		$table .= '</tbody>';
