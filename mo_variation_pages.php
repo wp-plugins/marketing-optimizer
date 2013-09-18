@@ -194,11 +194,11 @@ function get_post_template_for_template_loader($template) {
 	
 	if ($post && $post->post_type == 'variation-page') {
 		$post_template = get_post_meta ( $post->ID, '_post_template', true );
-		$parent_post_template = get_post_meta(get_post_meta($post->ID,'mo_variation_parent',true),'_post_template',true);
+		$parent_post_template = get_post_meta ( get_post_meta ( $post->ID, 'mo_variation_parent', true ), '_post_template', true );
 		if (empty ( $post_template ) && (! $post_template || $post_template == 'default')) {
-			if($parent_post_template && file_exists(get_template_directory ().'/'.$parent_post_template)){
-				$template = get_template_directory ().'/'.$parent_post_template;
-			}elseif (file_exists ( get_template_directory () . '/page-' . $post->post_name . '.php' )) {
+			if ($parent_post_template && file_exists ( get_template_directory () . '/' . $parent_post_template )) {
+				$template = get_template_directory () . '/' . $parent_post_template;
+			} elseif (file_exists ( get_template_directory () . '/page-' . $post->post_name . '.php' )) {
 				$template = get_template_directory () . '/page-' . $post->post_name . '.php';
 			} elseif (file_exists ( get_template_directory () . '/page-' . $post->ID . '.php' )) {
 				$template = get_template_directory () . '/page-' . $post->ID . '.php';
@@ -221,7 +221,7 @@ add_filter ( 'template_include', 'get_post_template_for_template_loader' );
 add_action ( 'wp', 'mo_make_variation_page' );
 function mo_make_variation_page() {
 	global $wp_query, $post;
-	$parent_post_id = get_post_meta($post->ID,'mo_variation_parent',true);
+	$parent_post_id = get_post_meta ( $post->ID, 'mo_variation_parent', true );
 	if ($post->post_type == 'variation-page') {
 		$wp_query->is_page = true;
 		$wp_query->is_single = false;
@@ -229,7 +229,7 @@ function mo_make_variation_page() {
 }
 function get_variation_template_for_template_loader() {
 	global $post, $variation_post_id;
-	if (is_object ( $post ) && $post->ID && mo_is_experiment($post->ID)) {
+	if (is_object ( $post ) && $post->ID && mo_is_experiment ( $post->ID )) {
 		
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 		// $variationMetaDataArr [$post->ID] = get_post_meta ( $post->ID );
@@ -242,32 +242,32 @@ function get_variation_template_for_template_loader() {
 					update_post_meta ( $post_id, 'mo_page_views_count', 0 );
 				}
 			}
-		//	if ($totalPageViews > 0) {
-				if (isset ( $_GET ['v'] ) && $_GET ['v']) {
-					$variationPostId = $_GET ['v'];
-				} else {
-					$variationPostId = mo_get_variation_to_show ( $post->ID, $variationMetaDataArr );
-				}
-				$variation_post_id = $variationPostId;
-				update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
-				if (mo_is_experiment ( $post->ID ) && get_option ( 'mo_cache_compatible' ) && ! $_GET ['t'] && ! $_GET ['v']) {
-					include (__DIR__ . '/templates' . DS . 'ajax.php');
-					exit ();
-				}
-				$variationContent = get_post ( $variationPostId );
-				$post->post_content = $variationContent->post_content;
-				$post->post_variation = get_post_meta ( $variationPostId, 'mo_variation_id', true );
-				if (isset ( $variationMetaDataArr [$variationPostId] ['_post_template'] [0] ) && $variationMetaDataArr [$variationPostId] ['_post_template'] [0] != 'default' && file_exists ( get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0] )) {
-					include (get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0]);
-					exit ();
-				}
-// 			} else {
-// 				$variation_post_id = $post->ID;
-// 				$post->post_variation = get_post_meta ( $post->ID, 'mo_variation_id', true );
-// 				$pageViews = get_post_meta ( $post->ID, 'mo_page_views_count' );
-// 				$incrementedPageViews = ( int ) $pageViews [0] + 1;
-// 				update_post_meta ( $post->ID, 'mo_page_views_count', ( int ) $incrementedPageViews );
-// 			}
+			// if ($totalPageViews > 0) {
+			if (isset ( $_GET ['v'] ) && $_GET ['v']) {
+				$variationPostId = $_GET ['v'];
+			} else {
+				$variationPostId = mo_get_variation_to_show ( $post->ID, $variationMetaDataArr );
+			}
+			$variation_post_id = $variationPostId;
+			update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
+			if (mo_is_experiment ( $post->ID ) && get_option ( 'mo_cache_compatible' ) && ! $_GET ['t'] && ! $_GET ['v']) {
+				include (__DIR__ . '/templates' . DS . 'ajax.php');
+				exit ();
+			}
+			$variationContent = get_post ( $variationPostId );
+			$post->post_content = $variationContent->post_content;
+			$post->post_variation = get_post_meta ( $variationPostId, 'mo_variation_id', true );
+			if (isset ( $variationMetaDataArr [$variationPostId] ['_post_template'] [0] ) && $variationMetaDataArr [$variationPostId] ['_post_template'] [0] != 'default' && file_exists ( get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0] )) {
+				include (get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0]);
+				exit ();
+			}
+			// } else {
+			// $variation_post_id = $post->ID;
+			// $post->post_variation = get_post_meta ( $post->ID, 'mo_variation_id', true );
+			// $pageViews = get_post_meta ( $post->ID, 'mo_page_views_count' );
+			// $incrementedPageViews = ( int ) $pageViews [0] + 1;
+			// update_post_meta ( $post->ID, 'mo_page_views_count', ( int ) $incrementedPageViews );
+			// }
 		} else {
 		}
 	}
@@ -287,15 +287,15 @@ function mo_is_experiment($post_id) {
 add_action ( 'template_redirect', 'get_variation_template_for_template_loader' );
 function mo_get_variation_metadata($metadata, $object_id, $meta_key, $single) {
 	global $post, $variation_post_id;
-	if ($object_id == $post->ID && $variation_post_id != $object_id && !is_admin () && ! is_home ()) {
-		mo_writelog('returning variation meta '.$meta_key);
+	if ($object_id == $post->ID && $variation_post_id != $object_id && ! is_admin () && ! is_home ()) {
+		mo_writelog ( 'returning variation meta ' . $meta_key );
 		return get_post_meta ( $variation_post_id, $meta_key, true );
 	}
-	mo_writelog('returning parent meta '.$meta_key);
+	mo_writelog ( 'returning parent meta ' . $meta_key );
 	return get_post_meta ( $object_id, $meta_key, $single );
 }
 add_filter ( 'get_page_metadata', 'mo_get_variation_metadata', 1, 4 );
-//add_filter ( 'get_post_metadata', 'mo_get_variation_metadata', 1, 4 );
+// add_filter ( 'get_post_metadata', 'mo_get_variation_metadata', 1, 4 );
 
 // function mo_get_metaboxes(){
 // global $wp_meta_boxes;
@@ -758,7 +758,7 @@ add_action ( 'admin_action_mo_create_experiment', 'mo_create_experiment' );
 function mo_get_variation_count($post_id) {
 	global $wpdb;
 	if ($post_id) {
-		return (int)$wpdb->get_var ( "SELECT COUNT(*) from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id");
+		return ( int ) $wpdb->get_var ( "SELECT COUNT(*) from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id" );
 	}
 }
 function mo_duplicate_variation() {
@@ -778,7 +778,7 @@ function mo_duplicate_variation() {
 				'post_parent' => $originalPostObj->post_parent ? $originalPostObj->post_parent : 0,
 				'post_password' => $originalPostObj->post_parent->post_password,
 				'post_status' => 'variation',
-				'post_title' => $prefix . $originalPostObj->post_title,
+				'post_title' => $originalPostObj->post_title,
 				'post_type' => 'variation-page' 
 		);
 		$newVariationPostId = wp_insert_post ( $newVariationPage );
@@ -786,6 +786,9 @@ function mo_duplicate_variation() {
 			if ($k != 'mo_variation_id' && $k != 'mo_unique_page_views_count' && $k != 'mo_conversion_count' && $k != 'mo_page_views_count') {
 				update_post_meta ( $newVariationPostId, $k, $v [0] );
 			}
+		}
+		if (! get_post_meta ( $originalPostId, 'mo_variation_parent', true )) {
+			update_post_meta ( $newVariationPostId, 'mo_variation_parent', $originalPostId );
 		}
 	}
 	wp_redirect ( admin_url ( 'admin.php?page=edit.php?post_type=variation-page' ) );
