@@ -43,6 +43,7 @@ class MO_List_Table extends WP_List_Table {
             'edit'      => sprintf('<a href="post.php?action=%s&post=%s">Edit</a>','edit',$item['ID']),
            // 'delete'    => sprintf('<a href="post.php?action=%s&post=%s">Delete</a>','delete',$item['ID']),
             'view'    => '<a href="'.get_permalink($item['ID']).'">View</a>',
+            'duplicate'    =>  '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $item['ID'] . '">Duplicate</a>',
             'mo_reset_ab_stats'    => sprintf('<a href="admin.php?action=%s&post=%s">Reset All Stats</a> <i>('.$last_reset,'mo_reset_ab_stats',$item['ID']).')</i>'
         );
         

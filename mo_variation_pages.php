@@ -251,7 +251,11 @@ function get_variation_template_for_template_loader() {
 			$variation_post_id = $variationPostId;
 			update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
 			if (mo_is_experiment ( $post->ID ) && get_option ( 'mo_cache_compatible' ) && ! $_GET ['t'] && ! $_GET ['v']) {
-				include (__DIR__ . '/templates' . DS . 'ajax.php');
+				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+					include (__DIR__ . '/templates' . DS . 'ajax.php');
+				} else {
+					include ('templates' . DS . 'ajax.php');
+				}
 				exit ();
 			}
 			$variationContent = get_post ( $variationPostId );
@@ -261,13 +265,6 @@ function get_variation_template_for_template_loader() {
 				include (get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0]);
 				exit ();
 			}
-			// } else {
-			// $variation_post_id = $post->ID;
-			// $post->post_variation = get_post_meta ( $post->ID, 'mo_variation_id', true );
-			// $pageViews = get_post_meta ( $post->ID, 'mo_page_views_count' );
-			// $incrementedPageViews = ( int ) $pageViews [0] + 1;
-			// update_post_meta ( $post->ID, 'mo_page_views_count', ( int ) $incrementedPageViews );
-			// }
 		} else {
 		}
 	}
