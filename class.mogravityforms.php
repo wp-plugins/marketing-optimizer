@@ -111,9 +111,11 @@ class mogravityforms {
 		$post_url = 'http://app.aimcrm.com/remote/form_post.php';
 		$form_id = $entry ['form_id'];
 		$formFieldMappingArr = mogravityforms::mo_get_form_field_mapping ( $form_id );
+		$v_id = $_COOKIE['ap_cookie_1p_'.get_option ( 'mo_account_id' )];
 		$body = array ();
 		$body ['org_id'] = get_option ( 'mo_account_id' );
-		$body ['action'] = 'feedback_visitor_add';
+		$body ['action'] = 'feedback_post_add';
+		$body ['v_id'] = $v_id;
 		if ($formFieldMappingArr) {
 			$formFieldMappingArr = array_flip ( $formFieldMappingArr );
 			foreach ( $formFieldMappingArr as $k => $v ) {
@@ -133,11 +135,13 @@ class mogravityforms {
 	function mo_paged_post_to_marketing_optimizer($form, $coming_from_page, $current_page) {
 		$post_url = 'http://app.aimcrm.com/remote/form_post.php';
 		$form_id = $form ['id'];
+		$v_id = $_COOKIE['ap_cookie_1p_'.get_option ( 'mo_account_id' )];
 		$formFieldMappingArr = mogravityforms::mo_get_form_field_mapping ( $form_id );
 		if ($formFieldMappingArr ['gf_persist'] == 'true') {
 			$body = array ();
 			$body ['org_id'] = get_option ( 'mo_account_id' );
-			$body ['action'] = 'feedback_visitor_add';
+			$body ['action'] = 'feedback_post_add';
+			$body ['v_id'] = $v_id;
 			$entry = array ();
 			$needle = 'input_';
 			foreach ( $_POST as $k => $v ) {
