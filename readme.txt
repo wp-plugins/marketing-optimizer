@@ -81,6 +81,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 20130924 =
+* #bugFix fixed an issue with get parameters and cache compatibility
 = Version 20130920 =
 * #bugFix fixed A/B testing compatability issue with PHP version < 5.3.
 * #featureRequest added ability to submit multi page gravity forms after each page.
