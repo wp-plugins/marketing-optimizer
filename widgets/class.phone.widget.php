@@ -1,10 +1,10 @@
 <?php
 /*
  * Plugin Name: Marketing Optimizer Phone Widget 
- * Plugin URI: http://www.marketingoptimizer.com/ 
+ * Plugin URI: http://www.marketingoptimizer.com/?apcid=8381
  * Description: Will output Marketing Optimizer Phone Tracking code 
  * Author: Stephen R. Croskey Version: 1 
- * Author URI: * http://www.marketingoptimizer.com/
+ * Author URI: * http://www.marketingoptimizer.com/?apcid=8381
  */
 class MoPhoneWidget extends WP_Widget {
 	function MoPhoneWidget() {

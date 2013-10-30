@@ -1,4 +1,5 @@
 <script type='text/javascript'>
+document.onload = functino(){
 function moGetExperimentCookie() {
     var cookies = document.cookie.split(/;\s*/);
     for (var i = 0; i < cookies.length; i++) {
@@ -42,5 +43,6 @@ if (isIE) {
         xmlhttp.open("GET", url[0] + '?t=' + new Date().getTime()+params, true);
     }
     xmlhttp.send();
+}
 }
  </script>

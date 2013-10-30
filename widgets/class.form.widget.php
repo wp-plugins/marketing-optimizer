@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Marketing Optimizer Form Widget
-Plugin URI: http://www.marketingoptimizer.com/
+Plugin URI: http://www.marketingoptimizer.com/?apcid=8381
 Description: Will output Marketing Optimizer form publishing javascript code
 Author: Stephen R. Croskey
 Version: 1
-Author URI: http://www.marketingoptimizer.com/
+Author URI: http://www.marketingoptimizer.com/?apcid=8381
 */
  
  

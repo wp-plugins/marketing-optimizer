@@ -129,7 +129,7 @@ add_filter ( 'wp_insert_post_data', 'mo_save_variation_settings', 10, 2 );
 function mo_save_variation_settings($data, $postArr) {
 	global $post;
 	// Check it's not an auto save routine
-	if (defined ( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || $postArr ['post_type'] == 'revision')
+	if (defined ( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || $postArr ['post_type'] == 'revision' || $postArr ['post_type'] == 'nav_menu_item')
 		
 		return $data;
 	
@@ -230,7 +230,6 @@ function mo_make_variation_page() {
 function get_variation_template_for_template_loader() {
 	global $post, $variation_post_id;
 	if (is_object ( $post ) && $post->ID && mo_is_experiment ( $post->ID )) {
-		
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 		// $variationMetaDataArr [$post->ID] = get_post_meta ( $post->ID );
 		if (is_array ( $variationMetaDataArr ) && count ( $variationMetaDataArr ) > 0) {
@@ -251,19 +250,22 @@ function get_variation_template_for_template_loader() {
 			$variation_post_id = $variationPostId;
 			update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
 			if (mo_is_experiment ( $post->ID ) && get_option ( 'mo_cache_compatible' ) && ! $_GET ['t'] && ! $_GET ['v']) {
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-					include (__DIR__ . '/templates' . DS . 'ajax.php');
-				} else {
-					include ('templates' . DS . 'ajax.php');
+				// if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+				// include (__DIR__ . '/templates' . DS . 'ajax.php');
+				// } else {
+				// include ('templates' . DS . 'ajax.php');
+				// }
+				add_action ( 'wp_head', 'mo_get_experiment_javascript' );
+				// exit ();
+			} else {
+				add_action ( 'wp_head', 'mo_get_variation_style' );
+				$variationContent = get_post ( $variationPostId );
+				$post->post_content = $variationContent->post_content;
+				$post->post_variation = get_post_meta ( $variationPostId, 'mo_variation_id', true );
+				if (isset ( $variationMetaDataArr [$variationPostId] ['_post_template'] [0] ) && $variationMetaDataArr [$variationPostId] ['_post_template'] [0] != 'default' && file_exists ( get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0] )) {
+					include (get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0]);
+					exit ();
 				}
-				exit ();
-			}
-			$variationContent = get_post ( $variationPostId );
-			$post->post_content = $variationContent->post_content;
-			$post->post_variation = get_post_meta ( $variationPostId, 'mo_variation_id', true );
-			if (isset ( $variationMetaDataArr [$variationPostId] ['_post_template'] [0] ) && $variationMetaDataArr [$variationPostId] ['_post_template'] [0] != 'default' && file_exists ( get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0] )) {
-				include (get_template_directory () . '/' . $variationMetaDataArr [$variationPostId] ['_post_template'] [0]);
-				exit ();
 			}
 		} else {
 		}
@@ -407,28 +409,41 @@ add_action ( 'wp_ajax_mo_get_variation_for_display', 'mo_get_variation_for_displ
 add_action ( 'wp_ajax_nopriv_mo_get_variation_for_display', 'mo_get_variation_for_display' );
 function mo_get_variation_page_stats_table($post_id = false) {
 	if ($post_id) {
-		$variationStatsTable = '<table><tr style="background-color:#ECECEC;"><th style="width:200px;">Title</th><th style="width:300px;">Variation Name</th><th style="width:50px;">Visitors</th><th style="width:50px;">Conversions</th><th style="width:110px;">Conversion Rate</th><th style="width:110px;">Conv Rate Diff</th><th style="width:110px;">Confidence</th><th>Variation ID</th></tr>';
+		$variationStatsTable = '<table><tr style="background-color:#ECECEC;"><th style="width:200px;">Title</th><th style="width:300px;">Variation Name</th><th style="width:50px;">Visitors</th><th style="width:50px;">Conversions</th><th style="width:110px;">Conversion Rate</th><th style="width:110px;">Conv Rate Diff</th><th style="width:110px;">Chance of Winning</th><th>Variation ID</th></tr>';
 		$controlRow = '';
 		$variationRows = '';
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post_id, true );
-		// $variationMetaDataArr = array (
-		// $post_id => get_post_meta ( $post_id )
-		// ) + $variationMetaDataArr;
+		
 		$total_visitors = 0;
 		$total_conversions = 0;
-		foreach ( $variationMetaDataArr as $k => $v ) {
+
+		$confidenceArr = array();
+		foreach($variationMetaDataArr as $k => $v){
 			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
 			$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
-			$conversionRatesArr [$k] = mo_get_conversion_rate ( $visitors, $conversions );
+			$conversionRate = mo_get_conversion_rate ( $visitors, $conversions );
+			$conversionRatesArr [$k] = $conversionRate;
+			foreach($variationMetaDataArr as $key=>$value){
+				if($k != $key ){
+					$varVisitors  = $value ['mo_unique_page_views_count'] [0] ? $value ['mo_unique_page_views_count'] [0] : 0;
+					$varConversions = $value ['mo_conversion_count'] [0] ? $value ['mo_conversion_count'] [0] : 0;
+					$varConversionRate = mo_get_conversion_rate ( $varVisitors, $varConversions );
+					if(!isset($confidenceArr[$k])||$confidenceArr[$k] > number_format ( mo_get_cumnormdist ( mo_get_zscore(array('visitors'=>$varVisitors,'conversion_rate'=>$varConversionRate),array('visitors'=>$visitors,'conversion_rate'=>$conversionRate)) ) * 100, 1 ) && (int)$varConversions){
+						$confidenceArr[$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore(array('visitors'=>$varVisitors,'conversion_rate'=>$varConversionRate),array('visitors'=>$visitors,'conversion_rate'=>$conversionRate)) ) * 100, 1 );
+					}
+				}
+			}
+			mo_writelog($confidenceArr[$k]);
 		}
-		arsort ( $conversionRatesArr );
-		reset ( $conversionRatesArr );
-		$bestConversionRate = current ( $conversionRatesArr );
-		$bestConversionRatePostId = key ( $conversionRatesArr );
-		$controlZscoreArr = array (
-				'conversion_rate' => $bestConversionRate,
-				'visitors' => $variationMetaDataArr [$bestConversionRatePostId] ['mo_unique_page_views_count'] [0] 
-		);
+		
+ 		arsort ( $conversionRatesArr );
+ 		reset ( $conversionRatesArr );
+ 		$bestConversionRate = current ( $conversionRatesArr );
+// 		$bestConversionRatePostId = key ( $conversionRatesArr );
+// 		$controlZscoreArr = array (
+// 				'conversion_rate' => $bestConversionRate,
+// 				'visitors' => $variationMetaDataArr [$bestConversionRatePostId] ['mo_unique_page_views_count'] [0] 
+// 		);
 		foreach ( $variationMetaDataArr as $k => $v ) {
 			// set title
 			$title = substr ( get_the_title ( $k ), 0, 30 );
@@ -443,7 +458,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			if ($v ['mo_variation_id'] [0]) {
 				$variation_id = '<a  class=\'mo-variation-id\' title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . "&action=edit'>" . $v ['mo_variation_id'] [0] . '</a>';
 			} else {
-				$variation_id = '<a  class=\'mo-variation-id\' title=\'Click to go to the Marketing Optimizer website.\' href=\'http://www.marketingoptimizer.com\'><img src="' . plugins_url ( '/images/moicon.png', __FILE__ ) . '" />' . '</a>';
+				$variation_id = '<a  class=\'mo-variation-id\' title=\'Click to go to the Marketing Optimizer website.\' href=\'http://www.marketingoptimizer.com/?apcid=8381\'><img src="' . plugins_url ( '/images/moicon.png', __FILE__ ) . '" />' . '</a>';
 			}
 			// set stats
 			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
@@ -459,20 +474,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
 			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
 			$promote_link = '<a href="admin.php?action=mo_promote_variation&post=' . $k . '">Promote</a>';
-			// if ($k == $post_id) {
-			// $control_conversion_rate = $conversion_rate;
-			// $controlZscoreArr = array (
-			// 'conversion_rate' => $control_conversion_rate,
-			// 'visitors' => $visitors
-			// );
-			// $controlRow .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' | ' . $duplicate_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>NA</td><td>NA</td><td>' . $variation_id . '</td></tr>';
-			// } else {
-			$variationZscoreArr = array (
-					'conversion_rate' => $conversion_rate,
-					'visitors' => $visitors 
-			);
-			$zScore = mo_get_zscore ( $controlZscoreArr, $variationZscoreArr );
-			$confidence = number_format ( mo_get_cumnormdist ( $zScore ) * 100, 2 ) . '%';
+			$confidence = $confidenceArr[$k]== 50.00?'<i title="Not Enough Information">NEI</i>':$confidenceArr[$k]. '%';
 			if (($bestConversionRate - $conversion_rate) > 0) {
 				$conversion_rate_diff = '<span style="color:red;">-' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%</span>';
 			} elseif (($bestConversionRate - $conversion_rate) == 0) {
@@ -520,7 +522,6 @@ function moGetVariationCookie(){
 									cookiesArr.push(cookie);
 								}
 							}
-							console.log(cookiesArr);
 							return JSON.stringify(cookiesArr);
 						}
 	var data = {
@@ -633,7 +634,6 @@ function mo_set_cookie($args) {
 						var cookie = cookies[i];
 						if(cookie.indexOf("mo_experiment_' . $post->ID . '") != -1){
 							cookie = cookie.split(\'=\',2);
-							console.log(cookie[1]);
 							return cookie[1];
 						}
 					}
@@ -838,3 +838,68 @@ function mo_admin_bar_render() {
 		) );
 }
 add_action ( 'wp_before_admin_bar_render', 'mo_admin_bar_render' );
+function mo_get_experiment_javascript() {
+	global $post;
+	echo '<script type="text/javascript">
+window.onload = function(){
+function moGetExperimentCookie() {
+    var cookies = document.cookie.split(/;\s*/);
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var control = ' . $post->ID . '; 
+        if (control > 0 && cookie.indexOf("mo_experiment_" + control) != -1) {
+            cookie = cookie.split("=", 2);
+            return cookie[1];
+        }
+    }
+    return null;
+}
+var url = window.location.href;
+var params = "";
+url = url.split("?");
+if(!url[1]){
+	params = "";
+}else{
+	params = "&"+url[1];
+}
+variation_id = moGetExperimentCookie();
+var isIE = window.XDomainRequest ? true : false;
+if (isIE) {
+        if (variation_id != null) {
+            window.location =  url[0] + "?v=" + moGetExperimentCookie()+params;
+        } else {
+       	 window.location = url[0] + "?t=" + new Date().getTime()+params;
+        }
+} else {
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var newDoc = document.open("text/html", "replace");
+            newDoc.write(xmlhttp.responseText);
+            newDoc.close();
+        }
+    }
+    if (variation_id != null) {
+        xmlhttp.open("GET", url[0] + "?v=" + moGetExperimentCookie()+params, true);
+    } else {
+        xmlhttp.open("GET", url[0] + "?t=" + new Date().getTime()+params, true);
+    }
+    xmlhttp.send();
+}
+						
+}
+ </script>
+						<style>
+body {
+display:none;
+}
+</style>';
+}
+function mo_get_variation_style() {
+	global $post;
+	echo '<style>
+body {
+display:inline !important;
+}
+</style>';
+}

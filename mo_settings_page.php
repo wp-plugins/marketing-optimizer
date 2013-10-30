@@ -39,7 +39,7 @@ if ($_POST) {
 <div class="wrap">
 	<div style="display: block; width: 80%; float: left;">
 		<h2>
-			<a href="http://www.marketingoptimizer.com"
+			<a href="http://www.marketingoptimizer.com/?apcid=8381"
 				title="marketing optimizer logo"> <img
 				src="<?php echo plugins_url().DS.MO_PLUGIN_DIRECTORY?>/images/mologo.png" /></a>
 	 <?php echo "<span style=\"float:right;font-size:14px;padding-top:40px;font-style:italic;\">Version ". MO_CURRENT_VERSION ."</span>";?></h2>
@@ -135,7 +135,7 @@ break;
 								<input type="hidden" name="marketing_optimizer"
 								value="<?php echo get_option ( 'mo_marketing_optimizer' ) == 'true'?'true':''; ?>" /></td>
 							<td style="width: 50%"><p style="font-style: italic;">
-									<a href="http://www.marketingoptimizer.com">Learn more about
+									<a href="http://www.marketingoptimizer.com/?apcid=8381">Learn more about
 										Marketing Optimizer</a>
 								</p></td>
 						</tr>

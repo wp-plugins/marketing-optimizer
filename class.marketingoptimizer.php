@@ -36,7 +36,8 @@ class marketingoptimizer {
 		$websiteTrackingJs .= "<script type='text/javascript'> \n";
 		$websiteTrackingJs .= "var _apVars = _apVars || []; \n";
 		$websiteTrackingJs .= "_apVars.push(['_trackPageview']); \n";
-		$websiteTrackingJs .= "_apVars.push(['_setAccount',  $this->account_id ]); \n";
+		$websiteTrackingJs .= "_apVars.push(['_setAccount',\"$this->account_id\"]); \n";
+		
 		if($this->getVariationId()){
 			$websiteTrackingJs .= "_apVars.push([ '_trackVariation',". $this->getVariationId()."]); \n";
 		}
@@ -61,6 +62,7 @@ class marketingoptimizer {
 		$websiteTrackingJs .= "})(document); \n";
 		$websiteTrackingJs .= "</script> \n";
 		$websiteTrackingJs .= "<!-- End of Asynchronous Tracking Code --> \n";
+		mo_writelog($websiteTrackingJs);
 		return $websiteTrackingJs;
 	}
 

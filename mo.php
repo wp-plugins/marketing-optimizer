@@ -1,17 +1,17 @@
 <?php
 /*
  * Plugin Name: Marketing Optimizer
- *  Plugin URI: http://www.marketingoptimizer.com/wordpress/ 
+ *  Plugin URI: http://www.marketingoptimizer.com/wordpress/?apcid=8381 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 20130924
+ *  Version: 20131030
  *  Author: Marketing Optimizer, customercare@marketingoptimizer.com 
- *  Author URI: http://www.marketingoptimizer.com/
+ *  Author URI: http://www.marketingoptimizer.com/?apcid=8381
  */
 ?>
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20130924' );
+define ( 'MO_CURRENT_VERSION', '20131030' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -119,6 +119,7 @@ function mo_activate() {
 				get_option('mo_form_default_id')?add_option ( 'mo_form_default_id', FORM_ID ):'';
 				get_option ( 'mo_variation_pages' )?add_option ( 'mo_variation_pages', VARIATION_PAGES ):'';
 	}
+	flush_rewrite_rules();
 }
 // create admin menu
 function mo_create_menu() {
@@ -164,6 +165,7 @@ function mo_deactivate() {
 // 		delete_option ( 'mo_variation_pages' );
 	}
 	// needed for proper deletion of every option
+	flush_rewrite_rules();
 }
 // check if debug is activated
 function mo_debug() {
