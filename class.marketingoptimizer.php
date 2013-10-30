@@ -62,7 +62,6 @@ class marketingoptimizer {
 		$websiteTrackingJs .= "})(document); \n";
 		$websiteTrackingJs .= "</script> \n";
 		$websiteTrackingJs .= "<!-- End of Asynchronous Tracking Code --> \n";
-		mo_writelog($websiteTrackingJs);
 		return $websiteTrackingJs;
 	}
 

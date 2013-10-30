@@ -287,10 +287,10 @@ add_action ( 'template_redirect', 'get_variation_template_for_template_loader' )
 function mo_get_variation_metadata($metadata, $object_id, $meta_key, $single) {
 	global $post, $variation_post_id;
 	if ($object_id == $post->ID && $variation_post_id != $object_id && ! is_admin () && ! is_home ()) {
-		mo_writelog ( 'returning variation meta ' . $meta_key );
+		//mo_writelog ( 'returning variation meta ' . $meta_key );
 		return get_post_meta ( $variation_post_id, $meta_key, true );
 	}
-	mo_writelog ( 'returning parent meta ' . $meta_key );
+	//mo_writelog ( 'returning parent meta ' . $meta_key );
 	return get_post_meta ( $object_id, $meta_key, $single );
 }
 add_filter ( 'get_page_metadata', 'mo_get_variation_metadata', 1, 4 );
@@ -409,41 +409,55 @@ add_action ( 'wp_ajax_mo_get_variation_for_display', 'mo_get_variation_for_displ
 add_action ( 'wp_ajax_nopriv_mo_get_variation_for_display', 'mo_get_variation_for_display' );
 function mo_get_variation_page_stats_table($post_id = false) {
 	if ($post_id) {
-		$variationStatsTable = '<table><tr style="background-color:#ECECEC;"><th style="width:200px;">Title</th><th style="width:300px;">Variation Name</th><th style="width:50px;">Visitors</th><th style="width:50px;">Conversions</th><th style="width:110px;">Conversion Rate</th><th style="width:110px;">Conv Rate Diff</th><th style="width:110px;">Chance of Winning</th><th>Variation ID</th></tr>';
+		$variationStatsTable = '<table><tr style="background-color:#ECECEC;"><th style="width:200px;">Title</th><th style="width:300px;">Variation Name</th><th style="width:50px;">Visitors</th><th style="width:50px;">Conversions</th><th style="width:110px;">Conversion Rate</th><th style="width:110px;">Conv Rate Diff</th><th style="width:110px;">Confidence of Winning</th><th>Variation ID</th></tr>';
 		$controlRow = '';
 		$variationRows = '';
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post_id, true );
 		
 		$total_visitors = 0;
 		$total_conversions = 0;
-
-		$confidenceArr = array();
-		foreach($variationMetaDataArr as $k => $v){
+		
+		$confidenceArr = array ();
+		foreach ( $variationMetaDataArr as $k => $v ) {
 			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
 			$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
 			$conversionRate = mo_get_conversion_rate ( $visitors, $conversions );
 			$conversionRatesArr [$k] = $conversionRate;
-			foreach($variationMetaDataArr as $key=>$value){
-				if($k != $key ){
-					$varVisitors  = $value ['mo_unique_page_views_count'] [0] ? $value ['mo_unique_page_views_count'] [0] : 0;
+			foreach ( $variationMetaDataArr as $key => $value ) {
+				if ($k != $key && ( int ) $conversions) {
+					$varVisitors = $value ['mo_unique_page_views_count'] [0] ? $value ['mo_unique_page_views_count'] [0] : 0;
 					$varConversions = $value ['mo_conversion_count'] [0] ? $value ['mo_conversion_count'] [0] : 0;
 					$varConversionRate = mo_get_conversion_rate ( $varVisitors, $varConversions );
-					if(!isset($confidenceArr[$k])||$confidenceArr[$k] > number_format ( mo_get_cumnormdist ( mo_get_zscore(array('visitors'=>$varVisitors,'conversion_rate'=>$varConversionRate),array('visitors'=>$visitors,'conversion_rate'=>$conversionRate)) ) * 100, 1 ) && (int)$varConversions){
-						$confidenceArr[$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore(array('visitors'=>$varVisitors,'conversion_rate'=>$varConversionRate),array('visitors'=>$visitors,'conversion_rate'=>$conversionRate)) ) * 100, 1 );
+					if (! isset ( $confidenceArr [$k] ) && ( int ) $varConversions) {
+						$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+								'visitors' => $varVisitors,
+								'conversion_rate' => $varConversionRate 
+						), array (
+								'visitors' => $visitors,
+								'conversion_rate' => $conversionRate 
+						) ) ) * 100, 1 );
+					} elseif ($confidenceArr [$k] > number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+							'visitors' => $varVisitors,
+							'conversion_rate' => $varConversionRate 
+					), array (
+							'visitors' => $visitors,
+							'conversion_rate' => $conversionRate 
+					) ) ) * 100, 1 ) && ( int ) $varConversions) {
+						$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+								'visitors' => $varVisitors,
+								'conversion_rate' => $varConversionRate 
+						), array (
+								'visitors' => $visitors,
+								'conversion_rate' => $conversionRate 
+						) ) ) * 100, 1 );
 					}
 				}
 			}
-			mo_writelog($confidenceArr[$k]);
 		}
 		
- 		arsort ( $conversionRatesArr );
- 		reset ( $conversionRatesArr );
- 		$bestConversionRate = current ( $conversionRatesArr );
-// 		$bestConversionRatePostId = key ( $conversionRatesArr );
-// 		$controlZscoreArr = array (
-// 				'conversion_rate' => $bestConversionRate,
-// 				'visitors' => $variationMetaDataArr [$bestConversionRatePostId] ['mo_unique_page_views_count'] [0] 
-// 		);
+		arsort ( $conversionRatesArr );
+		reset ( $conversionRatesArr );
+		$bestConversionRate = current ( $conversionRatesArr );
 		foreach ( $variationMetaDataArr as $k => $v ) {
 			// set title
 			$title = substr ( get_the_title ( $k ), 0, 30 );
@@ -474,7 +488,7 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
 			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
 			$promote_link = '<a href="admin.php?action=mo_promote_variation&post=' . $k . '">Promote</a>';
-			$confidence = $confidenceArr[$k]== 50.00?'<i title="Not Enough Information">NEI</i>':$confidenceArr[$k]. '%';
+			$confidence = $confidenceArr [$k] ? $confidenceArr [$k] . "%" : '<i title="Not Enough Information">NEI</i>';
 			if (($bestConversionRate - $conversion_rate) > 0) {
 				$conversion_rate_diff = '<span style="color:red;">-' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%</span>';
 			} elseif (($bestConversionRate - $conversion_rate) == 0) {
@@ -483,7 +497,6 @@ function mo_get_variation_page_stats_table($post_id = false) {
 				$conversion_rate_diff = '<span style="color:green;">+' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) * (- 1) . '%</span>';
 			}
 			$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
-			// }
 		}
 		$totalRows .= '<tr ><td></td><td style="font-size:14px;"><b>Totals</b></td><td style="font-size:14px;"><b>' . $total_visitors . '</b></td><td style="font-size:14px;"><b>' . $total_conversions . '</b></td><td style="font-size:14px;"><b>' . number_format ( mo_get_conversion_rate ( $total_visitors, $total_conversions ) * 100, 2 ) . '%</b></td><td></td><td></td><td></td></tr>';
 		$variationStatsTable .= $variationRows . $totalRows . '</table>';
