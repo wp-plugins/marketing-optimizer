@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer
  *  Plugin URI: http://www.marketingoptimizer.com/wordpress/?apcid=8381 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 20131030.1
+ *  Version: 20131106
  *  Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  *  Author URI: http://www.marketingoptimizer.com/?apcid=8381
  */
@@ -11,7 +11,7 @@
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20131030.1' );
+define ( 'MO_CURRENT_VERSION', '20131106' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -323,7 +323,7 @@ var data = {
 // register required plugin javascripts
 function mo_register_scripts() {
 	if (is_admin ()) {
-		wp_enqueue_script ( 'jquery-ui-tabs' );
+		//wp_enqueue_script ( 'jquery-ui-tabs' );
 		wp_enqueue_script ( 'jquery-ui-slider' );
 		wp_enqueue_script ( 'jquery-toggles',plugins_url ( '/js/toggles.min.js', __FILE__ ) );
 		
@@ -333,7 +333,7 @@ function mo_register_scripts() {
 }
 // register required plugin styles
 function mo_register_styles() {
-	wp_enqueue_style ( 'jquery_ui_tabs', plugins_url ( '/css/jquery-ui.css', __FILE__ ) );
+	//wp_enqueue_style ( 'jquery_ui_tabs', plugins_url ( '/css/jquery-ui.css', __FILE__ ) );
 	wp_enqueue_style ( 'custom_css', plugins_url ( '/css/custom.css', __FILE__ ) );
 	wp_enqueue_style ( 'toggles-modern-css', plugins_url ( '/css/toggles-modern.css', __FILE__ ) );
 }

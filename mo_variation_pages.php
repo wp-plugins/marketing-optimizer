@@ -481,9 +481,9 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$total_visitors = $total_visitors + $visitors;
 			$total_conversions = $total_conversions + $conversions;
 			$is_paused = ((get_post_meta ( $k, 'mo_variation_active', true ) == 'true') ? true : false);
-			
+			$previewPermalink = get_permalink($v['mo_variation_parent'][0]);
 			$edit_link = '<a title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . '&action=edit\'>Edit</a>';
-			$preview_link = '<a href="' . esc_url ( apply_filters ( 'preview_post_link', set_url_scheme ( add_query_arg ( 'preview', 'true', post_permalink ( $k ) ) ) ) ) . '" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
+			$preview_link = '<a href="' . $previewPermalink . '?v='.$k.'" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
 			$pause_link = '<a href="admin.php?action=mo_pause_variation&post=' . $k . '" ' . (! $is_paused ? 'style="color:red;font-style:italic;font-weight:bold;"' : '') . '>' . ($is_paused ? 'Pause' : 'Unpause') . '</a>';
 			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
 			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
@@ -603,18 +603,37 @@ function mo_promote_variation($post_id = false) {
 				'ID' => $control_post_id 
 		) );
 		foreach ( $newControlVariationMetaDataArr as $k => $v ) {
-			if ($k == 'mo_variation_parent') {
-				update_post_meta ( $control_post_id, 'mo_variation_parent', '' );
-			} else {
-				update_post_meta ( $control_post_id, $k, $v [0] );
+			switch ($k){
+				case 'mo_variation_parent':
+					update_post_meta ( $control_post_id, 'mo_variation_parent', '' );
+					break;
+				case 'mo_variation_active':
+					update_post_meta ( $control_post_id, 'mo_variation_active', 'false' );
+					break;
+				case 'mo_variation_id':
+					update_post_meta ( $control_post_id, 'mo_variation_id', get_post_meta($post_id,'mo_variation_id',true) );
+					break;
+				default :
+					update_post_meta ( $control_post_id, $k, $v [0] );
+					break;
+						
 			}
 		}
 		foreach ( $oldControlVariationMetaDataArr as $k => $v ) {
-			
-			if ($k == 'mo_variation_parent') {
-				update_post_meta ( $post_id, 'mo_variation_parent', $control_post_id );
-			} else {
-				update_post_meta ( $post_id, $k, $v [0] );
+			switch ($k){
+				case 'mo_variation_parent':
+					update_post_meta ( $post_id, 'mo_variation_parent', $control_post_id );
+					break;
+				case 'mo_variation_active':
+					update_post_meta ( $post_id, 'mo_variation_active', 'false' );
+					break;
+				case 'mo_variation_id':
+					update_post_meta ( $post_id, 'mo_variation_id', get_post_meta($post_id,'mo_variation_id',true) );
+					break;
+				default :
+					update_post_meta ( $post_id, $k, $v [0] );
+					break;
+					
 			}
 		}
 	}
