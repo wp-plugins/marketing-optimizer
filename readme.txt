@@ -81,8 +81,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 20131107 =
+* #bugFix fixed an issue with multisite compatability.
 = Version 20131106 =
-* #bugFix fixed an issue with promoting variations not retaining sine meta data.
+* #bugFix fixed an issue with promoting variations not retaining some meta data.
 * #bugFix fixed an issue previewing variations.
 = Version 20131030 =
 * #bugFix fixed an issue with cache compatibility and search engine indexing.

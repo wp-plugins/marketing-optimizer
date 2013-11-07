@@ -3,9 +3,6 @@ if(!class_exists('WP_List_Table')){
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-
-
-
 class MO_List_Table extends WP_List_Table {
     
     function __construct(){
@@ -18,9 +15,7 @@ class MO_List_Table extends WP_List_Table {
             'ajax'      => false,
         	'screen' => true       //does this table support ajax?
         ) );
-        
     }
-    
     
     function column_default($item, $column_name){
         switch($column_name){
@@ -34,7 +29,6 @@ class MO_List_Table extends WP_List_Table {
                // return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
     }
-    
         
     function column_title($item){
         $last_reset = get_post_meta($item['ID'],'mo_last_stat_reset',true)?'Last Reset: '.date('n/j/y h:ia',get_post_meta($item['ID'],'mo_last_stat_reset',true)):'Last Reset: '.'Never';
@@ -63,7 +57,6 @@ class MO_List_Table extends WP_List_Table {
         );
     }
     
-    
     function get_columns(){
         $columns = array (
 			"cb" => "&lt;input type=\"checkbox\" /&gt;",
@@ -80,14 +73,12 @@ class MO_List_Table extends WP_List_Table {
         return $sortable_columns;
     }
     
-    
     function get_bulk_actions() {
         $actions = array(
             'delete'    => 'Delete'
         );
         return $actions;
     }
-    
     
     function process_bulk_action() {
         
@@ -98,9 +89,8 @@ class MO_List_Table extends WP_List_Table {
         
     }
     
-    
     function prepare_items() {
-        global $wpdb; //This is used only if making any database queries
+        global $wpdb, $blog_id; //This is used only if making any database queries
 
         $per_page = 10;
         
@@ -112,8 +102,11 @@ class MO_List_Table extends WP_List_Table {
         $this->_column_headers = array($columns, $hidden, $sortable);
         
         $this->process_bulk_action();
-        
-       $parent_pages = $wpdb->get_col('SELECT meta_value FROM wp_postmeta WHERE meta_key = \'mo_variation_parent\' AND meta_value != \'\' GROUP BY meta_value');
+        if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
+        	$parent_pages = $wpdb->get_col('SELECT meta_value FROM ' . $wpdb->base_prefix . 'postmeta WHERE meta_key = \'mo_variation_parent\' AND meta_value != \'\' GROUP BY meta_value');
+        } else {
+        	$parent_pages = $wpdb->get_col('SELECT meta_value FROM ' . $wpdb->base_prefix . $blog_id . '_postmeta WHERE meta_key = \'mo_variation_parent\' AND meta_value != \'\' GROUP BY meta_value');
+       }
        $where_clause = 'AND ';
        $array_last = end($parent_pages);
        reset($parent_pages);
@@ -124,7 +117,11 @@ class MO_List_Table extends WP_List_Table {
        		$where_clause .= ' ID = '.$id;
        	}
        }
-        $data = $wpdb->get_results('SELECT * FROM '.$wpdb->prefix.'posts WHERE post_type = \'page\' AND post_status = \'publish\' '.$where_clause,ARRAY_A);
+       if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
+       	$data = $wpdb->get_results('SELECT * FROM ' . $wpdb->base_prefix . 'posts WHERE post_type = \'page\' AND post_status = \'publish\' '.$where_clause,ARRAY_A);
+        } else {
+        $data = $wpdb->get_results('SELECT * FROM ' . $wpdb->base_prefix . $blog_id . '_posts WHERE post_type = \'page\' AND post_status = \'publish\' '.$where_clause,ARRAY_A);
+       }
         function usort_reorder($a,$b){
             $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; //If no sort, default to title
             $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
@@ -133,19 +130,13 @@ class MO_List_Table extends WP_List_Table {
         }
         usort($data, 'usort_reorder');
         
-        
-                
         $current_page = $this->get_pagenum();
         
         $total_items = count($data);
         
-        
         $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
         
-        
-        
         $this->items = $data;
-        
         
         $this->set_pagination_args( array(
             'total_items' => $total_items,                  //WE have to calculate the total number of items
@@ -155,11 +146,6 @@ class MO_List_Table extends WP_List_Table {
     }
     
 }
-
-
-
-
-
 
 function mo_add_menu_items(){
     add_submenu_page( __ ( MO_PLUGIN_DIRECTORY . '/mo_settings_page.php', EMU2_I18N_DOMAIN ),'Experiments', 'Experiments', 'manage_options', 'edit.php?post_type=variation-page', 'mo_render_list_page');

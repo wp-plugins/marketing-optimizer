@@ -272,10 +272,13 @@ function get_variation_template_for_template_loader() {
 	}
 }
 function mo_is_experiment($post_id) {
-	global $wpdb;
+	global $wpdb,$blog_id;
 	if ($post_id) {
-		$variations = $wpdb->get_results ( "SELECT post_id from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
-		
+		if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
+		$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . "postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		}else{
+			$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . $blog_id . "_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		}
 		if (count ( $variations ) > 0) {
 			return true;
 		} else {
@@ -287,10 +290,10 @@ add_action ( 'template_redirect', 'get_variation_template_for_template_loader' )
 function mo_get_variation_metadata($metadata, $object_id, $meta_key, $single) {
 	global $post, $variation_post_id;
 	if ($object_id == $post->ID && $variation_post_id != $object_id && ! is_admin () && ! is_home ()) {
-		//mo_writelog ( 'returning variation meta ' . $meta_key );
+		// mo_writelog ( 'returning variation meta ' . $meta_key );
 		return get_post_meta ( $variation_post_id, $meta_key, true );
 	}
-	//mo_writelog ( 'returning parent meta ' . $meta_key );
+	// mo_writelog ( 'returning parent meta ' . $meta_key );
 	return get_post_meta ( $object_id, $meta_key, $single );
 }
 add_filter ( 'get_page_metadata', 'mo_get_variation_metadata', 1, 4 );
@@ -304,9 +307,13 @@ add_filter ( 'get_page_metadata', 'mo_get_variation_metadata', 1, 4 );
 // }
 // add_action('admin_head','mo_get_metaboxes');
 function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
-	global $wpdb;
+	global $wpdb, $blog_id;
 	if ($post_id) {
-		$variations = $wpdb->get_results ( "SELECT post_id from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
+			$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . "postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		} else {
+			$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . $blog_id . "_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		}
 		
 		if (count ( $variations ) > 0) {
 			$variationMetaDataArr = array ();
@@ -353,16 +360,6 @@ function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array())
 			return key ( $conversionRateVariationArr );
 		}
 	}
-}
-function get_remaining_show_percentage($post_id) {
-	global $wpdb;
-	$variations = $wpdb->get_results ( "SELECT post_id from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id", ARRAY_A );
-	$totalShowPercentage = 0;
-	$showPercentageArr = array ();
-	foreach ( $variations as $variation ) {
-		$showPercentageArr [$variation ['post_id']] = get_post_meta ( $variation ['post_id'], 'mo_show_percentage', true );
-	}
-	return 100 - array_sum ( $showPercentageArr );
 }
 function mo_track_conversion() {
 	global $post;
@@ -481,9 +478,9 @@ function mo_get_variation_page_stats_table($post_id = false) {
 			$total_visitors = $total_visitors + $visitors;
 			$total_conversions = $total_conversions + $conversions;
 			$is_paused = ((get_post_meta ( $k, 'mo_variation_active', true ) == 'true') ? true : false);
-			$previewPermalink = get_permalink($v['mo_variation_parent'][0]);
+			$previewPermalink = get_permalink ( $v ['mo_variation_parent'] [0] );
 			$edit_link = '<a title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . '&action=edit\'>Edit</a>';
-			$preview_link = '<a href="' . $previewPermalink . '?v='.$k.'" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
+			$preview_link = '<a href="' . $previewPermalink . '?v=' . $k . '" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
 			$pause_link = '<a href="admin.php?action=mo_pause_variation&post=' . $k . '" ' . (! $is_paused ? 'style="color:red;font-style:italic;font-weight:bold;"' : '') . '>' . ($is_paused ? 'Pause' : 'Unpause') . '</a>';
 			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
 			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
@@ -603,37 +600,35 @@ function mo_promote_variation($post_id = false) {
 				'ID' => $control_post_id 
 		) );
 		foreach ( $newControlVariationMetaDataArr as $k => $v ) {
-			switch ($k){
-				case 'mo_variation_parent':
+			switch ($k) {
+				case 'mo_variation_parent' :
 					update_post_meta ( $control_post_id, 'mo_variation_parent', '' );
 					break;
-				case 'mo_variation_active':
+				case 'mo_variation_active' :
 					update_post_meta ( $control_post_id, 'mo_variation_active', 'false' );
 					break;
-				case 'mo_variation_id':
-					update_post_meta ( $control_post_id, 'mo_variation_id', get_post_meta($post_id,'mo_variation_id',true) );
+				case 'mo_variation_id' :
+					update_post_meta ( $control_post_id, 'mo_variation_id', get_post_meta ( $post_id, 'mo_variation_id', true ) );
 					break;
 				default :
 					update_post_meta ( $control_post_id, $k, $v [0] );
 					break;
-						
 			}
 		}
 		foreach ( $oldControlVariationMetaDataArr as $k => $v ) {
-			switch ($k){
-				case 'mo_variation_parent':
+			switch ($k) {
+				case 'mo_variation_parent' :
 					update_post_meta ( $post_id, 'mo_variation_parent', $control_post_id );
 					break;
-				case 'mo_variation_active':
+				case 'mo_variation_active' :
 					update_post_meta ( $post_id, 'mo_variation_active', 'false' );
 					break;
-				case 'mo_variation_id':
-					update_post_meta ( $post_id, 'mo_variation_id', get_post_meta($post_id,'mo_variation_id',true) );
+				case 'mo_variation_id' :
+					update_post_meta ( $post_id, 'mo_variation_id', get_post_meta ( $post_id, 'mo_variation_id', true ) );
 					break;
 				default :
 					update_post_meta ( $post_id, $k, $v [0] );
 					break;
-					
 			}
 		}
 	}
@@ -698,44 +693,6 @@ function mo_set_cookie($args) {
 	}
 }
 add_action ( 'wp_footer', 'mo_set_cookie' );
-function mo_get_experiments_control_post_ids() {
-	global $wpdb;
-	$experimentControls = $wpdb->get_results ( "SELECT meta_value from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value <> '' GROUP BY meta_value", ARRAY_A );
-	$controlPostIds = array ();
-	foreach ( $experimentControls as $v ) {
-		$controlPostIds [] = $v ['meta_value'];
-	}
-	if (! empty ( $controlPostIds )) {
-		return $controlPostIds;
-	} else {
-		return false;
-	}
-}
-add_action ( 'wp', 'mo_get_experiments_control_post_ids' );
-function mo_promote_variation_by_perfomance() {
-	$controlPostIds = mo_get_experiments_control_post_ids ();
-	if (is_array ( $controlPostIds )) {
-		foreach ( $controlPostIds as $v ) {
-			$variationMetaDataArr [$v] = get_post_meta ( $v );
-			$variationMetaDataArr = mo_get_variation_meta_data ( $v );
-			$conversionRatesArr = array ();
-			foreach ( $variationMetaDataArr as $k => $v ) {
-				$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
-				$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
-				$conversion_rate = ( float ) $conversions && ( float ) $visitors ? (( float ) $conversions / ( float ) $visitors) : 0;
-				$conversionRatesArr [$k] = number_format ( $conversion_rate, 2 );
-			}
-			arsort ( $conversionRatesArr );
-			reset ( $conversionRatesArr );
-			if (! in_array ( key ( $conversionRatesArr ), $controlPostIds )) {
-				mo_promote_variation ( key ( $conversionRatesArr ) );
-			} else {
-				continue;
-			}
-		}
-	}
-}
-add_action ( 'mo_promote_variation_by_perfomance', 'mo_promote_variation_by_perfomance' );
 function mo_create_experiment() {
 	if (isset ( $_POST ['mo_variation_parent'] ) && $_POST ['mo_variation_parent']) {
 		$prefix = 'Copy ';
@@ -785,9 +742,13 @@ function mo_create_experiment() {
 }
 add_action ( 'admin_action_mo_create_experiment', 'mo_create_experiment' );
 function mo_get_variation_count($post_id) {
-	global $wpdb;
+	global $wpdb, $blog_id;
 	if ($post_id) {
-		return ( int ) $wpdb->get_var ( "SELECT COUNT(*) from wp_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id" );
+		if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
+			return ( int ) $wpdb->get_var ( "SELECT COUNT(*) from " . $wpdb->base_prefix . "postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id" );
+		} else {
+			return ( int ) $wpdb->get_var ( "SELECT COUNT(*) from " . $wpdb->base_prefix . $blog_id . "_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = $post_id" );
+		}
 	}
 }
 function mo_duplicate_variation() {
