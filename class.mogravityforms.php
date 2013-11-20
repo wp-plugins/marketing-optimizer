@@ -108,7 +108,7 @@ class mogravityforms {
 		}
 	}
 	function mo_post_to_marketing_optimizer($entry, $form) {
-		$post_url = 'http://app.aimcrm.com/remote/form_post.php';
+		$post_url = 'http://app.marketingoptimizer.com/remote/form_post.php';
 		$form_id = $entry ['form_id'];
 		$formFieldMappingArr = mogravityforms::mo_get_form_field_mapping ( $form_id );
 		$v_id = $_COOKIE['ap_cookie_1p_'.get_option ( 'mo_account_id' )];
@@ -133,7 +133,7 @@ class mogravityforms {
 		}
 	}
 	function mo_paged_post_to_marketing_optimizer($form, $coming_from_page, $current_page) {
-		$post_url = 'http://app.aimcrm.com/remote/form_post.php';
+		$post_url = 'http://app.marketingoptimizer.com/remote/form_post.php';
 		$form_id = $form ['id'];
 		$v_id = $_COOKIE['ap_cookie_1p_'.get_option ( 'mo_account_id' )];
 		$formFieldMappingArr = mogravityforms::mo_get_form_field_mapping ( $form_id );

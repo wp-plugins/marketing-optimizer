@@ -232,7 +232,7 @@ function get_variation_template_for_template_loader() {
 	if (is_object ( $post ) && $post->ID && mo_is_experiment ( $post->ID )) {
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 		// $variationMetaDataArr [$post->ID] = get_post_meta ( $post->ID );
-		if (is_array ( $variationMetaDataArr ) && count ( $variationMetaDataArr ) > 0) {
+		if (is_array ( $variationMetaDataArr ) && count ( $variationMetaDataArr ) > 0 && !bot_detected()) {
 			$totalPageViews = 0;
 			foreach ( $variationMetaDataArr as $post_id => $metaDataArr ) {
 				if (isset ( $metaDataArr ['mo_page_views_count'] [0] )) {
@@ -518,7 +518,7 @@ function mo_track_unique_pageview() {
 add_action ( 'wp_ajax_mo_track_unique_pageview', 'mo_track_unique_pageview' );
 add_action ( 'wp_ajax_nopriv_mo_track_unique_pageview', 'mo_track_unique_pageview' );
 function mo_conversion() {
-	if ($_GET ['preview'] != true) {
+	if ($_GET ['preview'] != true && !current_user_can( 'manage_options' )) {
 		echo '<script type="text/javascript" >
 						
 						
@@ -652,7 +652,7 @@ function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true ) ? get_post_meta ( $variation_post_id, 'mo_variation_id', true ) : 0;
-	if (is_array ( $variationMetaDataArr ) && $_GET ['preview'] != true) {
+	if (is_array ( $variationMetaDataArr ) && $_GET ['preview'] != true && !current_user_can( 'manage_options' )) {
 		echo '<script>
 				jQuery(document).ready(function($) {
 					function moGetExperimentCookie(){
@@ -895,4 +895,14 @@ body {
 display:inline !important;
 }
 </style>';
+}
+function bot_detected() {
+
+	if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+
 }

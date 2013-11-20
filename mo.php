@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer
  *  Plugin URI: http://www.marketingoptimizer.com/wordpress/?apcid=8381 
  *  Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- *  Version: 20131107
+ *  Version: 20131120
  *  Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  *  Author URI: http://www.marketingoptimizer.com/?apcid=8381
  */
@@ -11,7 +11,7 @@
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20131107' );
+define ( 'MO_CURRENT_VERSION', '20131120' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer');
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -98,26 +98,26 @@ function mo_activate() {
 		if ($blogs) {
 			foreach ( $blogs as $blog ) {
 				switch_to_blog ( $blog ['blog_id'] );
-				get_option('mo_marketing_optimizer')?add_option ( 'mo_marketing_optimizer', MARKETING_OPTIMIZER ):'';
-				get_option('mo_account_id')?add_option ( 'mo_account_id', ACCOUNT_ID ):'';
-				get_option('mo_phone_tracking')?add_option ( 'mo_phone_tracking', PHONE_TRACKING ):'';
-				get_option('mo_phone_publish_cls')?add_option ( 'mo_phone_publish_cls', PHONE_TRACKING_PUBLISH_CLS ):'';
-				get_option('mo_phone_tracking_thank_you_url')?add_option ( 'mo_phone_tracking_thank_you_url', PHONE_TRACKING_THANK_YOU_URL ):'';
-				get_option('mo_phone_tracking_default_number')?add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ):'';
-				get_option('mo_form_default_id')?add_option ( 'mo_form_default_id', FORM_ID ):'';
-				get_option ( 'mo_variation_pages' )?add_option ( 'mo_variation_pages', VARIATION_PAGES ):'';
+				!get_option('mo_marketing_optimizer')?add_option ( 'mo_marketing_optimizer', MARKETING_OPTIMIZER ):'';
+				!get_option('mo_account_id')?add_option ( 'mo_account_id', ACCOUNT_ID ):'';
+				!get_option('mo_phone_tracking')?add_option ( 'mo_phone_tracking', PHONE_TRACKING ):'';
+				!get_option('mo_phone_publish_cls')?add_option ( 'mo_phone_publish_cls', PHONE_TRACKING_PUBLISH_CLS ):'';
+				!get_option('mo_phone_tracking_thank_you_url')?add_option ( 'mo_phone_tracking_thank_you_url', PHONE_TRACKING_THANK_YOU_URL ):'';
+				!get_option('mo_phone_tracking_default_number')?add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ):'';
+				!get_option('mo_form_default_id')?add_option ( 'mo_form_default_id', FORM_ID ):'';
+				!get_option ( 'mo_variation_pages' )?add_option ( 'mo_variation_pages', VARIATION_PAGES ):'';
 			}
 			restore_current_blog ();
 		}
 	} else {
-		get_option('mo_marketing_optimizer')?add_option ( 'mo_marketing_optimizer', MARKETING_OPTIMIZER ):'';
-				get_option('mo_account_id')?add_option ( 'mo_account_id', ACCOUNT_ID ):'';
-				get_option('mo_phone_tracking')?add_option ( 'mo_phone_tracking', PHONE_TRACKING ):'';
-				get_option('mo_phone_publish_cls')?add_option ( 'mo_phone_publish_cls', PHONE_TRACKING_PUBLISH_CLS ):'';
-				get_option('mo_phone_tracking_thank_you_url')?add_option ( 'mo_phone_tracking_thank_you_url', PHONE_TRACKING_THANK_YOU_URL ):'';
-				get_option('mo_phone_tracking_default_number')?add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ):'';
-				get_option('mo_form_default_id')?add_option ( 'mo_form_default_id', FORM_ID ):'';
-				get_option ( 'mo_variation_pages' )?add_option ( 'mo_variation_pages', VARIATION_PAGES ):'';
+		!get_option('mo_marketing_optimizer')?add_option ( 'mo_marketing_optimizer', MARKETING_OPTIMIZER ):'';
+				!get_option('mo_account_id')?add_option ( 'mo_account_id', ACCOUNT_ID ):'';
+				!get_option('mo_phone_tracking')?add_option ( 'mo_phone_tracking', PHONE_TRACKING ):'';
+				!get_option('mo_phone_publish_cls')?add_option ( 'mo_phone_publish_cls', PHONE_TRACKING_PUBLISH_CLS ):'';
+				!get_option('mo_phone_tracking_thank_you_url')?add_option ( 'mo_phone_tracking_thank_you_url', PHONE_TRACKING_THANK_YOU_URL ):'';
+				!get_option('mo_phone_tracking_default_number')?add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ):'';
+				!get_option('mo_form_default_id')?add_option ( 'mo_form_default_id', FORM_ID ):'';
+				!get_option ( 'mo_variation_pages' )?add_option ( 'mo_variation_pages', VARIATION_PAGES ):'';
 	}
 	flush_rewrite_rules();
 }
@@ -184,9 +184,9 @@ function mo_form_shortcode($attributes, $content = null) {
 // phone shortcode function
 function mo_phone_shortcode($attributes, $content = null) {
 	if (get_option ( 'mo_phone_tracking' ) == 'true') {
+		$defaultPhone = get_option ( 'mo_phone_tracking_default_number' ) ? get_option ( 'mo_phone_tracking_default_number' ) : '';
 		if (get_option ( 'mo_phone_publish_cls' )) {
 			$class = get_option ( 'mo_phone_publish_cls' );
-			$defaultPhone = get_option ( 'mo_phone_tracking_default_number' ) ? get_option ( 'mo_phone_tracking_default_number' ) : '';
 			return "<span class=\"$class\">$defaultPhone</span>";
 		} else {
 			return '<span class="phonePublishCls">' . $defaultPhone . '</span>';
@@ -198,7 +198,7 @@ function mo_phone_shortcode($attributes, $content = null) {
 // register items to be output by the wp_head() function
 function mo_register_head_items() {
 	global $post;
-	if (get_option ( 'mo_account_id' ) && $_GET['preview'] != true) {
+	if (get_option ( 'mo_account_id' ) && $_GET['preview'] != true && !current_user_can( 'manage_options' )) {
 		$moObj = new marketingoptimizer ( get_option ( 'mo_account_id' ) );
 		if ($post->post_variation) {
 			$moObj->setVariationId ( $post->post_variation );

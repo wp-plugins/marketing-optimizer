@@ -82,6 +82,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 
 == Changelog ==
 = Version 20131107 =
+* #bugFix fixed an issue with multisite configurations not cascading to all network sites.
+* #bugFix fixed an issue with admin user being tracked by experiments.
+* #bugFix fixed an issue with search engines not being able to index experiments.
+= Version 20131107 =
 * #bugFix fixed an issue with multisite compatability.
 = Version 20131106 =
 * #bugFix fixed an issue with promoting variations not retaining some meta data.

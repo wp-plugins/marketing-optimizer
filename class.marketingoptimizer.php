@@ -57,7 +57,7 @@ class marketingoptimizer {
 		}
 		$websiteTrackingJs .= "(function(d){ \n";
 		$websiteTrackingJs .= "var t = d.createElement(\"script\"), s = d.getElementsByTagName(\"script\")[0]; \n";
-		$websiteTrackingJs .= "t.src =  \"//app.aimcrm.com/remote/ap.js\"; \n";
+		$websiteTrackingJs .= "t.src =  \"//app.marketingoptimizer.com/remote/ap.js\"; \n";
 		$websiteTrackingJs .= "s.parentNode.insertBefore(t, s); \n";
 		$websiteTrackingJs .= "})(document); \n";
 		$websiteTrackingJs .= "</script> \n";
