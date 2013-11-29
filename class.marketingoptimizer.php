@@ -16,6 +16,7 @@ class marketingoptimizer {
 	public $variation_id;
 	public $variation_percentage;
 	public $cache_compatible;
+	public $track_admin;
 	public function __construct($acct_id = 0) {
 		if ($acct_id > 0) {
 			$this->account_id = $acct_id;
@@ -28,6 +29,7 @@ class marketingoptimizer {
 			$this->setVariationPages(get_option('mo_variation_pages'));
 			$this->setVariationPercentage(get_option('mo_variation_percentage'));
 			$this->setCacheCompatible(get_option('mo_cache_compatible'));
+			$this->setTrackAdmin(get_option('mo_track_admin'));
 		}
 	}
 	public function _getWebsiteTrackingCode() {
@@ -156,6 +158,9 @@ class marketingoptimizer {
 	public function getMarketingOptimizer() {
 		return $this->marketing_optimizer;
 	}
+	public function getTrackAdmin() {
+		return $this->track_admin;
+	}
 	public function setMarketingOptimizer($marketing_optimizer) {
 		return $this->marketing_optimizer = $marketing_optimizer;
 	}
@@ -170,6 +175,9 @@ class marketingoptimizer {
 	}
 	public function setCacheCompatible($cache_compatible) {
 		return $this->cache_compatible = $cache_compatible;
+	}
+	public function setTrackAdmin($track_admin) {
+		return $this->track_admin = $track_admin;
 	}
 }
 // <!-- Start of Asynchronous Tracking Code -->

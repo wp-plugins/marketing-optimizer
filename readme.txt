@@ -81,6 +81,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 4. Experiments
 
 == Changelog ==
+= Version 20131129 =
+* #bugFix fixed an issue when you have no experiments or variations was causing an error.
+* #featureAdded added ability to turn on/off tracking of admin users.
 = Version 20131126 =
 * #bugFix fixed an issue a/b testing slider not showing up due to wordpress update.
 = Version 20131107 =

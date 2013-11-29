@@ -95,6 +95,15 @@ switch ($active_tab) {
 								<td style="width: 50%"><p style="font-style: italic;">Turn
 										on/off Cache compatability.</p></td>
 							</tr>
+							<tr valign="top">
+								<td style="width: 20%">Track Admin Users:</td>
+								<td style="width: 30%"><div
+										class="toggle-trackadmin toggle-modern"></div>
+									<input type="hidden" name="track_admin"
+									value="<?php echo get_option ( 'mo_track_admin' ) == 'true'?'true':''; ?>" /></td>
+								<td style="width: 50%"><p style="font-style: italic;">Turn
+										on/off Admin User Tracking.</p></td>
+							</tr>
 							<tr>
 								<td style="width: 20%" colspan="2"><label for="amount">Set
 										Exploitation/Exploration Percentage for Variations</label></td>

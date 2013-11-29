@@ -177,19 +177,8 @@ function post_template_meta_box($post) {
 	?>
 <?php
 }
-function post_template_dropdown($default = '') {
-	$templates = get_page_templates ();
-	ksort ( $templates );
-	foreach ( array_keys ( $templates ) as $template ) :
-		if ($default == $templates [$template])
-			$selected = " selected='selected'";
-		else
-			$selected = '';
-		echo "\n\t<option value='" . $templates [$template] . "' $selected>$template</option>";
-	endforeach
-	;
-}
-function get_post_template_for_template_loader($template) {
+
+function mo_get_post_template_for_template_loader($template) {
 	global $post;
 	
 	if ($post && $post->post_type == 'variation-page') {
@@ -216,7 +205,7 @@ function get_post_template_for_template_loader($template) {
 	return $template;
 }
 
-add_filter ( 'template_include', 'get_post_template_for_template_loader' );
+add_filter ( 'template_include', 'mo_get_post_template_for_template_loader' );
 
 add_action ( 'wp', 'mo_make_variation_page' );
 function mo_make_variation_page() {
@@ -227,12 +216,11 @@ function mo_make_variation_page() {
 		$wp_query->is_single = false;
 	}
 }
-function get_variation_template_for_template_loader() {
+function mo_get_variation_template_for_template_loader() {
 	global $post, $variation_post_id;
 	if (is_object ( $post ) && $post->ID && mo_is_experiment ( $post->ID )) {
 		$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
-		// $variationMetaDataArr [$post->ID] = get_post_meta ( $post->ID );
-		if (is_array ( $variationMetaDataArr ) && count ( $variationMetaDataArr ) > 0 && !bot_detected()) {
+		if (is_array ( $variationMetaDataArr ) && count ( $variationMetaDataArr ) > 0 && ! bot_detected ()) {
 			$totalPageViews = 0;
 			foreach ( $variationMetaDataArr as $post_id => $metaDataArr ) {
 				if (isset ( $metaDataArr ['mo_page_views_count'] [0] )) {
@@ -241,7 +229,6 @@ function get_variation_template_for_template_loader() {
 					update_post_meta ( $post_id, 'mo_page_views_count', 0 );
 				}
 			}
-			// if ($totalPageViews > 0) {
 			if (isset ( $_GET ['v'] ) && $_GET ['v']) {
 				$variationPostId = $_GET ['v'];
 			} else {
@@ -250,13 +237,7 @@ function get_variation_template_for_template_loader() {
 			$variation_post_id = $variationPostId;
 			update_post_meta ( $variationPostId, 'mo_page_views_count', $variationMetaDataArr [$variationPostId] ['mo_page_views_count'] [0] + 1 );
 			if (mo_is_experiment ( $post->ID ) && get_option ( 'mo_cache_compatible' ) && ! $_GET ['t'] && ! $_GET ['v']) {
-				// if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-				// include (__DIR__ . '/templates' . DS . 'ajax.php');
-				// } else {
-				// include ('templates' . DS . 'ajax.php');
-				// }
 				add_action ( 'wp_head', 'mo_get_experiment_javascript' );
-				// exit ();
 			} else {
 				add_action ( 'wp_head', 'mo_get_variation_style' );
 				$variationContent = get_post ( $variationPostId );
@@ -272,11 +253,11 @@ function get_variation_template_for_template_loader() {
 	}
 }
 function mo_is_experiment($post_id) {
-	global $wpdb,$blog_id;
+	global $wpdb, $blog_id;
 	if ($post_id) {
 		if ((is_multisite () && $blog_id == 1) || ! is_multisite ()) {
-		$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . "postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
-		}else{
+			$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . "postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
+		} else {
 			$variations = $wpdb->get_results ( "SELECT post_id from " . $wpdb->base_prefix . $blog_id . "_postmeta WHERE meta_key = 'mo_variation_parent' AND meta_value = " . ( int ) $post_id );
 		}
 		if (count ( $variations ) > 0) {
@@ -286,26 +267,16 @@ function mo_is_experiment($post_id) {
 		}
 	}
 }
-add_action ( 'template_redirect', 'get_variation_template_for_template_loader' );
+add_action ( 'template_redirect', 'mo_get_variation_template_for_template_loader' );
 function mo_get_variation_metadata($metadata, $object_id, $meta_key, $single) {
 	global $post, $variation_post_id;
 	if ($object_id == $post->ID && $variation_post_id != $object_id && ! is_admin () && ! is_home ()) {
-		// mo_writelog ( 'returning variation meta ' . $meta_key );
 		return get_post_meta ( $variation_post_id, $meta_key, true );
 	}
-	// mo_writelog ( 'returning parent meta ' . $meta_key );
 	return get_post_meta ( $object_id, $meta_key, $single );
 }
+
 add_filter ( 'get_page_metadata', 'mo_get_variation_metadata', 1, 4 );
-// add_filter ( 'get_post_metadata', 'mo_get_variation_metadata', 1, 4 );
-
-// function mo_get_metaboxes(){
-// global $wp_meta_boxes;
-// if(is_array($wp_meta_boxes['page']) && is_array($wp_meta_boxes['page']['advanced']) && is_array($wp_meta_boxes['page']['advanced']['default'])){
-
-// }
-// }
-// add_action('admin_head','mo_get_metaboxes');
 function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
 	global $wpdb, $blog_id;
 	if ($post_id) {
@@ -332,6 +303,7 @@ function mo_get_variation_meta_data($post_id = false, $show_paused = false) {
 		}
 	}
 }
+
 function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array()) {
 	if ($post_id > 0 && ! empty ( $variationMetaDataArr )) {
 		foreach ( $variationMetaDataArr as $postid => $metaDataArr ) {
@@ -361,6 +333,7 @@ function mo_get_variation_to_show($post_id = 0, $variationMetaDataArr = array())
 		}
 	}
 }
+
 function mo_track_conversion() {
 	global $post;
 	if (isset ( $_POST ['cookie'] ) && $_POST ['cookie']) {
@@ -415,89 +388,93 @@ function mo_get_variation_page_stats_table($post_id = false) {
 		$total_conversions = 0;
 		
 		$confidenceArr = array ();
-		foreach ( $variationMetaDataArr as $k => $v ) {
-			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
-			$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
-			$conversionRate = mo_get_conversion_rate ( $visitors, $conversions );
-			$conversionRatesArr [$k] = $conversionRate;
-			foreach ( $variationMetaDataArr as $key => $value ) {
-				if ($k != $key && ( int ) $conversions) {
-					$varVisitors = $value ['mo_unique_page_views_count'] [0] ? $value ['mo_unique_page_views_count'] [0] : 0;
-					$varConversions = $value ['mo_conversion_count'] [0] ? $value ['mo_conversion_count'] [0] : 0;
-					$varConversionRate = mo_get_conversion_rate ( $varVisitors, $varConversions );
-					if (! isset ( $confidenceArr [$k] ) && ( int ) $varConversions) {
-						$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+		
+		if ($variationMetaDataArr) {
+			foreach ( $variationMetaDataArr as $k => $v ) {
+				$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
+				$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
+				$conversionRate = mo_get_conversion_rate ( $visitors, $conversions );
+				$conversionRatesArr [$k] = $conversionRate;
+				foreach ( $variationMetaDataArr as $key => $value ) {
+					if ($k != $key && ( int ) $conversions) {
+						$varVisitors = $value ['mo_unique_page_views_count'] [0] ? $value ['mo_unique_page_views_count'] [0] : 0;
+						$varConversions = $value ['mo_conversion_count'] [0] ? $value ['mo_conversion_count'] [0] : 0;
+						$varConversionRate = mo_get_conversion_rate ( $varVisitors, $varConversions );
+						if (! isset ( $confidenceArr [$k] ) && ( int ) $varConversions) {
+							$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+									'visitors' => $varVisitors,
+									'conversion_rate' => $varConversionRate 
+							), array (
+									'visitors' => $visitors,
+									'conversion_rate' => $conversionRate 
+							) ) ) * 100, 1 );
+						} elseif ($confidenceArr [$k] > number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
 								'visitors' => $varVisitors,
 								'conversion_rate' => $varConversionRate 
 						), array (
 								'visitors' => $visitors,
 								'conversion_rate' => $conversionRate 
-						) ) ) * 100, 1 );
-					} elseif ($confidenceArr [$k] > number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
-							'visitors' => $varVisitors,
-							'conversion_rate' => $varConversionRate 
-					), array (
-							'visitors' => $visitors,
-							'conversion_rate' => $conversionRate 
-					) ) ) * 100, 1 ) && ( int ) $varConversions) {
-						$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
-								'visitors' => $varVisitors,
-								'conversion_rate' => $varConversionRate 
-						), array (
-								'visitors' => $visitors,
-								'conversion_rate' => $conversionRate 
-						) ) ) * 100, 1 );
+						) ) ) * 100, 1 ) && ( int ) $varConversions) {
+							$confidenceArr [$k] = number_format ( mo_get_cumnormdist ( mo_get_zscore ( array (
+									'visitors' => $varVisitors,
+									'conversion_rate' => $varConversionRate 
+							), array (
+									'visitors' => $visitors,
+									'conversion_rate' => $conversionRate 
+							) ) ) * 100, 1 );
+						}
 					}
 				}
 			}
-		}
+			
+			arsort ( $conversionRatesArr );
+			reset ( $conversionRatesArr );
+			$bestConversionRate = current ( $conversionRatesArr );
+			foreach ( $variationMetaDataArr as $k => $v ) {
+				// set title
+				$title = substr ( get_the_title ( $k ), 0, 30 );
+				
+				// set variation name
+				$variation_name_full = $v ['mo_variation_name'] [0] ? $v ['mo_variation_name'] [0] : '';
+				$variation_name = strlen ( $variation_name_full ) > 30 ? substr ( $variation_name_full, 0, 27 ) . '...' : $variation_name_full;
+				$variation_name = '<a   title=\'' . $variation_name_full . '\' href=\'/wp-admin/post.php?post=' . $k . "&action=edit'>" . $variation_name . '</a>';
+				
+				// set variation id
+				$variation_id = $v ['mo_variation_id'] [0] ? $v ['mo_variation_id'] [0] : '';
+				if ($v ['mo_variation_id'] [0]) {
+					$variation_id = '<a  class=\'mo-variation-id\' title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . "&action=edit'>" . $v ['mo_variation_id'] [0] . '</a>';
+				} else {
+					$variation_id = '<a  class=\'mo-variation-id\' title=\'Click to go to the Marketing Optimizer website.\' href=\'http://www.marketingoptimizer.com/?apcid=8381\'><img src="' . plugins_url ( '/images/moicon.png', __FILE__ ) . '" />' . '</a>';
+				}
+				// set stats
+				$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
+				$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
+				$conversion_rate = mo_get_conversion_rate ( ( float ) $visitors, ( float ) $conversions );
+				$total_visitors = $total_visitors + $visitors;
+				$total_conversions = $total_conversions + $conversions;
+				$is_paused = ((get_post_meta ( $k, 'mo_variation_active', true ) == 'true') ? true : false);
+				$previewPermalink = get_permalink ( $v ['mo_variation_parent'] [0] );
+				$edit_link = '<a title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . '&action=edit\'>Edit</a>';
+				$preview_link = '<a href="' . $previewPermalink . '?v=' . $k . '" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
+				$pause_link = '<a href="admin.php?action=mo_pause_variation&post=' . $k . '" ' . (! $is_paused ? 'style="color:red;font-style:italic;font-weight:bold;"' : '') . '>' . ($is_paused ? 'Pause' : 'Unpause') . '</a>';
+				$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
+				$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
+				$promote_link = '<a href="admin.php?action=mo_promote_variation&post=' . $k . '">Promote</a>';
+				$confidence = $confidenceArr [$k] ? $confidenceArr [$k] . "%" : '<i title="Not Enough Information">NEI</i>';
+				if (($bestConversionRate - $conversion_rate) > 0) {
+					$conversion_rate_diff = '<span style="color:red;">-' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%</span>';
+				} elseif (($bestConversionRate - $conversion_rate) == 0) {
+					$conversion_rate_diff = number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%';
+				} else {
+					$conversion_rate_diff = '<span style="color:green;">+' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) * (- 1) . '%</span>';
+				}
+				$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
+			}
 		
-		arsort ( $conversionRatesArr );
-		reset ( $conversionRatesArr );
-		$bestConversionRate = current ( $conversionRatesArr );
-		foreach ( $variationMetaDataArr as $k => $v ) {
-			// set title
-			$title = substr ( get_the_title ( $k ), 0, 30 );
-			
-			// set variation name
-			$variation_name_full = $v ['mo_variation_name'] [0] ? $v ['mo_variation_name'] [0] : '';
-			$variation_name = strlen ( $variation_name_full ) > 30 ? substr ( $variation_name_full, 0, 27 ) . '...' : $variation_name_full;
-			$variation_name = '<a   title=\'' . $variation_name_full . '\' href=\'/wp-admin/post.php?post=' . $k . "&action=edit'>" . $variation_name . '</a>';
-			
-			// set variation id
-			$variation_id = $v ['mo_variation_id'] [0] ? $v ['mo_variation_id'] [0] : '';
-			if ($v ['mo_variation_id'] [0]) {
-				$variation_id = '<a  class=\'mo-variation-id\' title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . "&action=edit'>" . $v ['mo_variation_id'] [0] . '</a>';
-			} else {
-				$variation_id = '<a  class=\'mo-variation-id\' title=\'Click to go to the Marketing Optimizer website.\' href=\'http://www.marketingoptimizer.com/?apcid=8381\'><img src="' . plugins_url ( '/images/moicon.png', __FILE__ ) . '" />' . '</a>';
-			}
-			// set stats
-			$visitors = $v ['mo_unique_page_views_count'] [0] ? $v ['mo_unique_page_views_count'] [0] : 0;
-			$conversions = $v ['mo_conversion_count'] [0] ? $v ['mo_conversion_count'] [0] : 0;
-			$conversion_rate = mo_get_conversion_rate ( ( float ) $visitors, ( float ) $conversions );
-			$total_visitors = $total_visitors + $visitors;
-			$total_conversions = $total_conversions + $conversions;
-			$is_paused = ((get_post_meta ( $k, 'mo_variation_active', true ) == 'true') ? true : false);
-			$previewPermalink = get_permalink ( $v ['mo_variation_parent'] [0] );
-			$edit_link = '<a title=\'click to edit this variation\' href=\'/wp-admin/post.php?post=' . $k . '&action=edit\'>Edit</a>';
-			$preview_link = '<a href="' . $previewPermalink . '?v=' . $k . '" title="' . esc_attr ( sprintf ( __ ( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __ ( 'Preview' ) . '</a>';
-			$pause_link = '<a href="admin.php?action=mo_pause_variation&post=' . $k . '" ' . (! $is_paused ? 'style="color:red;font-style:italic;font-weight:bold;"' : '') . '>' . ($is_paused ? 'Pause' : 'Unpause') . '</a>';
-			$duplicate_link = '<a href="admin.php?action=mo_duplicate_variation&post_id=' . $k . '">Duplicate</a>';
-			$trash_link = '<a href="' . get_delete_post_link ( $k ) . '">Trash</a>';
-			$promote_link = '<a href="admin.php?action=mo_promote_variation&post=' . $k . '">Promote</a>';
-			$confidence = $confidenceArr [$k] ? $confidenceArr [$k] . "%" : '<i title="Not Enough Information">NEI</i>';
-			if (($bestConversionRate - $conversion_rate) > 0) {
-				$conversion_rate_diff = '<span style="color:red;">-' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%</span>';
-			} elseif (($bestConversionRate - $conversion_rate) == 0) {
-				$conversion_rate_diff = number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) . '%';
-			} else {
-				$conversion_rate_diff = '<span style="color:green;">+' . number_format ( ($bestConversionRate - $conversion_rate) * 100, 2 ) * (- 1) . '%</span>';
-			}
-			$variationRows .= '<tr><td>' . $title . '</td><td>' . $variation_name . '<br />[' . $edit_link . ' | ' . $preview_link . ' |  ' . $pause_link . ' | ' . $duplicate_link . ' | ' . $trash_link . ' | ' . $promote_link . ']</td><td>' . $visitors . '</td><td>' . $conversions . '</td><td>' . number_format ( $conversion_rate * 100, 2 ) . '%</td><td>' . $conversion_rate_diff . '</td><td>' . $confidence . '</td><td>' . $variation_id . '</td></tr>';
-		}
 		$totalRows .= '<tr ><td></td><td style="font-size:14px;"><b>Totals</b></td><td style="font-size:14px;"><b>' . $total_visitors . '</b></td><td style="font-size:14px;"><b>' . $total_conversions . '</b></td><td style="font-size:14px;"><b>' . number_format ( mo_get_conversion_rate ( $total_visitors, $total_conversions ) * 100, 2 ) . '%</b></td><td></td><td></td><td></td></tr>';
 		$variationStatsTable .= $variationRows . $totalRows . '</table>';
 		return $variationStatsTable;
+		}
 	}
 }
 function mo_track_unique_pageview() {
@@ -518,7 +495,7 @@ function mo_track_unique_pageview() {
 add_action ( 'wp_ajax_mo_track_unique_pageview', 'mo_track_unique_pageview' );
 add_action ( 'wp_ajax_nopriv_mo_track_unique_pageview', 'mo_track_unique_pageview' );
 function mo_conversion() {
-	if ($_GET ['preview'] != true && !current_user_can( 'manage_options' )) {
+	if ($_GET ['preview'] != true && mo_track_admin_user()) {
 		echo '<script type="text/javascript" >
 						
 						
@@ -652,7 +629,7 @@ function mo_set_cookie($args) {
 	global $post, $variation_post_id;
 	$variationMetaDataArr = mo_get_variation_meta_data ( $post->ID );
 	$variation_id = get_post_meta ( $variation_post_id, 'mo_variation_id', true ) ? get_post_meta ( $variation_post_id, 'mo_variation_id', true ) : 0;
-	if (is_array ( $variationMetaDataArr ) && $_GET ['preview'] != true && !current_user_can( 'manage_options' )) {
+	if (is_array ( $variationMetaDataArr ) && $_GET ['preview'] != true && mo_track_admin_user()) {
 		echo '<script>
 				jQuery(document).ready(function($) {
 					function moGetExperimentCookie(){
@@ -897,12 +874,9 @@ display:inline !important;
 </style>';
 }
 function bot_detected() {
-
-	if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+	if (isset ( $_SERVER ['HTTP_USER_AGENT'] ) && preg_match ( '/bot|crawl|slurp|spider/i', $_SERVER ['HTTP_USER_AGENT'] )) {
 		return TRUE;
-	}
-	else {
+	} else {
 		return FALSE;
 	}
-
 }

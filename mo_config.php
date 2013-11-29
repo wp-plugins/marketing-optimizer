@@ -22,3 +22,4 @@ define('GOOGLE_CROSS_DOMAIN','false');
 define('GOOGLE_CROSS_DOMAIN_DOMAINS','');
 
 define('VARIATION_PAGES','true');
+define('TRACK_ADMIN','false');

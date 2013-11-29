@@ -3,7 +3,7 @@
  * Plugin Name: Marketing Optimizer 
  * Plugin URI: http://www.marketingoptimizer.com/wordpress/?apcid=8381 
  * Description: A plugin to integrate with Marketing Optimizer and perform A/B testing experiments on your wordpress pages. 
- * Version: 20131126 
+ * Version: 20131129 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
  */
@@ -11,7 +11,7 @@
 <?php
 // some definition we will use
 define ( 'MO_PUGIN_NAME', 'Marketing Optimizer' );
-define ( 'MO_CURRENT_VERSION', '20131126' );
+define ( 'MO_CURRENT_VERSION', '20131129' );
 define ( 'MO_CURRENT_BUILD', '1' );
 define ( 'MO_PLUGIN_DIRECTORY', 'marketing-optimizer' );
 define ( 'MO_LOGPATH', str_replace ( '\\', '/', WP_CONTENT_DIR ) . '/mo-logs/' );
@@ -107,6 +107,7 @@ function mo_activate() {
 				! get_option ( 'mo_phone_tracking_default_number' ) ? add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ) : '';
 				! get_option ( 'mo_form_default_id' ) ? add_option ( 'mo_form_default_id', FORM_ID ) : '';
 				! get_option ( 'mo_variation_pages' ) ? add_option ( 'mo_variation_pages', VARIATION_PAGES ) : '';
+				! get_option ( 'mo_track_admin' ) ? add_option ( 'mo_track_admin', TRACK_ADMIN ) : '';
 			}
 			restore_current_blog ();
 		}
@@ -119,6 +120,7 @@ function mo_activate() {
 		! get_option ( 'mo_phone_tracking_default_number' ) ? add_option ( 'mo_phone_tracking_default_number', PHONE_TRACKING_DEFAULT_NUMBER ) : '';
 		! get_option ( 'mo_form_default_id' ) ? add_option ( 'mo_form_default_id', FORM_ID ) : '';
 		! get_option ( 'mo_variation_pages' ) ? add_option ( 'mo_variation_pages', VARIATION_PAGES ) : '';
+		! get_option ( 'mo_track_admin' ) ? add_option ( 'mo_track_admin', TRACK_ADMIN ) : '';
 	}
 	flush_rewrite_rules ();
 }
@@ -130,42 +132,7 @@ function mo_create_menu() {
 }
 // deactivating
 function mo_deactivate() {
-	if (is_multisite ()) {
-		global $wpdb;
-		$blogs = $wpdb->get_results ( "SELECT blog_id FROM {$wpdb->blogs}", ARRAY_A );
-		if ($blogs) {
-			foreach ( $blogs as $blog ) {
-				switch_to_blog ( $blog ['blog_id'] );
-				// delete_option ( 'mo_marketing_optimizer' );
-				// delete_option ( 'mo_account_id' );
-				// delete_option ( 'mo_phone_tracking' );
-				// delete_option ( 'mo_phone_publish_cls' );
-				// delete_option ( 'mo_phone_tracking_thank_you_url' );
-				// delete_option ( 'mo_phone_tracking_default_number' );
-				// delete_option ( 'mo_form_default_id' );
-				// delete_option ( 'mo_google_analytics' );
-				// delete_option ( 'mo_google_analytics_account_id' );
-				// delete_option ( 'mo_google_analytics_cross_domain' );
-				// delete_option ( 'mo_google_analytics_domains' );
-				// delete_option ( 'mo_variation_pages' );
-			}
-			restore_current_blog ();
-		}
-	} else {
-		// delete_option ( 'mo_marketing_optimizer' );
-		// delete_option ( 'mo_account_id' );
-		// delete_option ( 'mo_phone_tracking' );
-		// delete_option ( 'mo_phone_publish_cls' );
-		// delete_option ( 'mo_phone_tracking_thank_you_url' );
-		// delete_option ( 'mo_phone_tracking_default_number' );
-		// delete_option ( 'mo_form_default_id' );
-		// delete_option ( 'mo_google_analytics' );
-		// delete_option ( 'mo_google_analytics_account_id' );
-		// delete_option ( 'mo_google_analytics_cross_domain' );
-		// delete_option ( 'mo_google_analytics_domains' );
-		// delete_option ( 'mo_variation_pages' );
-	}
-	// needed for proper deletion of every option
+	
 	flush_rewrite_rules ();
 }
 // check if debug is activated
@@ -206,12 +173,24 @@ function mo_phone_shortcode($attributes, $content = null) {
 // register items to be output by the wp_head() function
 function mo_register_head_items() {
 	global $post;
-	if (get_option ( 'mo_account_id' ) && $_GET ['preview'] != true && ! current_user_can ( 'manage_options' )) {
+	
+	if (get_option ( 'mo_account_id' ) && $_GET ['preview'] != true && mo_track_admin_user()) {
 		$moObj = new marketingoptimizer ( get_option ( 'mo_account_id' ) );
 		if ($post->post_variation) {
 			$moObj->setVariationId ( $post->post_variation );
 		}
 		echo $moObj->_getWebsiteTrackingCode ();
+	}
+}
+function mo_track_admin_user(){
+	if(current_user_can('manage_options')){
+		if(get_option('mo_track_admin') == 'true'){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		return true;
 	}
 }
 // register plugin functions
@@ -235,19 +214,48 @@ function mo_register_settings() {
 	register_setting ( 'mo-settings-group', 'mo_google_analytics_domains' );
 	register_setting ( 'mo-settings-group', 'mo_variation_pages' );
 	register_setting ( 'mo-settings-group', 'mo_variation_conversion_page' );
+	register_setting ( 'mo-settings-group', 'mo_track_admin' );
 }
 
 // uninstalling
 function mo_uninstall() {
-	// delete all data stored
-	delete_option ( 'mo_marketing_optimizer' );
-	delete_option ( 'mo_account_id' );
-	delete_option ( 'mo_phone_tracking' );
-	delete_option ( 'mo_phone_publish_cls' );
-	delete_option ( 'mo_phone_tracking_thank_you_url' );
-	delete_option ( 'mo_phone_tracking_default_number' );
-	delete_option ( 'mo_form_default_id' );
-	delete_option ( 'mo_variation_pages' );
+	if (is_multisite ()) {
+		global $wpdb;
+		$blogs = $wpdb->get_results ( "SELECT blog_id FROM {$wpdb->blogs}", ARRAY_A );
+		if ($blogs) {
+			foreach ( $blogs as $blog ) {
+				switch_to_blog ( $blog ['blog_id'] );
+				delete_option ( 'mo_marketing_optimizer' );
+				delete_option ( 'mo_account_id' );
+				delete_option ( 'mo_phone_tracking' );
+				delete_option ( 'mo_phone_publish_cls' );
+				delete_option ( 'mo_phone_tracking_thank_you_url' );
+				delete_option ( 'mo_phone_tracking_default_number' );
+				delete_option ( 'mo_form_default_id' );
+				delete_option ( 'mo_google_analytics' );
+				delete_option ( 'mo_google_analytics_account_id' );
+				delete_option ( 'mo_google_analytics_cross_domain' );
+				delete_option ( 'mo_google_analytics_domains' );
+				delete_option ( 'mo_variation_pages' );
+			}
+			restore_current_blog ();
+		}
+	} else {
+		delete_option ( 'mo_marketing_optimizer' );
+		delete_option ( 'mo_account_id' );
+		delete_option ( 'mo_phone_tracking' );
+		delete_option ( 'mo_phone_publish_cls' );
+		delete_option ( 'mo_phone_tracking_thank_you_url' );
+		delete_option ( 'mo_phone_tracking_default_number' );
+		delete_option ( 'mo_form_default_id' );
+		delete_option ( 'mo_google_analytics' );
+		delete_option ( 'mo_google_analytics_account_id' );
+		delete_option ( 'mo_google_analytics_cross_domain' );
+		delete_option ( 'mo_google_analytics_domains' );
+		delete_option ( 'mo_variation_pages' );
+	}
+	// needed for proper deletion of every option
+	flush_rewrite_rules ();
 	// delete log files and folder only if needed
 	if (function_exists ( 'mo_deleteLogFolder' ))
 		mo_deleteLogFolder ();
@@ -260,6 +268,7 @@ function mo_jquery_tabs_init() {
 	$phoneTracking = get_option ( 'mo_phone_tracking' ) == 'true' ? 'true' : 'false';
 	$sliderStartValue = get_option ( 'mo_variation_percentage' ) ? get_option ( 'mo_variation_percentage' ) : 90;
 	$cacheCompatible = get_option ( 'mo_cache_compatible' ) == 'true' ? 'true' : 'false';
+	$trackAdmin = get_option ( 'mo_track_admin' ) == 'true' ? 'true' : 'false';
 	echo '<script>
 			  jQuery(function() {
 			    jQuery( "#slider-range-max" ).slider({
@@ -308,6 +317,14 @@ function mo_jquery_tabs_init() {
 				        			jQuery(\'[name="cache_compatible"]\').val("true");
 				        		}else{
 				        			jQuery(\'[name="cache_compatible"]\').val("");
+				        		}
+			        		});
+				jQuery(\'.toggle-trackadmin\').toggles({on:' . $trackAdmin . '});
+			   jQuery(\'.toggle-trackadmin\').on(\'toggle\',function(e,active){
+				        		if(active){
+				        			jQuery(\'[name="track_admin"]\').val("true");
+				        		}else{
+				        			jQuery(\'[name="track_admin"]\').val("");
 				        		}
 			        		});
 			jQuery(document).ready(function($) {
