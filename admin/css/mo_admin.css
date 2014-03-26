@@ -1,0 +1,57 @@
+@CHARSET "ISO-8859-1";
+.reveal .fa {
+  font-family: 'FontAwesome';
+}
+.mo_lp_stats_table{
+	border-spacing:0;
+}
+.mo_lp_stats_header_cell{
+	font-size:12px !important;
+	font-weight:bold !important;
+	text-align:center !important;
+	border-right:1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5 !important;
+}
+.mo_lp_stats_cell{
+	border-right:1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5 !important;
+	text-align:center;
+	font-size:10px !important;
+}
+.column-impressions{
+	width:10%;
+}
+.column-visits{
+	width:10%;
+}
+.column-conversions{
+	width:10%;
+}
+.column-cr{
+	width:10%;
+}
+
+.mo_lp_meta_box_stats_table th{
+	width:43px !important;
+	font-size:14px !important;
+}
+.mo_lp_meta_box_stats_table td{
+	font-size:12px !important;
+}
+.mo_lp_status_paused, .mo_page_status_paused{
+	
+	
+}
+.mo_lp_status_paused td, .mo_page_status_paused td{
+	color:#78B6C8;
+	font-style:italic;
+	
+}
+.mo_lp_status_paused td a, .mo_page_status_paused td a{
+	color:#78B6C8;
+	font-style:italic;
+	
+}
+.a_b_tabs{
+	padding-bottom:0px !important;
+}
