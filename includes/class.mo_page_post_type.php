@@ -394,15 +394,15 @@ class mo_page_post_type {
 		$variations = $mo_page_obj->get_variation_ids_arr ();
 		if (count ( $variations )) {
 			$variations_arr = $mo_page_obj->get_variations_arr ();
-			echo '<table class="mo_lp_stats_table">
+			echo '<table class="mo_stats_table">
 					  <tr class="mo_lp_stats_header_row">
-					    <th class="mo_lp_stats_header_cell">ID</th>
-					    <th class="mo_lp_stats_header_cell">Imp</th>
-					    <th class="mo_lp_stats_header_cell">Visits</th>
-					    <th class="mo_lp_stats_header_cell">Conv</th>
-					    <th class="mo_lp_stats_header_cell">CR</th>
-					    <th class="mo_lp_stats_header_cell">Confidence</th>
-						<th class="mo_lp_stats_header_cell">Actions</th>
+					    <th class="mo_stats_header_cell">ID</th>
+					    <th class="mo_stats_header_cell">Imp</th>
+					    <th class="mo_stats_header_cell">Visits</th>
+					    <th class="mo_stats_header_cell">Conv</th>
+					    <th class="mo_stats_header_cell">CR</th>
+					    <th class="mo_stats_header_cell">Confidence</th>
+						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
 			
 			// echo "<ul class='mo_lp_stats_list'>";
@@ -423,7 +423,7 @@ class mo_page_post_type {
 				// current variation status
 				$status = $var_obj->get_status ();
 				$status_text = $status ? '<i title="Pause Variation" class="fa fa-pause"></i>' : '<i title="UnPause Variation" class="fa fa-play"></i>';
-				$status_class_text = $status ? 'mo_page_status_unpaused' : 'mo_page_status_paused';
+				$status_class_text = $status ? 'mo_status_unpaused' : 'mo_status_paused';
 				$confidence = $mo_page_obj->get_confidence ( $var_obj->get_id () );
 				$description = $var_obj->get_description () ? $var_obj->get_description () : 'Default';
 				// get variation conversions
@@ -447,13 +447,13 @@ class mo_page_post_type {
 				$cr_array [] = $conversion_rate;
 				
 				echo '<tr class="' . $status_class_text . '">';
-				echo '<td class="mo_lp_stats_cell"><a title="' . $description . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
-				echo '<td class="mo_lp_stats_cell">' . $impressions . '</td>';
-				echo '<td class="mo_lp_stats_cell">' . $visits . '</td>';
-				echo '<td class="mo_lp_stats_cell">' . $conversions . '</td>';
-				echo '<td class="mo_lp_stats_cell">' . $conversion_rate . '%</td>';
-				echo '<td class="mo_lp_stats_cell">' . $confidence . '</td>';
-				echo '<td class="mo_lp_stats_cell"><a target="_blank" href="' . get_permalink ( $post->ID ) . '?mo_page_variation_id=' . $var_obj->get_id () . '" <i class="fa fa-search"></i></a> | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', 'mo_page_pause_variation', $post->ID, $var_obj->get_id () ) . '| ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', 'mo_page_delete_variation', $post->ID, $var_obj->get_id () ) . '</td>';
+				echo '<td class="mo_stats_cell"><a title="' . $description . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
+				echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+				echo '<td class="mo_stats_cell">' . $visits . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+				echo '<td class="mo_stats_cell">' . $confidence . '</td>';
+				echo '<td class="mo_stats_cell"><a target="_blank" href="' . get_permalink ( $post->ID ) . '?mo_page_variation_id=' . $var_obj->get_id () . '" <i class="fa fa-search"></i></a> | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', 'mo_page_pause_variation', $post->ID, $var_obj->get_id () ) . '| ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', 'mo_page_delete_variation', $post->ID, $var_obj->get_id () ) . '</td>';
 				echo '</tr>';
 			}
 			echo "</table>";
@@ -594,7 +594,7 @@ if(!url[1]){
 	params = "&"+url[1];
 }
 variation_id = mo_page_get_variation_cookie();
-
+if(variation_id != 0){
 if (isIE()) {
         if (variation_id != null) {
             window.location =  url[0] + "?mo_page_variation_id=" + mo_page_get_variation_cookie()+params;
@@ -617,7 +617,7 @@ if (isIE()) {
     }
     xmlhttp.send();
 }
-		
+}		
 
  </script>';
 		}
@@ -662,6 +662,10 @@ if (isIE()) {
 				'mo_page_conversion' 
 		) );
 		add_shortcode ( 'mo_phone', array (
+				$this,
+				'mo_phone_shortcode' 
+		) );
+		add_shortcode ( 'aim_phone', array (
 				$this,
 				'mo_phone_shortcode' 
 		) );

@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140325 
+ * Version: 20140408 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -50,6 +50,9 @@ class mo_landing_pages_plugin {
 		include ('includes/class.mo_lp_metaboxes.php');
 		include ('includes/class.mo_page_metaboxes.php');
 		include ('includes/class.mo_pages.php');
+		//include ('includes/class.mo_sp_post_type.php');
+		//include ('includes/class.mo_squeeze_pages.php');
+		//include ('includes/class.mo_sp_metaboxes.php');
 		
 		// include('includes/mo_lp_post_type.php');
 		// include('includes/mo_lp_metaboxes.php');
@@ -582,7 +585,7 @@ class mo_landing_pages_plugin {
 			wp_enqueue_script ( 'jquery-ui-slider' );
 			wp_enqueue_style ( $this->plugin_name . '_font_awesome_css' );
 		}
-		if ($hook == 'post-new.php' && $_GET ['post_type'] === 'mo_landing_page') {
+		if ($hook == 'post-new.php' && ($_GET ['post_type'] === 'mo_landing_page' ||$_GET ['post_type'] === 'mo_sp' )) {
 			// Create New Landing Jquery UI
 			wp_enqueue_style ( 'mo_lp_admin_post_new_css', $this->plugin_url . 'admin/css/mo_admin_post_new.css' );
 			 wp_enqueue_script('mo_lp_mixitup_js', $this->plugin_url . 'admin/js/jquery.mixitup.min.js');
