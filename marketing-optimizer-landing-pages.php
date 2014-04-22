@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140408 
+ * Version: 20140422 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -15,8 +15,8 @@ class mo_landing_pages_plugin {
 	 * =============================================================================== Declare Class Variables ===============================================================================
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
-	CONST MO_LP_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140325';
+	CONST MO_DIRECTORY = 'marketing-optimizer';
+	public static $plugin_version = '20140422';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -46,13 +46,16 @@ class mo_landing_pages_plugin {
 		require_once ('class.mo_settings.php');
 		include ('includes/class.mo_page_post_type.php');
 		include ('includes/class.mo_lp_post_type.php');
+		if(class_exists("GFFormsModel")){
 		include ('includes/class.mo_gravity_forms.php');
+		}
 		include ('includes/class.mo_lp_metaboxes.php');
 		include ('includes/class.mo_page_metaboxes.php');
 		include ('includes/class.mo_pages.php');
-		//include ('includes/class.mo_sp_post_type.php');
-		//include ('includes/class.mo_squeeze_pages.php');
-		//include ('includes/class.mo_sp_metaboxes.php');
+		include ('includes/class.mo_sp_post_type.php');
+		include ('includes/class.mo_squeeze_pages.php');
+		include ('includes/class.mo_sp_metaboxes.php');
+		include ('includes/class.mo_sp_variation.php');
 		
 		// include('includes/mo_lp_post_type.php');
 		// include('includes/mo_lp_metaboxes.php');
@@ -531,6 +534,7 @@ class mo_landing_pages_plugin {
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_scripts() {
+		wp_enqueue_script ( 'nyromodal', plugins_url ( 'includes/js/jquery.nyroModal.custom.min.js', __FILE__ ) );
 		// wp_register_script($this->plugin_name . '_frontend-js' , $this->plugin_url . 'js/frontend-scripts.js', false , $this->get_version(), true);
 		// wp_enqueue_script($this->plugin_name . '_frontend-js');
 	}
@@ -547,6 +551,7 @@ class mo_landing_pages_plugin {
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_styles() {
+		wp_enqueue_style ( 'nyromodal_css', plugins_url ( 'includes/styles/nyroModal.css', __FILE__ ) );
 		// wp_register_style($this->plugin_name . '_frontend-css', $this->plugin_url . 'css/frontend-style.css', false, $this->plugin_version);
 		// wp_enqueue_style($this->plugin_name . '_frontend-css');
 	}
@@ -577,6 +582,7 @@ class mo_landing_pages_plugin {
 	}
 	public function mo_lp_admin_scripts($hook) {
 		if (is_admin ()) {
+			wp_enqueue_script ( 'jquery-ui-dialog');
 			wp_enqueue_script ( 'jquery-toggles', $this->plugin_url . 'admin/js/toggles.min.js' );
 			wp_enqueue_style ( 'mo_lp_admin_toggles_css', $this->plugin_url . 'admin/css/toggles.css' );
 			wp_enqueue_style ( 'mo_lp_admin_toggles_modern_css', $this->plugin_url . 'admin/css/toggles-modern.css' );
@@ -604,22 +610,39 @@ class mo_landing_pages_plugin {
 	}
 	public function mo_lp_get_slider_js() {
 		$mo_settings_obj = new mo_settings ();
-		$sliderStartValue = $mo_settings_obj->get_mo_lp_variation_percentage () ? $mo_settings_obj->get_mo_lp_variation_percentage () : 90;
+		$mo_lp_slider_start_value = $mo_settings_obj->get_mo_lp_variation_percentage () ? $mo_settings_obj->get_mo_lp_variation_percentage () : 90;
+		var_dump($mo_lp_slider_start_value);
+		$mo_sp_slider_start_value = $mo_settings_obj->get_mo_sp_variation_percentage () ? $mo_settings_obj->get_mo_sp_variation_percentage () : 90;
 		echo '<script>
 			  jQuery(function() {
-			    jQuery( "#slider-range-max" ).slider({
+			    jQuery( "#mo_lp_slider-range-max" ).slider({
 			      range: "max",
 			      min: 10,
 			      max: 90,
-			      value: ' . $sliderStartValue . ',
+			      value: ' . $mo_lp_slider_start_value . ',
+				  step:10,
+			      slide: function( event, ui ) {
+					var label = "Exploitation: "+ui.value+"%/Exploration: "+(100-ui.value)+"%"
+			        jQuery( "#mo_lp_amount" ).val(label  );
+			        jQuery( "#mo_lp_variation_percentage" ).val(ui.value  );
+			      }
+			    });
+						var labelval =  "Exploitation: "+jQuery( "#mo_lp_slider-range-max" ).slider( "value" )+"%/Exploration: "+(100-jQuery( "#mo_lp_slider-range-max" ).slider( "value" ))+"%";
+			    jQuery( "#mo_lp_amount" ).val( labelval );
+			      		
+			    jQuery( "#mo_sp_slider-range-max" ).slider({
+			      range: "max",
+			      min: 10,
+			      max: 90,
+			      value: ' . $mo_sp_slider_start_value . ',
 				  step:10,
 			      slide: function( event, ui ) {
 					var label = "Exploitation: "+ui.value+"%/Exploration: "+(100-ui.value)+"%"
 			        jQuery( "#amount" ).val(label  );
-			        jQuery( "#mo_lp_variation_percentage" ).val(ui.value  );
+			        jQuery( "#mo_sp_variation_percentage" ).val(ui.value  );
 			      }
 			    });
-						var labelval =  "Exploitation: "+jQuery( "#slider-range-max" ).slider( "value" )+"%/Exploration: "+(100-jQuery( "#slider-range-max" ).slider( "value" ))+"%";
+						var labelval =  "Exploitation: "+jQuery( "#mo_sp_slider-range-max" ).slider( "value" )+"%/Exploration: "+(100-jQuery( "#mo_sp_slider-range-max" ).slider( "value" ))+"%";
 			    jQuery( "#amount" ).val( labelval );
 				
 			  });

@@ -19,6 +19,8 @@ class mo_pages extends mo_ab_testing {
 		global $post, $pagenow;
 		if (isset ( $_GET ['mo_page_variation_id'] )) {
 			$this->current_variation = ( int ) $_GET ['mo_page_variation_id'];
+		}elseif (isset ( $_GET ['v_id'] )) {
+			$this->current_variation = ( int ) $_GET ['v_id'];
 		} elseif (isset ( $_POST ['mo_page_open_variation'] )) {
 			$this->current_variation = ( int ) $_POST ['mo_page_open_variation'];
 		} elseif (isset($post) && isset ( $_COOKIE ['mo_page_variation_' . $post->ID] ) && ! is_admin ()) {

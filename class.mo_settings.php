@@ -7,6 +7,13 @@ class mo_settings {
 	public $mo_lp_cache_compatible;
 	public $mo_lp_track_admin;
 	public $mo_lp_variation_percentage;
+	// squeeze page settings
+	public $mo_sp_permalink_prefix;
+	public $mo_sp_variation_pages;
+	public $mo_sp_cache_compatible;
+	public $mo_sp_track_admin;
+	public $mo_sp_variation_percentage;
+	public $mo_sp_show_time = 15;
 	// marketing optimizer integration settings
 	public $mo_marketing_optimizer;
 	public $mo_account_id;
@@ -52,6 +59,42 @@ class mo_settings {
 	}
 	public function set_mo_lp_variation_percentage($value) {
 		$this->mo_lp_variation_percentage = $value;
+	}
+	public function get_mo_sp_permalink_prefix() {
+		return $this->mo_sp_permalink_prefix;
+	}
+	public function set_mo_sp_permalink_prefix($value) {
+		$this->mo_sp_permalink_prefix = $value;
+	}
+	public function get_mo_sp_variation_pages() {
+		return $this->mo_sp_variation_pages;
+	}
+	public function set_mo_sp_variation_pages($value) {
+		$this->mo_sp_variation_pages = $value;
+	}
+	public function get_mo_sp_show_time() {
+		return $this->mo_sp_show_time;
+	}
+	public function set_mo_sp_show_time($value) {
+		$this->mo_sp_show_time = $value;
+	}
+	public function get_mo_sp_cache_compatible() {
+		return $this->mo_sp_cache_compatible;
+	}
+	public function set_mo_sp_cache_compatible($value) {
+		$this->mo_sp_cache_compatible = $value;
+	}
+	public function get_mo_sp_track_admin() {
+		return $this->mo_sp_track_admin;
+	}
+	public function set_mo_sp_track_admin($value) {
+		$this->mo_sp_track_admin = $value;
+	}
+	public function get_mo_sp_variation_percentage() {
+		return $this->mo_sp_variation_percentage;
+	}
+	public function set_mo_sp_variation_percentage($value) {
+		$this->mo_sp_variation_percentage = $value;
 	}
 	public function get_mo_marketing_optimizer() {
 		return $this->mo_marketing_optimizer;

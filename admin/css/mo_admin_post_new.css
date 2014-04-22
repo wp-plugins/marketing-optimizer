@@ -142,13 +142,13 @@ hr{
 	display: inline-block;
 	width: 200px;
 }
-.mo_lp_template_select_heading{
+.mo_template_select_heading{
 margin-top: 20px;
 }
-#mo_lp_templates{
+#mo_templates{
 text-align:center;	
 }
-#mo_lp_description_div{
+#mo_description_div{
 	margin-bottom:15px;
 }
 .nav-tab-special-active {

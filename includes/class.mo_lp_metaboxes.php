@@ -128,22 +128,22 @@ class mo_lp_metaboxes {
 			$conversion_rate = $mo_lp_obj->get_variation_property ( $v_id, 'conversion_rate' ) ? number_format ( $mo_lp_obj->get_variation_property ( $v_id, 'conversion_rate' ), 1 ) * 100 : 0;
 			$status = $mo_lp_obj->get_variation_property ( $v_id, 'status' );
 			$status_text = $status ? 'pause' : 'unpause';
-			echo '<table class="mo_lp_meta_box_stats_table">
+			echo '<table class="mo_meta_box_stats_table">
 							  <tr class="mo_lp_stats_header_row">
-							    <th class="mo_lp_stats_header_cell">ID</th>
-							    <th class="mo_lp_stats_header_cell">Imp</th>
-							    <th class="mo_lp_stats_header_cell">Visits</th>
-							    <th class="mo_lp_stats_header_cell">Conv</th>
-							    <th class="mo_lp_stats_header_cell">CR%</th>
-							    <th class="mo_lp_stats_header_cell">Status</th>
+							    <th class="mo_stats_header_cell">ID</th>
+							    <th class="mo_stats_header_cell">Imp</th>
+							    <th class="mo_stats_header_cell">Visits</th>
+							    <th class="mo_stats_header_cell">Conv</th>
+							    <th class="mo_stats_header_cell">CR%</th>
+							    <th class="mo_stats_header_cell">Status</th>
 							  </tr>';
 			echo '<tr>';
-			echo '<td class="mo_lp_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_lp_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
-			echo '<td class="mo_lp_stats_cell">' . $impressions . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $visits . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $conversions . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $conversion_rate . '%</td>';
-			echo '<td class="mo_lp_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_lp_pause_variation', $post->ID, $v_id ) . '</td>';
+			echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_lp_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
+			echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+			echo '<td class="mo_stats_cell">' . $visits . '</td>';
+			echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+			echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+			echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_pause_variation', $post->ID, $v_id ) . '</td>';
 			echo '</tr>';
 			echo '</table>';
 		}
@@ -156,34 +156,33 @@ class mo_lp_metaboxes {
 			$theme_template = $mo_lp_obj->get_variation_property ( $v_id, 'theme_template' );
 			$template_dir = get_template_directory_uri ();
 		} else {
-			$template_dir = '/' . PLUGINDIR . '/'.mo_landing_pages_plugin::MO_LP_DIRECTORY.'/templates/' . $template;
+			$template_dir = '/' . PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $template;
 		}
 		// Add an nonce field so we can check for it later.
-		wp_nonce_field ( 'mo_lp_get_template_selected_metabox', 'mo_lp_get_template_selected_metabox_nonce' );
-		echo '<div id="mo_lp_templates" class="postbox">
+		wp_nonce_field ( 'mo_get_template_selected_metabox', 'mo_get_template_selected_metabox_nonce' );
+		echo '<div id="mo_templates" class="postbox">
 				<h3 class="hndle">Landing Page Template: 
-					<span id="mo_lp_template_name">' . $template . '</span>
+					<span id="mo_template_name">' . $template . '</span>
 				</h3>
-				<div id="mo_lp_template_image_container">
-					<span id="mo_lp_template_image">
+				<div id="mo_template_image_container">
+					<span id="mo_template_image">
 							<img height="200" width="200" src="' . $template_dir . '/screenshot.png" id="c_temp">
 									</span></div>
-									<div id="mo_lp_current_template">
-										<input type="hidden" name="mo_lp_template" value="' . $template . '">
+									<div id="mo_current_template">
+										<input type="hidden" name="mo_template" value="' . $template . '">
 									</div>';
 		
-			echo '<div id="mo_lp_theme_template" style="margin-top:10px;">
+		echo '<div id="mo_theme_template" style="margin-top:10px;">
 					<label  for="theme_template" style="font-weight:bold;margin-bottom:10px;">Theme Template</label>
 					<select name="theme_template" id="theme_template">
-	<option value="default">'; 
-		 _e ( 'Default Template' ) ;
-		 echo '</option>'; 
-		  page_template_dropdown ( $theme_template );
+	<option value="default">';
+		_e ( 'Default Template' );
+		echo '</option>';
+		page_template_dropdown ( $theme_template );
 		echo '</select></div>';
 		
-		
-		echo '<div id="mo_lp_template_change">
-												<h2><a class="button" id="mo_lp-change-template-button">Choose Another Template</a></h2>
+		echo '<div id="mo_template_change">
+												<h2><a class="button" id="mo-change-template-button">Choose Another Template</a></h2>
 											</div>
 				</div>';
 	}
@@ -232,7 +231,7 @@ class mo_lp_metaboxes {
 				if ($k == 'post_title') {
 					$k = 'title';
 				}
-				if ($k == 'mo_lp_template') {
+				if ($k == 'mo_template') {
 					$k = 'template';
 				}
 				if (property_exists ( 'mo_variation', $k )) {
@@ -293,8 +292,8 @@ class mo_lp_metaboxes {
 		
 		$template = get_post_meta ( $post->ID, 'lp-selected-template', true );
 		$template = apply_filters ( 'lp_selected_template', $template );
-		echo '<div id="mo_lp_template_select_container" style="' . $toggle . '">
-<div class="mo_lp_template_select_heading"><h1>Select Your Landing Page Template</h1></div>
+		echo '<div id="mo_template_select_container" style="' . $toggle . '">
+<div class="mo_template_select_heading"><h1>Select Your Landing Page Template</h1></div>
 ';
 		// '<div class="controls">
 		// <h3>Filter Controls</h3>
@@ -309,16 +308,19 @@ class mo_lp_metaboxes {
 		echo '<ul id="Grid" style=" ">';
 		foreach ( mo_lp_get_templates () as $k => $v ) {
 			// echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><span style=""><a href="#" id="defualt" class="mo_lp_template_select">Select</a></span> | <span style=""><a href="#">Preview</a></span></li>';
-			echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><div>' . $v ['title'] . '</div><a href="#" label="' . $k . '" id="' . $k . '" class="mo_lp_template_select"><img class="mo_lp_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" /></a><span style=""><a href="#" label="' . $k . '" id="' . $k . '" class="mo_lp_template_select">Select</a></span> </li>';
+			echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><div>' . $v ['title'] . '</div><a href="#" label="' . $k . '" id="' . $k . '" class="mo_template_select"><img class="mo_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" /></a><span style=""><a href="#" label="' . $k . '" id="' . $k . '" class="mo_template_select">Select</a></span> </li>';
 		}
 		
 		echo '<li class="gap"></li> <!-- "gap" elements fill in the gaps in justified grid -->
 </ul></div>';
 	}
 	function mo_lp_add_template_dialog_box() {
-		echo '<div id="dialog-confirm" title="Change Template" style="display:none;">
+global $post;
+		if (isset($post) && $post->post_type == 'mo_landing_page') {
+			echo '<div id="dialog-confirm" title="Change Template" style="display:none;">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Changing the template will replace the current content with the new template. Are you sure you want to do this?</p>
 </div>';
+		}
 	}
 }
 $mo_lp_metaboxes_obj = new mo_lp_metaboxes ();

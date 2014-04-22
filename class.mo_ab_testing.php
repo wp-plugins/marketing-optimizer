@@ -13,15 +13,16 @@ class mo_ab_testing {
 			$variation_ids_arr = explode ( ',', get_post_meta ( $this->get_post_id (), $this->meta_value_prefix . 'variations', true ) ? get_post_meta ( $this->get_post_id (), $this->meta_value_prefix . 'variations', true ) : 0 );
 			$this->set_variation_ids_arr ( $variation_ids_arr );
 			$this->set_variations_arr ( $this->get_variation_ids_arr () );
-			$this->set_current_variation ();
-			$v_id = $this->get_current_variation ();
-			if (! in_array ( $v_id, $variation_ids_arr ) && $v_id !== '') {
-				$variation_ids_arr [$v_id] = $v_id;
-			}
+			
 			foreach ( $this->get_variations_arr () as $k => $var_obj ) {
 				if (( int ) $var_obj->get_status ()) {
 					$this->set_active_variation_count ( ($this->get_active_variation_count () + 1) );
 				}
+			}
+			$this->set_current_variation ();
+			$v_id = $this->get_current_variation ();
+			if (! in_array ( $v_id, $variation_ids_arr ) && $v_id !== '') {
+				$variation_ids_arr [$v_id] = $v_id;
 			}
 		} else {
 			throw new InvalidArgumentException ( 'Not a valid post id' );
@@ -70,14 +71,16 @@ class mo_ab_testing {
 		$variations_arr [$v_id]->$method_name ( $value );
 	}
 	public function save() {
-		$v_id = $this->get_current_variation ();
+		$current_v_id = $this->get_current_variation ();
 		$variations_ids_arr = $this->get_variation_ids_arr ();
 		
 		update_post_meta ( $this->get_post_id (), $this->meta_value_prefix . 'variations', implode ( ',', $this->get_variation_ids_arr () ) );
 		
 		$variations_arr = $this->get_variations_arr ();
 		foreach ( $this->get_variations_arr () as $v_id => $variations_obj ) {
+			if($current_v_id == $v_id){
 			$variations_obj->save ();
+			}
 		}
 	}
 	public function get_current_variation() {
@@ -91,7 +94,7 @@ class mo_ab_testing {
 	}
 	public function pause_variation($post_id, $v_id) {
 		$v_status = $this->get_variation_property ( $v_id, 'status' );
-		if ($v_status) {
+		if ((int)$v_status) {
 			$this->set_variation_property ( $v_id, 'status', 0 );
 		} else {
 			$this->set_variation_property ( $v_id, 'status', 1 );
@@ -118,7 +121,7 @@ class mo_ab_testing {
 									'visitors' => $f_visitors,
 									'conversion_rate' => $f_conversion_rate 
 							) ) ) * 100, 1 );
-						} elseif ($confidence_arr [$f_v_id] > number_format ( $this->mo_lp_get_cumnormdist ( $this->mo_lp_get_zscore ( array (
+						} elseif (isset($confidence_arr[$f_v_id]) && $confidence_arr [$f_v_id] > number_format ( $this->mo_lp_get_cumnormdist ( $this->mo_lp_get_zscore ( array (
 								'visitors' => $s_visitors,
 								'conversion_rate' => $s_conversion_rate 
 						), array (

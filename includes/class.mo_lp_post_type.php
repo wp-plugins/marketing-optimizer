@@ -327,7 +327,7 @@ class mo_lp_post_type {
 		global $post;
 		if (! isset ( $_GET ['preview'] ) && $this->mo_lp_track_admin_user ()) {
 			echo '<script type="text/javascript" >
-				window.onload = public function() {
+				window.onload =  function() {
 					function mo_lp_get_variation_cookie(){
 							var cookies = document.cookie.split(/;\s*/);
 							var cookiesArr = [];
@@ -345,7 +345,7 @@ class mo_lp_post_type {
 									xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	
 									xmlhttp.send("action=mo_lp_track_conversion&cookie=+mo_lp_get_variation_cookie()");
-											xmlhttp.onreadystatechange = public function () {
+											xmlhttp.onreadystatechange = function () {
 				        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				           var response  = xmlhttp.responseText;
 											var json_response = JSON.parse(response);
@@ -508,7 +508,7 @@ class mo_lp_post_type {
 				// 'show_ui_nav_menus' => false,
 				// 'show_in_menu' => false,
 				'query_var' => true,
-				'menu_icon' => '/wp-content/plugins/'.mo_landing_pages_plugin::MO_LP_DIRECTORY.'/images/moicon.png',
+				'menu_icon' => plugins_url().'/'.mo_landing_pages_plugin::MO_DIRECTORY.'/images/moicon.png',
 				'rewrite' => array (
 						"slug" => "$slug",
 						'with_front' => false 
@@ -579,15 +579,15 @@ class mo_lp_post_type {
 		$variations = $mo_lp_obj->get_variation_ids_arr ();
 		if (count ( $variations )) {
 			$variations_arr = $mo_lp_obj->get_variations_arr ();
-			echo '<table class="mo_lp_stats_table">
-					  <tr class="mo_lp_stats_header_row">
-					    <th class="mo_lp_stats_header_cell">ID</th>
-					    <th class="mo_lp_stats_header_cell">Imp</th>
-					    <th class="mo_lp_stats_header_cell">Visits</th>
-					    <th class="mo_lp_stats_header_cell">Conv</th>
-					    <th class="mo_lp_stats_header_cell">CR</th>
-					    <th class="mo_lp_stats_header_cell">Confidence</th>
-						<th class="mo_lp_stats_header_cell">Actions</th>
+			echo '<table class="mo_stats_table">
+					  <tr class="mo_stats_header_row">
+					    <th class="mo_stats_header_cell">ID</th>
+					    <th class="mo_stats_header_cell">Imp</th>
+					    <th class="mo_stats_header_cell">Visits</th>
+					    <th class="mo_stats_header_cell">Conv</th>
+					    <th class="mo_stats_header_cell">CR</th>
+					    <th class="mo_stats_header_cell">Confidence</th>
+						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
 			
 			// echo "<ul class='mo_lp_stats_list'>";
@@ -608,7 +608,7 @@ class mo_lp_post_type {
 					// current variation status
 					$status = $var_obj->get_status ();
 					$status_text = $status ? '<i title="Pause Variation" class="fa fa-pause"></i>' : '<i title="UnPause Variation" class="fa fa-play"></i>';
-					$status_class_text = $status ? 'mo_lp_status_unpaused' : 'mo_lp_status_paused';
+					$status_class_text = $status ? 'mo_status_unpaused' : 'mo_status_paused';
 					$confidence = $mo_lp_obj->get_confidence ( $var_obj->get_id () );
 					
 					// get variation conversions
@@ -632,13 +632,13 @@ class mo_lp_post_type {
 					$cr_array [] = $conversion_rate;
 					
 					echo '<tr class="' . $status_class_text . '">';
-					echo '<td class="mo_lp_stats_cell"><a title="' . $var_obj->get_description () . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_lp_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
-					echo '<td class="mo_lp_stats_cell">' . $impressions . '</td>';
-					echo '<td class="mo_lp_stats_cell">' . $visits . '</td>';
-					echo '<td class="mo_lp_stats_cell">' . $conversions . '</td>';
-					echo '<td class="mo_lp_stats_cell">' . $conversion_rate . '%</td>';
-					echo '<td class="mo_lp_stats_cell">' . $confidence . '</td>';
-					echo '<td class="mo_lp_stats_cell"><a target="_blank" href="' . get_permalink ( $post->ID ) . '?mo_lp_variation_id=' . $var_obj->get_id () . '" <i class="fa fa-search"></i></a> | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', 'mo_lp_pause_variation', $post->ID, $var_obj->get_id () ) . ' | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', 'mo_lp_delete_variation', $post->ID, $var_obj->get_id () ) . '</td>';
+					echo '<td class="mo_stats_cell"><a title="' . $var_obj->get_description () . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_lp_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
+					echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+					echo '<td class="mo_stats_cell">' . $visits . '</td>';
+					echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+					echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+					echo '<td class="mo_stats_cell">' . $confidence . '</td>';
+					echo '<td class="mo_stats_cell"><a target="_blank" href="' . get_permalink ( $post->ID ) . '?mo_lp_variation_id=' . $var_obj->get_id () . '" <i class="fa fa-search"></i></a> | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', 'mo_lp_pause_variation', $post->ID, $var_obj->get_id () ) . ' | ' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', 'mo_lp_delete_variation', $post->ID, $var_obj->get_id () ) . '</td>';
 					echo '</tr>';
 				}
 			}
@@ -954,7 +954,7 @@ class mo_lp_post_type {
 			$template_name = $_POST ['template'];
 		}
 		if ($template_name != 'theme') {
-			$template_dir = site_url () . '/' . PLUGINDIR . '/'.mo_landing_pages_plugin::MO_LP_DIRECTORY.'/templates/' . $template_name;
+			$template_dir = site_url () . '/' . PLUGINDIR . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
 			if (! $template) {
@@ -971,7 +971,7 @@ class mo_lp_post_type {
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 			$v_id = $mo_lp_obj->get_current_variation ();
 			$mo_lp_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
-			$template_dir =  PLUGINDIR . '/'.mo_landing_pages_plugin::MO_LP_DIRECTORY.'/templates/' . $mo_lp_template;
+			$template_dir =  PLUGINDIR . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/' . $mo_lp_template;
 			if ($mo_lp_template != 'theme') {
 				$template = $template_dir . '/template.php';
 			} else {

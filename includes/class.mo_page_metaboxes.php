@@ -124,22 +124,22 @@ class mo_page_metaboxes {
 			$conversion_rate = $mo_page_obj->get_variation_property ( $v_id, 'conversion_rate' ) ? (number_format ( $mo_page_obj->get_variation_property ( $v_id, 'conversion_rate' ), 1 ) * 100) : 0;
 			$status = $mo_page_obj->get_variation_property ( $v_id, 'status' );
 			$status_text = $status ? 'pause' : 'unpause';
-			echo '<table class="mo_lp_meta_box_stats_table">
-							  <tr class="mo_lp_stats_header_row">
-							    <th class="mo_lp_stats_header_cell">ID</th>
-							    <th class="mo_lp_stats_header_cell">Imp</th>
-							    <th class="mo_lp_stats_header_cell">Visits</th>
-							    <th class="mo_lp_stats_header_cell">Conv</th>
-							    <th class="mo_lp_stats_header_cell">CR%</th>
-							    <th class="mo_lp_stats_header_cell">Status</th>
+			echo '<table class="mo_meta_box_stats_table">
+							  <tr class="mo_stats_header_row">
+							    <th class="mo_stats_header_cell">ID</th>
+							    <th class="mo_stats_header_cell">Imp</th>
+							    <th class="mo_stats_header_cell">Visits</th>
+							    <th class="mo_stats_header_cell">Conv</th>
+							    <th class="mo_stats_header_cell">CR%</th>
+							    <th class="mo_stats_header_cell">Status</th>
 							  </tr>';
 			echo '<tr>';
-			echo '<td class="mo_lp_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
-			echo '<td class="mo_lp_stats_cell">' . $impressions . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $visits . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $conversions . '</td>';
-			echo '<td class="mo_lp_stats_cell">' . $conversion_rate . '%</td>';
-			echo '<td class="mo_lp_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_page_pause_variation', $post->ID, $v_id ) . '</td>';
+			echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
+			echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+			echo '<td class="mo_stats_cell">' . $visits . '</td>';
+			echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+			echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+			echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_page_pause_variation', $post->ID, $v_id ) . '</td>';
 			echo '</tr>';
 			echo '</table>';
 		}
