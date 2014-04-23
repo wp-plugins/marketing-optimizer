@@ -149,8 +149,7 @@ echo '<script>
 		<h2 class="nav-tab-wrapper">
 			<a
 				href="?page=marketing-optimizer-settings&tab=mo_lp_general_settings"
-				class="nav-tab <?php echo $active_tab == 'mo_lp_general_settings' ? 'nav-tab-active' : ''; ?>">General
-				Settings</a> <a
+				class="nav-tab <?php echo $active_tab == 'mo_lp_general_settings' ? 'nav-tab-active' : ''; ?>">Landing Page Settings</a> <a
 				href="?page=marketing-optimizer-settings&tab=mo_sp_general_settings"
 				class="nav-tab <?php echo $active_tab == 'mo_sp_general_settings' ? 'nav-tab-active' : ''; ?>">Squeeze
 				Page Settings </a> <a
@@ -170,6 +169,7 @@ echo '<script>
 
 switch ($active_tab) {
 	case 'mo_lp_general_settings' :
+		$mo_lp_permalink = $mo_settings_obj->get_mo_lp_permalink_prefix()?$mo_settings_obj->get_mo_lp_permalink_prefix():'mo_lp';
 		?>		  
     <div id="tabs-1">
 					<input type='hidden' name="action" value="mo_lp_plugin_settings" />
@@ -179,7 +179,7 @@ switch ($active_tab) {
 							<td style="width: 30%"><div
 									class="toggle-abtesting toggle-modern"></div> <input
 								type="text" name="mo_lp_permalink_prefix"
-								value="<?php echo $mo_settings_obj->get_mo_lp_permalink_prefix() ?>" /></td>
+								value="<?php echo $mo_lp_permalink ?>" /></td>
 							<td style="width: 50%"><p style="font-style: italic;">This will
 									prefix your landing page permalinks, ex.
 									http://www.yoursite.com/{ prefix }/landing-page-slug</p></td>
@@ -227,6 +227,8 @@ switch ($active_tab) {
 		
 		break;
 	case 'mo_sp_general_settings' :
+		$mo_sp_permalink = $mo_settings_obj->get_mo_sp_permalink_prefix()?$mo_settings_obj->get_mo_sp_permalink_prefix():'mo_sp';
+		$mo_sp_showtime = $mo_settings_obj->get_mo_sp_show_time()?$mo_settings_obj->get_mo_sp_show_time():15;
 		?>
 		    <div id="tabs-2">
 			<input type='hidden' name="action" value="mo_sp_plugin_settings" />
@@ -234,15 +236,15 @@ switch ($active_tab) {
 				<tr valign="top">
 					<td style="width: 20%">Squeeze Page Permalink Prefix:</td>
 					<td>
-						<input type="text" name="mo_sp_permalink_prefix" value="<?php echo $mo_settings_obj->get_mo_sp_permalink_prefix() ?>" /></td>
+						<input type="text" name="mo_sp_permalink_prefix" value="<?php echo $mo_sp_permalink ?>" /></td>
 					<td style="width: 50%"><p style="font-style: italic;">This will
-							prefix your landing page permalinks, ex.
-							http://www.yoursite.com/{ prefix }/landing-page-slug</p></td>
+							prefix your squeeze page permalinks, ex.
+							http://www.yoursite.com/{ prefix }/squeeze-page-slug</p></td>
 				</tr>
 				<tr valign="top">
 					<td style="width: 20%">Show Squeeze Page After:</td>
 					<td style="width: 30%">
-						<input type="text" name="mo_sp_show_time" value="<?php echo $mo_settings_obj->get_mo_sp_show_time() ?>" /> Seconds</td>
+						<input type="text" name="mo_sp_show_time" value="<?php echo $mo_sp_showtime ?>" /> Seconds</td>
 					<td style="width: 50%"><p style="font-style: italic;">How many seconds to wait till automatically showing the squuze page</p></td>
 				</tr>
 				<tr valign="top">

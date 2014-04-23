@@ -94,6 +94,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140423 =
+* #featureAdded Squeeze pages, added the ability to create squeeze pages and a/b test them.
+* #bugFix fixed an issue with broken images for templates and icons.
+* #optimization general code optimization.
 = Version 20140325 =
 * A complete rewrite of the plugin, adding support for dedicated landing pages, new landing page templates, and a completely new user interface. 
 = Version 20131129 =
