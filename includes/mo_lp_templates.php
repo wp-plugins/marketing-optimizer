@@ -21,6 +21,12 @@ function mo_sp_get_templates() {
 			'mo_sp_blank' => array (
 					'title' => 'Blank',
 					'thumbnail' => plugins_url() . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/mo_sp_blank/screenshot.png' 
+			),
+			'mo_sp_newsletter' => array (
+					'title' => 'Newsletter',
+					'thumbnail' => plugins_url() . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/mo_sp_newsletter/screenshot.png',
+					'height' => 157, 
+					'width' => 550, 
 			)
 	);
 	return $templates_array;

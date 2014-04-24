@@ -9,7 +9,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<title></title>
+<title><?php bloginfo('name'); ?> <?php wp_title(' - ', true, 'left'); ?></title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

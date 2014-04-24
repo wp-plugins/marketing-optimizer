@@ -160,6 +160,7 @@ class mo_sp_post_type {
 				$this,
 				'mo_sp_get_js' 
 		) );
+		show_admin_bar( false );
 	}
 	
 	// ***********ADDS 'CLEAR STATS' BUTTON TO POSTS EDITING AREA******************/
@@ -1048,7 +1049,7 @@ class mo_sp_post_type {
 			$mo_sp_url = get_permalink ( $post_id ) . '?mo_sp_variation_id=' . $v_id;
 			$modal_width = get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) : 250;
 			$modal_length = get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) : 250;
-			if (! is_admin () ) {
+			if (! is_admin () && ($mo_settings_obj->get_mo_lp_cache_compatible () != 'true' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || isset($_COOKIE['mo_page_variation_'.$post->ID]))) { 
 				echo '<script>
 
 jQuery(document).ready(function($){
@@ -1113,17 +1114,17 @@ var mouseX = 0;
 		jQuery(\'body\').append(\'<a href="' . $mo_sp_url . '"  class="nyroModal" target="_blank">MO SP</a><div id="mo_sp_container" style="display:none;">mo squeeze page test</div>\');
 		var width = ' . $modal_width . ';
 		var height = ' . $modal_length . ';
-		mo_sp = jQuery(".nyroModal").nyroModal({
+		mo_sp = jQuery(".nyroModal").nm({
 				sizes:{
 					initW: width,
-					initH:height,
-					w:width,
-					h:height,
-					minW:width,
-					minH:height
+					initH: height,
+					w: width,
+					h: height,
+					minW: width,
+					minH: height
 				},
 				callbacks: {
-				    beforeShowCont: function() { 
+				    beforeShowCont: function() {
 				        width = $(\'.nyroModalCont\').width();
 				        height = $(\'.nyroModalCont\').height();
 				        $(\'.nyroModalCont iframe\').css(\'width\', width);

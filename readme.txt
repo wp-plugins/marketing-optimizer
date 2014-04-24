@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140424 =
+* #bugFix fixed and issue with cache compatability showing ajax content.
+* Added newsletter squeeze page template;
 = Version 20140423 =
 * #featureAdded Squeeze pages, added the ability to create squeeze pages and a/b test them.
 * #bugFix fixed an issue with broken images for templates and icons.

@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140423 
+ * Version: 20140424 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -16,7 +16,7 @@ class mo_landing_pages_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140423';
+	public static $plugin_version = '20140424';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;

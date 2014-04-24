@@ -29,7 +29,7 @@
 		<?php wp_head(); ?>
 		<!-- end of wordpress head -->
 </head>
-<body>
+<body style="margin:0;">
 
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
