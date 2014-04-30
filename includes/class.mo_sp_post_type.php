@@ -160,7 +160,7 @@ class mo_sp_post_type {
 				$this,
 				'mo_sp_get_js' 
 		) );
-		show_admin_bar( false );
+		
 	}
 	
 	// ***********ADDS 'CLEAR STATS' BUTTON TO POSTS EDITING AREA******************/
@@ -852,6 +852,7 @@ class mo_sp_post_type {
 	public function mo_sp_set_variation_id() {
 		global $post, $variation_id;
 		if ($post && $post->post_type == 'mo_sp') {
+			show_admin_bar( false );
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 			$variation_id = $mo_sp_obj->get_current_variation ();
 		}

@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140430 =
+* #bugFix fixed an issue with the admin toolbar being removed.
+* #bugFix fixed an issue with when selecting a template the contents not being added to the wordpress editor when in visual view.
 = Version 20140424 =
 * #bugFix fixed and issue with cache compatability showing ajax content.
 * Added newsletter squeeze page template;

@@ -448,7 +448,7 @@ class mo_page_post_type {
 					$conversion_rate = 0;
 				}
 				
-				$conversion_rate = round ( $conversion_rate, 2 ) * 100;
+				$conversion_rate = round ( $conversion_rate, 3 ) * 100;
 				$cr_array [] = $conversion_rate;
 				
 				echo '<tr class="' . $status_class_text . '">';

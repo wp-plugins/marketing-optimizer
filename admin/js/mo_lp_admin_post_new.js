@@ -41,11 +41,6 @@ jQuery(document)
 												+ " .mo_template_thumbnail";
 										var template_img_obj = jQuery(
 												template_image).attr("src");
-										console.log(template);
-										console.log(selected_template_id);
-										console.log(label);
-										console.log(template_image);
-										console.log(template_img_obj);
 										jQuery("#mo_template_name").text(label);
 										jQuery("#mo_current_template").html(
 												'<input type="hidden" name="mo_template" value="'
@@ -64,11 +59,13 @@ jQuery(document)
 															ajaxurl,
 															data,
 															function(response) {
-																jQuery(
-																		'#wp-content-editor-container .wp-editor-area')
-																		.val(
-																				response);
+																tinymce.get("content").focus();
+													            tinymce.activeEditor.setContent(response);
 															});
+											
+										}else{
+											tinymce.get("content").focus();
+								            tinymce.activeEditor.setContent('');
 										}
 										if (template != 'theme') {
 											jQuery('#mo_theme_template').hide();
