@@ -160,7 +160,7 @@ class mo_lp_post_type {
 	public function mo_lp_add_variation_cookie_js() {
 		global $post, $variation_id;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
-		if ($post->post_type == 'mo_landing_page' && $this->mo_lp_track_admin_user ()  && ! $mo_lp_obj->mo_bot_detected ()) {
+		if ($post->post_type == 'mo_landing_page' && $this->mo_lp_track_admin_user () && ! $mo_lp_obj->mo_bot_detected ()) {
 			echo '<script>
 				window.onload = function() {
 					function mo_lp_get_variation_cookie() {
@@ -200,7 +200,7 @@ class mo_lp_post_type {
 									xmlhttp = new XMLHttpRequest();
 									xmlhttp.open("POST","' . admin_url ( 'admin-ajax.php' ) . '" ,true);
 									xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-									xmlhttp.send("action=mo_lp_track_visit&post_id=' . $post->ID . '&v_id='.$variation_id.'");
+									xmlhttp.send("action=mo_lp_track_visit&post_id=' . $post->ID . '&v_id=' . $variation_id . '");
 														xmlhttp.onreadystatechange = function () {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
@@ -226,7 +226,7 @@ class mo_lp_post_type {
 						}
 	
 					}';
-			if($mo_lp_obj->mo_is_testing()){
+			if ($mo_lp_obj->mo_is_testing ()) {
 				echo 'if(mo_lp_get_variation_cookie() == null){
 							mo_lp_get_variation_id_to_display();
 		
@@ -235,7 +235,7 @@ class mo_lp_post_type {
 					}
 				}
 						</script>';
-			}else{
+			} else {
 				echo 'if(mo_lp_get_variation_cookie() == null){
 							mo_lp_set_variation_cookie("mo_lp_variation_' . $post->ID . '",' . $variation_id . ',365);
 															mo_lp_track_impression();
@@ -374,9 +374,11 @@ class mo_lp_post_type {
 			$v_id = $variation_id;
 			
 			$post_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
-			if (! empty ( $post_template ) && $post_template != 'default' && file_exists ( get_template_directory () . "/{$post_template}" ))
+			if (! empty ( $post_template ) && $post_template != 'default' && file_exists ( get_template_directory () . "/{$post_template}" )) {
 				$template = get_template_directory () . "/{$post_template}";
-			return ($template);
+			} else {
+				$template = get_template_directory () . '/index.php';
+			}
 		}
 		return $template;
 	}
@@ -508,7 +510,7 @@ class mo_lp_post_type {
 				// 'show_ui_nav_menus' => false,
 				// 'show_in_menu' => false,
 				'query_var' => true,
-				'menu_icon' => plugins_url().'/'.mo_landing_pages_plugin::MO_DIRECTORY.'/images/moicon.png',
+				'menu_icon' => plugins_url () . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
 						"slug" => "$slug",
 						'with_front' => false 
@@ -880,7 +882,7 @@ class mo_lp_post_type {
 	public function mo_lp_get_cache_compatible_js() {
 		global $post;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
-		if ($post->post_type == 'mo_landing_page' && $mo_lp_obj->mo_is_testing () && ! $mo_lp_obj->mo_bot_detected () && defined('DOING_AJAX') && DOING_AJAX  && (! isset ( $_GET ['mo_lp_variation_id'] ) || ! isset ( $_GET ['t'] ))) {
+		if ($post->post_type == 'mo_landing_page' && $mo_lp_obj->mo_is_testing () && ! $mo_lp_obj->mo_bot_detected () && defined ( 'DOING_AJAX' ) && DOING_AJAX && (! isset ( $_GET ['mo_lp_variation_id'] ) || ! isset ( $_GET ['t'] ))) {
 			echo '<script type="text/javascript">
 	
 						function mo_lp_get_variation_cookie() {
@@ -954,7 +956,7 @@ class mo_lp_post_type {
 			$template_name = $_POST ['template'];
 		}
 		if ($template_name != 'theme') {
-			$template_dir = site_url () . '/' . PLUGINDIR . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/' . $template_name;
+			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
 			if (! $template) {
@@ -971,11 +973,15 @@ class mo_lp_post_type {
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 			$v_id = $mo_lp_obj->get_current_variation ();
 			$mo_lp_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
-			$template_dir =  PLUGINDIR . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/templates/' . $mo_lp_template;
+			$template_dir = PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $mo_lp_template;
 			if ($mo_lp_template != 'theme') {
 				$template = $template_dir . '/template.php';
 			} else {
-				$template = get_template_directory () . '/' . $mo_lp_obj->get_variation_property ( $v_id, 'theme_template' );
+				if ($mo_lp_obj->get_variation_property ( $v_id, 'theme_template' ) != 'default') {
+					$template = get_template_directory () . '/' . $mo_lp_obj->get_variation_property ( $v_id, 'theme_template' );
+				} else {
+					$template = get_template_directory () . '/index.php';
+				}
 			}
 		}
 		return $template;

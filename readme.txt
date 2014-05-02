@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140501 =
+* #hotFix fixed an issue with landing pages when defualt theme template was chosen not working with some templates.
 = Version 20140430 =
 * #bugFix fixed an issue with the admin toolbar being removed.
 * #bugFix fixed an issue with when selecting a template the contents not being added to the wordpress editor when in visual view.

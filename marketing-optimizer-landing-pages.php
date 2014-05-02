@@ -611,7 +611,6 @@ class mo_landing_pages_plugin {
 	public function mo_lp_get_slider_js() {
 		$mo_settings_obj = new mo_settings ();
 		$mo_lp_slider_start_value = $mo_settings_obj->get_mo_lp_variation_percentage () ? $mo_settings_obj->get_mo_lp_variation_percentage () : 90;
-		var_dump($mo_lp_slider_start_value);
 		$mo_sp_slider_start_value = $mo_settings_obj->get_mo_sp_variation_percentage () ? $mo_settings_obj->get_mo_sp_variation_percentage () : 90;
 		echo '<script>
 			  jQuery(function() {

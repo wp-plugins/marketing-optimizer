@@ -1156,7 +1156,6 @@ var mouseX = 0;
 		preg_match ( "/\[(.*?)\]/", $_POST ['post_type'], $matches );
 		$post_type = $matches [1];
 		$post_meta_arr = $wpdb->get_results ( 'SELECT post_id FROM wp_postmeta WHERE meta_key = \'mo_sp_post_types\' AND post_id != ' . $post_id );
-		var_dump ( $post_meta_arr );
 		foreach ( $post_meta_arr as $v ) {
 			$post_types_arr = json_decode ( get_post_meta ( $v->post_id, 'mo_sp_post_types', true ) );
 			if (isset ( $post_types_arr->$post_type ) && $post_types_arr->$post_type) {

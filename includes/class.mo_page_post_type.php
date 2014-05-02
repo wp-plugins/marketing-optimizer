@@ -104,7 +104,9 @@ class mo_page_post_type {
 				$this,
 				'mo_page_get_variation_edit_link' 
 		), 10, 3 );
+		
 	}
+	
 	function mo_page_columns($columns) {
 		$columns = $this->insert_before_key ( $columns, 'author', 'stats', __ ( "Variation Testing Stats", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) );
 		return $columns;
