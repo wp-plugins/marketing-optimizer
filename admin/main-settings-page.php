@@ -143,7 +143,7 @@ echo '<script>
 			<a href="http://www.marketingoptimizer.com/?apcid=8381"
 				title="marketing optimizer logo"> <img
 				src="<?php echo plugins_url()?>/marketing-optimizer/images/mologo.png" /></a>
-	 <?php echo "<span style=\"float:right;font-size:14px;padding-top:40px;font-style:italic;\">Version ".mo_landing_pages_plugin::get_version() ."</span>";?></h2>
+	 <?php echo "<span style=\"float:right;font-size:14px;padding-top:40px;font-style:italic;\">Version ".mo_plugin::get_version() ."</span>";?></h2>
 	</div>
 	<div style="width: 80%">
 		<h2 class="nav-tab-wrapper">

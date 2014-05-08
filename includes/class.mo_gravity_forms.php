@@ -85,9 +85,9 @@ class mo_gravity_forms {
 		
 		foreach ( $form_field_mappings as $k => $v ) {
 			if ($formFieldMappingArr) {
-				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" value="' . $formFieldMappingArr [$k] . '" /></td></tr>';
+				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" value="' . $formFieldMappingArr [$k] . '" /></td></tr>';
 			} else {
-				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_landing_pages_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
+				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
 			}
 		}
 		$table .= '</tbody>';

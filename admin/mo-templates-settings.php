@@ -17,7 +17,7 @@ if ($_POST) {
 	<div style="display: block; width: 80%; float: left;">
 		<h2>
 			Marketing Optimizer Landing Pages for Wordpress
-	 <?php echo "<span style=\"float:right;font-size:14px;padding-top:40px;font-style:italic;\">Version ".mo_landing_pages_plugin::get_version() ."</span>";?></h2>
+	 <?php echo "<span style=\"float:right;font-size:14px;padding-top:40px;font-style:italic;\">Version ".mo_plugin::get_version() ."</span>";?></h2>
 	</div>
 	<div style="width: 80%">
 		<h2 class="nav-tab-wrapper">

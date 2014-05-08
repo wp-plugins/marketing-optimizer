@@ -108,7 +108,7 @@ class mo_page_post_type {
 	}
 	
 	function mo_page_columns($columns) {
-		$columns = $this->insert_before_key ( $columns, 'author', 'stats', __ ( "Variation Testing Stats", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) );
+		$columns = $this->insert_before_key ( $columns, 'author', 'stats', __ ( "Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN ) );
 		return $columns;
 	}
 	public function mo_page_column($column) {
@@ -473,9 +473,13 @@ class mo_page_post_type {
 			$mo_page_obj = mo_pages::instance ( $post->ID );
 			// $v_id = $mo_lp_obj->get_current_variation();
 			$v_id = $variation_id;
-			$title = $mo_page_obj->get_variation_property ( $v_id, 'title' ) ? $mo_page_obj->get_variation_property ( $v_id, 'title' ) . ' | ' : '';
-			return $title;
+			
+			if($v_id != 0){
+			$title =  $mo_page_obj->get_variation_property ( $v_id, 'title' )? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
+			//var_dump($title);
+			}
 		}
+		return $title;
 	}
 	public function mo_page_get_variation_title($title, $id) {
 		global $variation_id, $pagenow;

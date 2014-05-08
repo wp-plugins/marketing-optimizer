@@ -98,7 +98,7 @@ class mo_sp_metaboxes {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 			$v_id = $mo_sp_obj->get_current_variation ();
 			$mo_sp_description = $mo_sp_obj->get_variation_property ( $v_id, 'description' );
-			echo "<div id='mo_sp_description_div'><div id='description_wrap'><input placeholder='" . __ ( 'Add Description for this variation.', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='description' name='description' id='description' value='{$mo_sp_description}' style='width:100%;line-height:1.7em'></div></div>";
+			echo "<div id='mo_sp_description_div'><div id='description_wrap'><input placeholder='" . __ ( 'Add Description for this variation.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='description' name='description' id='description' value='{$mo_sp_description}' style='width:100%;line-height:1.7em'></div></div>";
 		}
 	}
 	function mo_sp_display_meta_boxes($post) {
@@ -160,7 +160,7 @@ class mo_sp_metaboxes {
 			$theme_template = $mo_sp_obj->get_variation_property ( $v_id, 'theme_template' );
 			$template_dir = get_template_directory_uri ();
 		} else {
-			$template_dir = '/' . PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $template;
+			$template_dir = '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template;
 		}
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field ( 'mo_get_template_selected_metabox', 'mo_get_template_selected_metabox_nonce' );
@@ -264,7 +264,7 @@ class mo_sp_metaboxes {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 			$v_id = $mo_sp_obj->get_current_variation ();
 			$mo_sp_variation_id = $mo_sp_obj->get_variation_property ( $v_id, 'variation_id' );
-			echo "<div id='mo_sp_variation_id_div'><div id='variation_id_wrap'><input placeholder='" . __ ( 'Add the marketing optimizer variation id.', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='variation_id' name='variation_id' id='variation_id' value='{$mo_sp_variation_id}' style='width:100%;line-height:1.7em'></div></div>";
+			echo "<div id='mo_sp_variation_id_div'><div id='variation_id_wrap'><input placeholder='" . __ ( 'Add the marketing optimizer variation id.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='variation_id' name='variation_id' id='variation_id' value='{$mo_sp_variation_id}' style='width:100%;line-height:1.7em'></div></div>";
 		}
 	}
 	public function mo_sp_content_save_pre($content) {

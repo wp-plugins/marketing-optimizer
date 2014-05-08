@@ -10,7 +10,7 @@
 /*===============================================================================
   Plugin Class
 ===============================================================================*/
-class mo_landing_pages_plugin {
+class mo_plugin {
 	/*
 	 * =============================================================================== Declare Class Variables ===============================================================================
 	 */
@@ -87,9 +87,9 @@ class mo_landing_pages_plugin {
 		// The Plugin Basename
 		$this->plugin_basename = plugin_basename ( __FILE__ );
 		// Variable for the Plugin Settings
-		$this->plugin_settings = mo_landing_pages_plugin::$plugin_name . '_settings';
+		$this->plugin_settings = mo_plugin::$plugin_name . '_settings';
 		// Variable for the Plugin Settings Group
-		$this->plugin_settings_group = mo_landing_pages_plugin::$plugin_name . '_settings_group';
+		$this->plugin_settings_group = mo_plugin::$plugin_name . '_settings_group';
 		// Variable for the Plugin Prefix
 		$this->domain = $this->plugin_prefix;
 		// Variable for the Plugin Options Array
@@ -699,5 +699,5 @@ class mo_landing_pages_plugin {
 	}
 }
 // Initiate the Plugin Class
-$yourPlugin = new mo_landing_pages_plugin ();
+$mo_plugin_obj = new mo_plugin ();
 ?>

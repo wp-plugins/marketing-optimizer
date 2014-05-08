@@ -91,7 +91,7 @@ class mo_page_metaboxes {
 			$v_id = $mo_page_obj->get_current_variation ();
 			if (( int ) $v_id !== 0) {
 				$mo_page_description = $mo_page_obj->get_variation_property ( $v_id, 'description' );
-				echo "<div id='mo_lp_description_div'><div id='description_wrap'><input placeholder='" . __ ( 'Add Description for this variation.', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='description' name='description' id='description' value='{$mo_page_description}' style='width:100%;line-height:1.7em'></div></div>";
+				echo "<div id='mo_lp_description_div'><div id='description_wrap'><input placeholder='" . __ ( 'Add Description for this variation.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='description' name='description' id='description' value='{$mo_page_description}' style='width:100%;line-height:1.7em'></div></div>";
 			}
 		}
 	}
@@ -110,7 +110,7 @@ class mo_page_metaboxes {
 			$mo_page_obj = mo_pages::instance ( $post->ID );
 			$v_id = $mo_page_obj->get_current_variation ();
 			$mo_page_variation_id = $mo_page_obj->get_variation_property ( $v_id, 'variation_id' );
-			echo "<div id='mo_lp_variation_id_div'><div id='variation_id_wrap'><input placeholder='" . __ ( 'Add the marketing optimizer variation id.', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='variation_id' name='variation_id' id='variation_id' value='{$mo_page_variation_id}' style='width:100%;line-height:1.7em'></div></div>";
+			echo "<div id='mo_lp_variation_id_div'><div id='variation_id_wrap'><input placeholder='" . __ ( 'Add the marketing optimizer variation id.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='variation_id' name='variation_id' id='variation_id' value='{$mo_page_variation_id}' style='width:100%;line-height:1.7em'></div></div>";
 		}
 	}
 	function mo_page_display_meta_box_variation_stats($post) {

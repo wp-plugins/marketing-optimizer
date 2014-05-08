@@ -252,8 +252,8 @@ class mo_lp_post_type {
 	public function mo_lp_category_register_taxonomy() {
 		$args = array (
 				'hierarchical' => true,
-				'label' => __ ( "Categories", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'singular_label' => __ ( "MO Landing Page Category", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
+				'label' => __ ( "Categories", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'singular_label' => __ ( "MO Landing Page Category", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'show_ui' => true,
 				'query_var' => true,
 				"rewrite" => true 
@@ -313,13 +313,13 @@ class mo_lp_post_type {
 		$columns = array (
 				"cb" => "<input type=\"checkbox\" />",
 				// "ID" => "ID",
-				// "thumbnail-lander" => __( "Preview" , mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN),
-				"title" => __ ( "Landing Page Title", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				"stats" => __ ( "Variation Testing Stats", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				"impressions" => __ ( "Impressions", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				"visits" => __ ( "Visits", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				"conversions" => __ ( "Conversions", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				"cr" => __ ( "Conversion Rate", mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ) 
+				// "thumbnail-lander" => __( "Preview" , mo_plugin::MO_LP_TEXT_DOMAIN),
+				"title" => __ ( "Landing Page Title", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				"stats" => __ ( "Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				"impressions" => __ ( "Impressions", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				"visits" => __ ( "Visits", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				"conversions" => __ ( "Conversions", mo_plugin::MO_LP_TEXT_DOMAIN ),
+				"cr" => __ ( "Conversion Rate", mo_plugin::MO_LP_TEXT_DOMAIN ) 
 		);
 		return $columns;
 	}
@@ -447,8 +447,9 @@ class mo_lp_post_type {
 			} catch ( Exception $e ) {
 				$title = '';
 			}
-			return $title;
+			
 		}
+		return $title;
 	}
 	public function mo_lp_get_variation_permalink($permalink, $post) {
 		global $variation_id;
@@ -488,17 +489,17 @@ class mo_lp_post_type {
 		$slug = get_option ( 'mo_lp_permalink_prefix', 'molp' );
 		
 		$labels = array (
-				'name' => _x ( 'Marketing Optimizer Landing Pages', 'post type general name', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'menu_name' => _x ( 'Landing Pages', 'post type general name', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'singular_name' => _x ( 'Marketing Optimizer Landing Page', 'post type singular name', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'add_new' => _x ( 'Add New', 'Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'add_new_item' => __ ( 'Add New Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'edit_item' => __ ( 'Edit Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'new_item' => __ ( 'New Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'view_item' => __ ( 'View Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'search_items' => __ ( 'Search Landing Page', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'not_found' => __ ( 'Nothing found', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
-				'not_found_in_trash' => __ ( 'Nothing found in Trash', mo_landing_pages_plugin::MO_LP_TEXT_DOMAIN ),
+				'name' => _x ( 'Marketing Optimizer Landing Pages', 'post type general name', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'menu_name' => _x ( 'Landing Pages', 'post type general name', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'singular_name' => _x ( 'Marketing Optimizer Landing Page', 'post type singular name', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'add_new' => _x ( 'Add New', 'Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'add_new_item' => __ ( 'Add New Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'edit_item' => __ ( 'Edit Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'new_item' => __ ( 'New Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'view_item' => __ ( 'View Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'search_items' => __ ( 'Search Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'not_found' => __ ( 'Nothing found', mo_plugin::MO_LP_TEXT_DOMAIN ),
+				'not_found_in_trash' => __ ( 'Nothing found in Trash', mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'parent_item_colon' => '' 
 		);
 		
@@ -510,7 +511,7 @@ class mo_lp_post_type {
 				// 'show_ui_nav_menus' => false,
 				// 'show_in_menu' => false,
 				'query_var' => true,
-				'menu_icon' => plugins_url () . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/images/moicon.png',
+				'menu_icon' => plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
 						"slug" => "$slug",
 						'with_front' => false 
@@ -956,7 +957,7 @@ class mo_lp_post_type {
 			$template_name = $_POST ['template'];
 		}
 		if ($template_name != 'theme') {
-			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $template_name;
+			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
 			if (! $template) {
@@ -973,7 +974,7 @@ class mo_lp_post_type {
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 			$v_id = $mo_lp_obj->get_current_variation ();
 			$mo_lp_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
-			$template_dir = PLUGINDIR . '/' . mo_landing_pages_plugin::MO_DIRECTORY . '/templates/' . $mo_lp_template;
+			$template_dir = PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $mo_lp_template;
 			if ($mo_lp_template != 'theme') {
 				$template = $template_dir . '/template.php';
 			} else {
