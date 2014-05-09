@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140509 =
+* #bugFix fixed an issue with stats not being tracked in some instances.
+* #bugFix fixed an issue with squeeze pages not displaying.
 = Version 20140508 =
 * #bugFix fixed an issue with meta titles not being displayed in some cases.
 = Version 20140501 =

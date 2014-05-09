@@ -160,7 +160,6 @@ class mo_sp_post_type {
 				$this,
 				'mo_sp_get_js' 
 		) );
-		
 	}
 	
 	// ***********ADDS 'CLEAR STATS' BUTTON TO POSTS EDITING AREA******************/
@@ -461,7 +460,6 @@ class mo_sp_post_type {
 			} catch ( Exception $e ) {
 				$title = '';
 			}
-			
 		}
 		return $title;
 	}
@@ -525,7 +523,7 @@ class mo_sp_post_type {
 				// 'show_ui_nav_menus' => false,
 				// 'show_in_menu' => false,
 				'query_var' => true,
-				'menu_icon' => plugins_url().'/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
+				'menu_icon' => plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
 						"slug" => "$slug",
 						'with_front' => false 
@@ -853,7 +851,7 @@ class mo_sp_post_type {
 	public function mo_sp_set_variation_id() {
 		global $post, $variation_id;
 		if ($post && $post->post_type == 'mo_sp') {
-			show_admin_bar( false );
+			show_admin_bar ( false );
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 			$variation_id = $mo_sp_obj->get_current_variation ();
 		}
@@ -1013,14 +1011,13 @@ class mo_sp_post_type {
 						if(this.checked){
 							var data = {action:\'mo_sp_change_post_type\',post_type:this.name,post_id:' . $post->ID . '};
 							jQuery.post(ajaxurl,data,function(response){
-								console.log(response);
 							});
 						}
 					});
 					});
 					
 					</script>';
-		} elseif (isset ( $post ) && $post->post_type != 'mo_sp' && !is_admin()) {
+		} elseif (isset ( $post ) && $post->post_type != 'mo_sp' && ! is_admin ()) {
 			$post_type = $post->post_type;
 			switch ($post_type) {
 				case 'mo_landing_page' :
@@ -1042,113 +1039,114 @@ class mo_sp_post_type {
 					$post_id = $v->post_id;
 				}
 			}
-			if($post_id){
-			$mo_settings_obj = new mo_settings ();
-			$mo_sp_obj = mo_squeeze_pages::instance ( $post_id );
-			$v_id = $mo_sp_obj->get_current_variation ();
-			$mo_sp_timeout = $mo_settings_obj->get_mo_sp_show_time () ? $mo_settings_obj->get_mo_sp_show_time () : 15;
-			$mo_sp_timeout = $mo_sp_timeout * 1000;
-			$mo_sp_url = get_permalink ( $post_id ) . '?mo_sp_variation_id=' . $v_id;
-			$modal_width = get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) : 250;
-			$modal_length = get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) : 250;
-			if (! is_admin () && ($mo_settings_obj->get_mo_lp_cache_compatible () != 'true' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || isset($_COOKIE['mo_page_variation_'.$post->ID]))) { 
-				echo '<script>
-
-jQuery(document).ready(function($){
-var mouseX = 0; 
- var mouseY = 0; 
- var counter = 0; 
- var mouseIsIn = true; 
- var spShown = function(){
- 	if(mo_sp_get_variation_cookie() === null && mo_sp_get_conversion_cookie() === null){ 
- 		return false; 
- 	}else{ 
- 		return true; 
- 	} 
- }
-		
- function mo_sp_get_variation_cookie() { 
- 	var cookies = document.cookie.split(/;\s*/); 
- 	for ( var i = 0; i < cookies.length; i++) { 
- 		var cookie = cookies[i]; 
- 		var control = ' . $post_id . '; 
- 		if (control > 0 
- 				&& cookie.indexOf("mo_sp_variation_" + control) != -1) { 
- 			cookie = cookie.split("=", 2); 
- 			return cookie[1]; 
- 		} 
- 	} 
- 	return null; 
- } 
- function mo_sp_get_conversion_cookie() { 
- 	var cookies = document.cookie.split(/;\s*/); 
- 	for ( var i = 0; i < cookies.length; i++) { 
- 		var cookie = cookies[i]; 
- 		var control = ' . $post_id . '; 
- 		if (control > 0 
- 				&& cookie.indexOf("mo_sp_conversion_" + control) != -1) { 
- 			cookie = cookie.split("=", 2); 
- 			return cookie[1]; 
- 		} 
- 	} 
- 	return null; 
- } 
-
- function mo_sp_add_event() { 
-	 window.addEventListener("mouseout", 
-	     function(e){ 
-	         mouseX = e.pageX; 
-	         mouseY = e.pageY; 
-	     	if ((mouseY >= 0 && mouseY <= window.innerHeight) 
-	     	&& (mouseX >= 0 && mouseX <= window.innerWidth)) 
-	     		return; 
-	     	if(!spShown()){ 
-	     		mo_sp.nmCall();
-	     		
-	     	}
-	     	counter++; 
-	     	mouseIsIn = false; 
-	     	//document.getElementById("in_out").innerHTML="out" + counter; 
-	     }, 
-	     false); 
- } 
- if(!spShown()){
-		jQuery(\'body\').append(\'<a href="' . $mo_sp_url . '"  class="nyroModal" target="_blank">MO SP</a><div id="mo_sp_container" style="display:none;">mo squeeze page test</div>\');
-		var width = ' . $modal_width . ';
-		var height = ' . $modal_length . ';
-		mo_sp = jQuery(".nyroModal").nm({
-				sizes:{
-					initW: width,
-					initH: height,
-					w: width,
-					h: height,
-					minW: width,
-					minH: height
-				},
-				callbacks: {
-				    beforeShowCont: function() {
-				        width = $(\'.nyroModalCont\').width();
-				        height = $(\'.nyroModalCont\').height();
-				        $(\'.nyroModalCont iframe\').css(\'width\', width);
-				        $(\'.nyroModalCont iframe\').css(\'height\', height);
-				       // $(\'.nyroModalCont iframe\').css(\'overflow\', \'hidden\');
-				    }
-		  }});			
-		 		mo_sp_add_event();
-				setTimeout(function(){mo_sp_show_sp();},' . $mo_sp_timeout . ');
-		}
-
-		function mo_sp_show_sp(){
-			if(!spShown()){
-				mo_sp.nmCall();
-				}
-			}
-	
-});
+			if ($post_id) {
+				$mo_page_obj = mo_pages::instance ( $post_id );
+				$mo_settings_obj = new mo_settings ();
+				$mo_sp_obj = mo_squeeze_pages::instance ( $post_id );
+				$v_id = $mo_sp_obj->get_current_variation ();
+				$mo_sp_timeout = $mo_settings_obj->get_mo_sp_show_time () ? $mo_settings_obj->get_mo_sp_show_time () : 15;
+				$mo_sp_timeout = $mo_sp_timeout * 1000;
+				$mo_sp_url = get_permalink ( $post_id ) . '?mo_sp_variation_id=' . $v_id;
+				$modal_width = get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) : 250;
+				$modal_length = get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) : 250;
+				// if ( ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || isset ( $_COOKIE ['mo_page_variation_' . $post->ID] ))) {
+				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || ! $mo_page_obj->mo_is_testing ()) {
+					echo '<script>
+							jQuery(document).ready(function($){
+							var mouseX = 0; 
+							 var mouseY = 0; 
+							 var counter = 0; 
+							 var mouseIsIn = true; 
+							 var spShown = function(){
+							 	if(mo_sp_get_variation_cookie() === null && mo_sp_get_conversion_cookie() === null){ 
+							 		return false; 
+							 	}else{ 
+							 		return true; 
+							 	} 
+							 }
+									
+							 function mo_sp_get_variation_cookie() { 
+							 	var cookies = document.cookie.split(/;\s*/); 
+							 	for ( var i = 0; i < cookies.length; i++) { 
+							 		var cookie = cookies[i]; 
+							 		var control = ' . $post_id . '; 
+							 		if (control > 0 
+							 				&& cookie.indexOf("mo_sp_variation_" + control) != -1) { 
+							 			cookie = cookie.split("=", 2); 
+							 			return cookie[1]; 
+							 		} 
+							 	} 
+							 	return null; 
+							 } 
+							 function mo_sp_get_conversion_cookie() { 
+							 	var cookies = document.cookie.split(/;\s*/); 
+							 	for ( var i = 0; i < cookies.length; i++) { 
+							 		var cookie = cookies[i]; 
+							 		var control = ' . $post_id . '; 
+							 		if (control > 0 
+							 				&& cookie.indexOf("mo_sp_conversion_" + control) != -1) { 
+							 			cookie = cookie.split("=", 2); 
+							 			return cookie[1]; 
+							 		} 
+							 	} 
+							 	return null; 
+							 } 
+							
+							 function mo_sp_add_event() { 
+								 window.addEventListener("mouseout", 
+								     function(e){ 
+								         mouseX = e.pageX; 
+								         mouseY = e.pageY; 
+								     	if ((mouseY >= 0 && mouseY <= window.innerHeight) 
+								     	&& (mouseX >= 0 && mouseX <= window.innerWidth)) 
+								     		return; 
+								     	if(!spShown()){ 
+								     		mo_sp.nmCall();
+								     		
+								     	}
+								     	counter++; 
+								     	mouseIsIn = false; 
+								     	//document.getElementById("in_out").innerHTML="out" + counter; 
+								     }, 
+								     false); 
+							 } 
+							 if(!spShown()){
+									jQuery(\'body\').append(\'<a href="' . $mo_sp_url . '"  class="nyroModal" target="_blank">MO SP</a><div id="mo_sp_container" style="display:none;">mo squeeze page test</div>\');
+									var width = ' . $modal_width . ';
+									var height = ' . $modal_length . ';
+									mo_sp = jQuery(".nyroModal").nm({
+											sizes:{
+												initW: width,
+												initH: height,
+												w: width,
+												h: height,
+												minW: width,
+												minH: height
+											},
+											callbacks: {
+											    beforeShowCont: function() {
+											        width = $(\'.nyroModalCont\').width();
+											        height = $(\'.nyroModalCont\').height();
+											        $(\'.nyroModalCont iframe\').css(\'width\', width);
+											        $(\'.nyroModalCont iframe\').css(\'height\', height);
+											       // $(\'.nyroModalCont iframe\').css(\'overflow\', \'hidden\');
+											    }
+									  }});			
+									 		mo_sp_add_event();
+											setTimeout(function(){mo_sp_show_sp();},' . $mo_sp_timeout . ');
+									}
+							
+									function mo_sp_show_sp(){
+										if(!spShown()){
+											mo_sp.nmCall();
+											}
+										}
+								
+							});
  
 			</script>';
+				}
 			}
-		}
 		}
 	}
 	public function mo_sp_change_post_type() {

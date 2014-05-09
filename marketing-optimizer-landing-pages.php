@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140430 
+ * Version: 20140509 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -16,7 +16,7 @@ class mo_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140430';
+	public static $plugin_version = '20140509';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -534,7 +534,7 @@ class mo_plugin {
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_scripts() {
-		wp_enqueue_script ( 'nyromodal', plugins_url ( 'includes/js/jquery.nyroModal.custom.min.js', __FILE__ ) );
+		wp_enqueue_script ( 'nyromodal', plugins_url ( 'includes/js/jquery.nyroModal.custom.min.js', __FILE__ ),array('jquery') );
 		// wp_register_script($this->plugin_name . '_frontend-js' , $this->plugin_url . 'js/frontend-scripts.js', false , $this->get_version(), true);
 		// wp_enqueue_script($this->plugin_name . '_frontend-js');
 	}
@@ -653,28 +653,30 @@ class mo_plugin {
 			$old_var_page_ids_arr = $wpdb->get_results ( 'SELECT * FROM wp_posts WHERE post_type = "variation-page"' );
 			foreach ( $old_var_page_ids_arr as $post_obj ) {
 				$parent_page = get_post_meta ( $post_obj->ID, 'mo_variation_parent', true );
-				$this->mo_update_parent_page($parent_page);
-				$mo_page_obj = mo_pages::instance ( $parent_page );
-				$mo_page_var_ids_arr = $mo_page_obj->get_variation_ids_arr ();
-				if (empty ( $mo_page_var_ids_arr )) {
-					$mo_page_var_ids_arr [0] = 0;
+				if($parent_page){
+					$this->mo_update_parent_page($parent_page);
+					$mo_page_obj = mo_pages::instance ( $parent_page );
+					$mo_page_var_ids_arr = $mo_page_obj->get_variation_ids_arr ();
+					if (empty ( $mo_page_var_ids_arr )) {
+						$mo_page_var_ids_arr [0] = 0;
+					}
+					$next_var_id = end ( $mo_page_var_ids_arr ) + 1;
+					$mo_page_var_ids_arr [$next_var_id] = $next_var_id;
+					$mo_page_obj->set_variation_ids_arr ( $mo_page_var_ids_arr );
+					$mo_page_obj->set_variations_arr ( $mo_page_var_ids_arr );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'title', $post_obj->post_title );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'description', get_post_meta ( $post_obj->ID, 'mo_variation_name', true ) );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'content', $post_obj->post_content );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'variation_id', get_post_meta ( $post_obj->ID, 'mo_variation_id', true ) );
+					$status = get_post_meta ( $post_obj->ID, 'mo_variation_active', true ) == 'true' ? 1 : 0;
+					$mo_page_obj->set_variation_property ( $next_var_id, 'status', $status );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'template', get_post_meta ( $post_obj->ID, '_post_template', true ) );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'impressions', get_post_meta (  $post_obj->ID, 'mo_page_views_count', true ) );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'visitors', get_post_meta (  $post_obj->ID, 'mo_unique_page_views_count', true ) );
+					$mo_page_obj->set_variation_property ( $next_var_id, 'conversions', get_post_meta (  $post_obj->ID, 'mo_conversion_count', true ) );
+					$mo_page_obj->save ();
+					wp_delete_post($post_obj->ID,true);
 				}
-				$next_var_id = end ( $mo_page_var_ids_arr ) + 1;
-				$mo_page_var_ids_arr [$next_var_id] = $next_var_id;
-				$mo_page_obj->set_variation_ids_arr ( $mo_page_var_ids_arr );
-				$mo_page_obj->set_variations_arr ( $mo_page_var_ids_arr );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'title', $post_obj->post_title );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'description', get_post_meta ( $post_obj->ID, 'mo_variation_name', true ) );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'content', $post_obj->post_content );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'variation_id', get_post_meta ( $post_obj->ID, 'mo_variation_id', true ) );
-				$status = get_post_meta ( $post_obj->ID, 'mo_variation_active', true ) == 'true' ? 1 : 0;
-				$mo_page_obj->set_variation_property ( $next_var_id, 'status', $status );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'template', get_post_meta ( $post_obj->ID, '_post_template', true ) );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'impressions', get_post_meta (  $post_obj->ID, 'mo_page_views_count', true ) );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'visitors', get_post_meta (  $post_obj->ID, 'mo_unique_page_views_count', true ) );
-				$mo_page_obj->set_variation_property ( $next_var_id, 'conversions', get_post_meta (  $post_obj->ID, 'mo_conversion_count', true ) );
-				$mo_page_obj->save ();
-				wp_delete_post($post_obj->ID,true);
 			}
 			update_option ( 'mo_migration', 1 );
 		}
