@@ -10,7 +10,6 @@ class mo_settings {
 	// squeeze page settings
 	public $mo_sp_permalink_prefix;
 	public $mo_sp_variation_pages;
-	public $mo_sp_cache_compatible;
 	public $mo_sp_track_admin;
 	public $mo_sp_variation_percentage;
 	public $mo_sp_show_time = 15;
@@ -77,12 +76,6 @@ class mo_settings {
 	}
 	public function set_mo_sp_show_time($value) {
 		$this->mo_sp_show_time = $value;
-	}
-	public function get_mo_sp_cache_compatible() {
-		return $this->mo_sp_cache_compatible;
-	}
-	public function set_mo_sp_cache_compatible($value) {
-		$this->mo_sp_cache_compatible = $value;
 	}
 	public function get_mo_sp_track_admin() {
 		return $this->mo_sp_track_admin;

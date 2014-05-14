@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140509 
+ * Version: 20140514 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -16,7 +16,7 @@ class mo_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140509';
+	public static $plugin_version = '201405149';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -57,8 +57,6 @@ class mo_plugin {
 		include ('includes/class.mo_sp_metaboxes.php');
 		include ('includes/class.mo_sp_variation.php');
 		
-		// include('includes/mo_lp_post_type.php');
-		// include('includes/mo_lp_metaboxes.php');
 		include ('includes/mo_lp_ab_testing.php');
 		include ('includes/mo_lp_templates.php');
 		
@@ -162,10 +160,7 @@ class mo_plugin {
 		 * the following action and and change 'custom_method_one'
 		 * to your function's unique name
 		 */
-		add_action ( 'admin_init', array (
-				$this,
-				'custom_method_one' 
-		) );
+		
 		update_option ( 'mo_lp_plugin_activated', '1' );
 	}
 	// End Class Constructor
@@ -534,9 +529,7 @@ class mo_plugin {
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_scripts() {
-		wp_enqueue_script ( 'nyromodal', plugins_url ( 'includes/js/jquery.nyroModal.custom.min.js', __FILE__ ),array('jquery') );
-		// wp_register_script($this->plugin_name . '_frontend-js' , $this->plugin_url . 'js/frontend-scripts.js', false , $this->get_version(), true);
-		// wp_enqueue_script($this->plugin_name . '_frontend-js');
+		wp_enqueue_script ( 'jquery-ui-dialog');
 	}
 	// End Enqueue Frontend Scripts
 	
@@ -551,32 +544,11 @@ class mo_plugin {
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_styles() {
-		wp_enqueue_style ( 'nyromodal_css', plugins_url ( 'includes/styles/nyroModal.css', __FILE__ ) );
-		// wp_register_style($this->plugin_name . '_frontend-css', $this->plugin_url . 'css/frontend-style.css', false, $this->plugin_version);
-		// wp_enqueue_style($this->plugin_name . '_frontend-css');
+		wp_enqueue_style ( 'jquery_ui-css', plugins_url ( 'admin/css/jquery_ui.css', __FILE__ ) );
 	}
 	// End Enqueue Frontend Styles
 	
-	/*
-	 * =============================================================================== Plugin Custom Functions ===============================================================================
-	 */
-	/**
-	 * This is the function you place your plugin's code
-	 * If you require multiple functions you can copy
-	 * the following function and give it a unique name
-	 */
-	public function custom_method_one() {
-		
-		// //////////////////////////////////////////////////
-		// //
-		// Your Code Goes Here //
-		// //
-		// //////////////////////////////////////////////////
-		// global $wp_rewrite;
-		// echo '<pre>';
-		// print_r($wp_rewrite->rules);
-		// echo '</pre>';
-	}
+	
 	public static function get_version() {
 		return self::$plugin_version;
 	}
@@ -599,7 +571,6 @@ class mo_plugin {
 		}
 		if ($hook == 'post.php') {
 			wp_enqueue_style ( 'mo_lp_admin_post_css', $this->plugin_url . 'admin/css/mo_admin_post.css' );
-			//wp_enqueue_style ( 'mo_lp_admin_post_new_css', $this->plugin_url . 'admin/css/mo_admin_post_new.css' );
 			wp_enqueue_script('mo_lp_mixitup_js', $this->plugin_url . 'admin/js/jquery.mixitup.min.js');
 			wp_enqueue_script('mo_lp_admin_post_new_js', $this->plugin_url . 'admin/js/mo_lp_admin_post_new.js');
 		}

@@ -149,7 +149,6 @@ class mo_page_post_type {
 		$mo_page_obj = mo_pages::instance ( $post->ID );
 		$mo_settings_obj = new mo_settings ();
 		if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
-		//if ( $mo_settings_obj->get_mo_lp_cache_compatible () != 'true' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || isset($_COOKIE['mo_page_variation_'.$post->ID])) {
 			if (($post->post_type == 'page' || is_home () || is_front_page ()) && $this->mo_page_track_admin_user () && ! $mo_page_obj->mo_bot_detected () ) {
 				$variation_id = $variation_id ? $variation_id : 0;
 				echo '<script>

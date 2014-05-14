@@ -116,14 +116,7 @@ class mo_page_metaboxes {
 	function mo_page_display_meta_box_variation_stats($post) {
 		if ('page' == $post->post_type) {
 			$mo_page_obj = mo_pages::instance ( $post->ID );
-			$v_id = $mo_page_obj->get_current_variation ();
-			$letter = mo_lp_ab_key_to_letter ( $v_id );
-			$impressions = $mo_page_obj->get_variation_property ( $v_id, 'impressions' ) ? $mo_page_obj->get_variation_property ( $v_id, 'impressions' ) : 0;
-			$visits = $mo_page_obj->get_variation_property ( $v_id, 'visitors' ) ? $mo_page_obj->get_variation_property ( $v_id, 'visitors' ) : 0;
-			$conversions = $mo_page_obj->get_variation_property ( $v_id, 'conversions' ) ? $mo_page_obj->get_variation_property ( $v_id, 'conversions' ) : 0;
-			$conversion_rate = $mo_page_obj->get_variation_property ( $v_id, 'conversion_rate' ) ? (number_format ( $mo_page_obj->get_variation_property ( $v_id, 'conversion_rate' ), 1 ) * 100) : 0;
-			$status = $mo_page_obj->get_variation_property ( $v_id, 'status' );
-			$status_text = $status ? 'pause' : 'unpause';
+			$mo_page_variation_ids_arr = $mo_page_obj->get_variation_ids_arr();
 			echo '<table class="mo_meta_box_stats_table">
 							  <tr class="mo_stats_header_row">
 							    <th class="mo_stats_header_cell">ID</th>
@@ -133,14 +126,24 @@ class mo_page_metaboxes {
 							    <th class="mo_stats_header_cell">CR%</th>
 							    <th class="mo_stats_header_cell">Status</th>
 							  </tr>';
-			echo '<tr>';
-			echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
-			echo '<td class="mo_stats_cell">' . $impressions . '</td>';
-			echo '<td class="mo_stats_cell">' . $visits . '</td>';
-			echo '<td class="mo_stats_cell">' . $conversions . '</td>';
-			echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
-			echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_page_pause_variation', $post->ID, $v_id ) . '</td>';
-			echo '</tr>';
+			foreach($mo_page_variation_ids_arr as $v){
+				$letter = mo_lp_ab_key_to_letter ( $v );
+				$impressions = $mo_page_obj->get_variation_property ( $v, 'impressions' ) ? $mo_page_obj->get_variation_property ( $v, 'impressions' ) : 0;
+				$visits = $mo_page_obj->get_variation_property ( $v, 'visitors' ) ? $mo_page_obj->get_variation_property ( $v, 'visitors' ) : 0;
+				$conversions = $mo_page_obj->get_variation_property ( $v, 'conversions' ) ? $mo_page_obj->get_variation_property ( $v, 'conversions' ) : 0;
+				$conversion_rate = $mo_page_obj->get_variation_property ( $v, 'conversion_rate' ) ? (number_format ( $mo_page_obj->get_variation_property ( $v, 'conversion_rate' ), 1 ) * 100) : 0;
+				$status = $mo_page_obj->get_variation_property ( $v, 'status' );
+				$status_text = $status ? 'pause' : 'unpause';
+					
+				echo '<tr>';
+				echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $v . '&action=edit">' . $letter . '</a> </td>';
+				echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+				echo '<td class="mo_stats_cell">' . $visits . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+				echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_page_pause_variation', $post->ID, $v ) . '</td>';
+				echo '</tr>';
+			}
 			echo '</table>';
 		}
 	}
@@ -159,7 +162,6 @@ class mo_page_metaboxes {
 		}
 		
 		if ($post->post_type == 'page') {
-			
 			$mo_page_obj = mo_pages::instance ( $post_id );
 			$v_id = $mo_page_obj->get_current_variation ();
 			$variation_ids_arr = $mo_page_obj->get_variation_ids_arr ();

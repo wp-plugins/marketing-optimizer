@@ -78,7 +78,6 @@ if ($_POST) {
 }
 $cache_compatible = $mo_settings_obj->get_mo_lp_cache_compatible () ? $mo_settings_obj->get_mo_lp_cache_compatible () : 'false';
 $track_admin = $mo_settings_obj->get_mo_lp_track_admin () ? $mo_settings_obj->get_mo_lp_track_admin () : 'false';
-$mo_sp_cache_compatible = $mo_settings_obj->get_mo_sp_cache_compatible () ? $mo_settings_obj->get_mo_sp_cache_compatible () : 'false';
 $mo_sp_track_admin = $mo_settings_obj->get_mo_sp_track_admin () ? $mo_settings_obj->get_mo_sp_track_admin () : 'false';
 $mo_integration = $mo_settings_obj->get_mo_marketing_optimizer () ? $mo_settings_obj->get_mo_marketing_optimizer () : 'false';
 $mo_phone_tracking = $mo_settings_obj->get_mo_phone_tracking () ? $mo_settings_obj->get_mo_phone_tracking () : 'false';
@@ -100,14 +99,7 @@ echo '<script>
 					jQuery(\'[name="mo_lp_track_admin"]\').val("");
 				}
 				});		
-				jQuery(\'.toggle-mospcachecompatible\').toggles({on:' . $mo_sp_cache_compatible . '});
-			   jQuery(\'.toggle-mospcachecompatible\').on(\'toggle\',function(e,active){
-				        		if(active){
-				        			jQuery(\'[name="mo_sp_cache_compatible"]\').val("true");
-				        		}else{
-				        			jQuery(\'[name="mo_sp_cache_compatible"]\').val("");
-				        		}
-			        		});
+				
 				jQuery(\'.toggle-mosptrackadmin\').toggles({on:' . $mo_sp_track_admin . '});
 				jQuery(\'.toggle-mosptrackadmin\').on(\'toggle\',function(e,active){
 				if(active){
@@ -246,15 +238,6 @@ switch ($active_tab) {
 					<td style="width: 30%">
 						<input type="text" name="mo_sp_show_time" value="<?php echo $mo_sp_showtime ?>" /> Seconds</td>
 					<td style="width: 50%"><p style="font-style: italic;">How many seconds to wait till automatically showing the squuze page</p></td>
-				</tr>
-				<tr valign="top">
-					<td style="width: 20%">Cache Compatability:</td>
-					<td style="width: 30%"><div
-							class="toggle-mospcachecompatible toggle-modern"></div> <input
-						type="hidden" name="mo_sp_cache_compatible"
-						value="<?php echo $mo_settings_obj->get_mo_sp_cache_compatible() == 'true'?'true':''; ?>" /></td>
-					<td style="width: 50%"><p style="font-style: italic;">Turn on/off
-							Cache compatability.</p></td>
 				</tr>
 				<tr valign="top">
 					<td style="width: 20%">Track Admin Users:</td>

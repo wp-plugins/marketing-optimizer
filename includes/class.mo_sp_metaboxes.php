@@ -124,14 +124,7 @@ class mo_sp_metaboxes {
 	function mo_sp_display_meta_box_variation_stats($post) {
 		if ('mo_sp' == $post->post_type) {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
-			$v_id = $mo_sp_obj->get_current_variation ();
-			$letter = mo_lp_ab_key_to_letter ( $v_id );
-			$impressions = $mo_sp_obj->get_variation_property ( $v_id, 'impressions' ) ? $mo_sp_obj->get_variation_property ( $v_id, 'impressions' ) : 0;
-			$visits = $mo_sp_obj->get_variation_property ( $v_id, 'visitors' ) ? $mo_sp_obj->get_variation_property ( $v_id, 'visitors' ) : 0;
-			$conversions = $mo_sp_obj->get_variation_property ( $v_id, 'conversions' ) ? $mo_sp_obj->get_variation_property ( $v_id, 'conversions' ) : 0;
-			$conversion_rate = $mo_sp_obj->get_variation_property ( $v_id, 'conversion_rate' ) ? number_format ( $mo_sp_obj->get_variation_property ( $v_id, 'conversion_rate' ), 1 ) * 100 : 0;
-			$status = $mo_sp_obj->get_variation_property ( $v_id, 'status' );
-			$status_text = $status ? 'pause' : 'unpause';
+			$mo_sp_variation_ids_arr = $mo_sp_obj->get_variation_ids_arr();
 			echo '<table class="mo_meta_box_stats_table">
 							  <tr class="mo_stats_header_row">
 							    <th class="mo_stats_header_cell">ID</th>
@@ -141,14 +134,24 @@ class mo_sp_metaboxes {
 							    <th class="mo_stats_header_cell">CR%</th>
 							    <th class="mo_stats_header_cell">Status</th>
 							  </tr>';
-			echo '<tr>';
-			echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_sp_variation_id=' . $v_id . '&action=edit">' . $letter . '</a> </td>';
-			echo '<td class="mo_stats_cell">' . $impressions . '</td>';
-			echo '<td class="mo_stats_cell">' . $visits . '</td>';
-			echo '<td class="mo_stats_cell">' . $conversions . '</td>';
-			echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
-			echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_sp_pause_variation', $post->ID, $v_id ) . '</td>';
-			echo '</tr>';
+			foreach($mo_sp_variation_ids_arr as $v){
+				$letter = mo_lp_ab_key_to_letter ( $v );
+				$impressions = $mo_sp_obj->get_variation_property ( $v, 'impressions' ) ? $mo_sp_obj->get_variation_property ( $v, 'impressions' ) : 0;
+				$visits = $mo_sp_obj->get_variation_property ( $v, 'visitors' ) ? $mo_sp_obj->get_variation_property ( $v, 'visitors' ) : 0;
+				$conversions = $mo_sp_obj->get_variation_property ( $v, 'conversions' ) ? $mo_sp_obj->get_variation_property ( $v, 'conversions' ) : 0;
+				$conversion_rate = $mo_sp_obj->get_variation_property ( $v, 'conversion_rate' ) ? number_format ( $mo_sp_obj->get_variation_property ( $v, 'conversion_rate' ), 1 ) * 100 : 0;
+				$status = $mo_sp_obj->get_variation_property ( $v, 'status' );
+				$status_text = $status ? 'pause' : 'unpause';
+					
+				echo '<tr>';
+				echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_sp_variation_id=' . $v . '&action=edit">' . $letter . '</a> </td>';
+				echo '<td class="mo_stats_cell">' . $impressions . '</td>';
+				echo '<td class="mo_stats_cell">' . $visits . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversions . '</td>';
+				echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
+				echo '<td class="mo_stats_cell">' . sprintf ( '<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . '</a>', 'mo_sp_pause_variation', $post->ID, $v ) . '</td>';
+				echo '</tr>';
+			}
 			echo '</table>';
 		}
 	}
@@ -352,7 +355,7 @@ class mo_sp_metaboxes {
 			echo '<div id="mo_sp_settings_container" style="overflow:hidden;">
 					<ul>
 						<li><div class="mo_sp_settings_label" style="width:30%;float:left;"><label for="mo_sp_post_type">Display for post types:</label></div><div class="mo_sp_settings_field" style="width:70%;float:left;"><input type="checkbox" name="mo_sp_post_types[lp]" value="1" ' . $post_type_lp . ' /><label>Landing Pages</label><input type="checkbox" name="mo_sp_post_types[posts]"    value="1" ' . $post_type_posts . ' /><label>Posts</label><input type="checkbox" name="mo_sp_post_types[pages]" value="1" ' . $post_type_pages . ' /><label>Pages</label><input type="checkbox" name="mo_sp_post_types[cats]" value="1" ' . $post_type_cats . ' /><label>Categories</label><input type="checkbox" name="mo_sp_post_types[tags]" value="1" ' . $post_type_tags . '  /><label>Tags</label></div></li>
-						<li><div class="mo_sp_settings_label" style="width:30%;float:left;"><label for="mo_sp_modal_size">Modal Size:</label></div><div class="mo_sp_settings_field" style="width:70%;float:left;"><input type="text" name="modal_length" value="' . $mo_sp_obj->get_variation_property ( $v_id, "modal_length" ) . '"/><label>Length</label><input type="text" name="modal_width" value="' . $mo_sp_obj->get_variation_property ( $v_id, "modal_width" ) . '" /><label>Width</label></div></li>
+						<li><div class="mo_sp_settings_label" style="width:30%;float:left;"><label for="mo_sp_modal_size">Modal Size (px):</label></div><div class="mo_sp_settings_field" style="width:70%;float:left;"><input type="text" name="modal_height" value="' . $mo_sp_obj->get_variation_property ( $v_id, "modal_height" ) . '"/><label> Height</label><input type="text" name="modal_width" value="' . $mo_sp_obj->get_variation_property ( $v_id, "modal_width" ) . '" /><label> Width</label></div></li>
 					</ul>
 				</div>';
 		}

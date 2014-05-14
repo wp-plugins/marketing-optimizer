@@ -142,12 +142,7 @@ class mo_sp_post_type {
 				$this,
 				'mo_sp_get_variation_title' 
 		), 10, 2 );
-		// if (get_option ( 'mo_sp_cache_compatible' ) == 'true' && ! isset ( $_GET ['mo_page_variation_id'] ) && ! isset ( $_GET ['t'] )) {
-		// add_action ( 'wp_head', array (
-		// $this,
-		// 'mo_sp_get_cache_compatible_js'
-		// ) );
-		// }
+		
 		add_filter ( 'template_include', array (
 				$this,
 				'mo_sp_get_template' 
@@ -180,6 +175,7 @@ class mo_sp_post_type {
 			echo '<script>
 				window.onload = function() {
 					function mo_sp_get_variation_cookie() {
+					
 						var cookies = document.cookie.split(/;\s*/);
 						for ( var i = 0; i < cookies.length; i++) {
 							var cookie = cookies[i];
@@ -893,66 +889,6 @@ class mo_sp_post_type {
 			}
 		}
 	}
-	public function mo_sp_get_cache_compatible_js() {
-		global $post;
-		$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
-		if ($post->post_type == 'mo_sp' && $mo_sp_obj->mo_is_testing () && ! $mo_sp_obj->mo_bot_detected () && defined ( 'DOING_AJAX' ) && DOING_AJAX && (! isset ( $_GET ['mo_sp_variation_id'] ) || ! isset ( $_GET ['t'] ))) {
-			echo '<script type="text/javascript">
-	
-						function mo_sp_get_variation_cookie() {
-												var cookies = document.cookie.split(/;\s*/);
-												for ( var i = 0; i < cookies.length; i++) {
-													var cookie = cookies[i];
-													var control = ' . $post->ID . ';
-													if (control > 0
-															&& cookie.indexOf("mo_sp_variation_" + control) != -1) {
-														cookie = cookie.split("=", 2);
-														return cookie[1];
-													}
-												}
-												return null;
-											}
-						function isIE() {
-							return ((navigator.appName == \'Microsoft Internet Explorer\') || ((navigator.appName == \'Netscape\') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
-						}
-						
-						var url = window.location.href;
-						var params = "";
-						url = url.split("?");
-						if(!url[1]){
-							params = "";
-						}else{
-							params = "&"+url[1];
-						}
-						variation_id = mo_sp_get_variation_cookie();
-							
-						if (isIE()) {
-						        if (variation_id != null) {
-						            window.location =  url[0] + "?mo_sp_variation_id=" + mo_sp_get_variation_cookie()+params;
-						        } else {
-						       	 window.location = url[0] + "?t=" + new Date().getTime()+params;
-						        }
-						} else {
-						    xmlhttp = new XMLHttpRequest();
-						    xmlhttp.onreadystatechange = function () {
-						        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						            var newDoc = document.open("text/html", "replace");
-						            newDoc.write(xmlhttp.responseText);
-						            newDoc.close();
-						        }
-						    }
-						    if (variation_id != null) {
-						        xmlhttp.open("GET", url[0] + "?mo_sp_variation_id=" +  mo_sp_get_variation_cookie()+params, true);
-						    } else {
-						        xmlhttp.open("GET", url[0] + "?t=" + new Date().getTime()+params, true);
-						    }
-						    xmlhttp.send();
-						}
-	
-	
- </script>';
-		}
-	}
 	function mo_sp_track_admin_user() {
 		if (current_user_can ( 'manage_options' )) {
 			if (get_option ( 'mo_sp_track_admin' ) == 'true') {
@@ -1058,11 +994,13 @@ class mo_sp_post_type {
 							 var counter = 0; 
 							 var mouseIsIn = true; 
 							 var spShown = function(){
-							 	if(mo_sp_get_variation_cookie() === null && mo_sp_get_conversion_cookie() === null){ 
-							 		return false; 
-							 	}else{ 
+							 	if(mo_sp_get_variation_cookie() != null){ 
 							 		return true; 
-							 	} 
+							 	}else if(mo_sp_get_conversion_cookie() != null){
+									return true;
+								}else{
+									return false;
+								}
 							 }
 									
 							 function mo_sp_get_variation_cookie() { 
@@ -1101,8 +1039,8 @@ class mo_sp_post_type {
 								     	&& (mouseX >= 0 && mouseX <= window.innerWidth)) 
 								     		return; 
 								     	if(!spShown()){ 
-								     		mo_sp.nmCall();
-								     		
+							 				jQuery("#mo_sp_iframe").prop("src","'.$mo_sp_url.'");
+								     		mo_sp.dialog("open")
 								     	}
 								     	counter++; 
 								     	mouseIsIn = false; 
@@ -1111,39 +1049,41 @@ class mo_sp_post_type {
 								     false); 
 							 } 
 							 if(!spShown()){
-									jQuery(\'body\').append(\'<a href="' . $mo_sp_url . '"  class="nyroModal" target="_blank">MO SP</a><div id="mo_sp_container" style="display:none;">mo squeeze page test</div>\');
+									jQuery(\'body\').append(\'<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:'.$modal_length.'px;width:'.$modal_width.'px;"></iframe></div>\');
 									var width = ' . $modal_width . ';
 									var height = ' . $modal_length . ';
-									mo_sp = jQuery(".nyroModal").nm({
-											sizes:{
-												initW: width,
-												initH: height,
-												w: width,
-												h: height,
-												minW: width,
-												minH: height
-											},
-											callbacks: {
-											    beforeShowCont: function() {
-											        width = $(\'.nyroModalCont\').width();
-											        height = $(\'.nyroModalCont\').height();
-											        $(\'.nyroModalCont iframe\').css(\'width\', width);
-											        $(\'.nyroModalCont iframe\').css(\'height\', height);
-											       // $(\'.nyroModalCont iframe\').css(\'overflow\', \'hidden\');
-											    }
-									  }});			
+									mo_sp = jQuery("#mo_sp_container");
+											mo_sp.dialog({
+											modal: true,
+													autoOpen: false,
+											//minHeight:height,
+											//minWidth:width,
+											height:"auto",
+											width: width,
+											maxHeight: height,
+											maxWidth : width,
+													dialogClass: "mo_sp_modal",
+													 open: function(){
+            jQuery(\'.ui-widget-overlay\').bind(\'click\',function(){
+                mo_sp.dialog(\'close\');
+            })
+            jQuery(\'#mo_sp_container .ui-dialog-titlebar-close\').bind(\'click\',function(){
+                mo_sp.dialog(\'close\');
+            })
+        }
+											});	
+													jQuery(".ui-dialog-titlebar").removeClass(\'ui-widget-header\')		;
 									 		mo_sp_add_event();
 											setTimeout(function(){mo_sp_show_sp();},' . $mo_sp_timeout . ');
 									}
 							
 									function mo_sp_show_sp(){
 										if(!spShown()){
-											mo_sp.nmCall();
+													jQuery("#mo_sp_iframe").prop("src","'.$mo_sp_url.'");
+											mo_sp.dialog("open");
 											}
 										}
-								
 							});
- 
 			</script>';
 				}
 			}

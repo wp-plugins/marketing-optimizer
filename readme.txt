@@ -94,6 +94,11 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140514 =
+* Changed squeeze page modal to use jquery ui dialog to fix issue with chrome browser not showing squeeze page content.
+* Removed squeeze page cache compatible option as it is not needed
+* added all variations stats to metaboxes
+* Changed edit squeeze page settings modal length to height
 = Version 20140509 =
 * #bugFix fixed an issue with stats not being tracked in some instances.
 * #bugFix fixed an issue with squeeze pages not displaying.
