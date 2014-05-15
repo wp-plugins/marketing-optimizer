@@ -54,18 +54,27 @@ jQuery(document)
 												action : 'mo_lp_get_template_content',
 												template : template
 											};
-											jQuery
-													.post(
+											jQuery.post(
 															ajaxurl,
 															data,
 															function(response) {
-																tinymce.get("content").focus();
-													            tinymce.activeEditor.setContent(response);
+																if (typeof tinymce.get("content") != 'undefined' && tinymce.get("content") != null) {
+																	tinymce.get("content").focus();
+														            tinymce.activeEditor.setContent(response);
+																}else{
+																	jQuery("#content").val(response);
+																}
+																
 															});
 											
 										}else{
-											tinymce.get("content").focus();
-								            tinymce.activeEditor.setContent('');
+											if(typeof tinymce.get("content") != 'undefined' && tinymce.get("content") != null ){
+												tinymce.get("content").focus();
+									            tinymce.activeEditor.setContent('');	
+											}else{
+												jQuery("#content").val("");
+											}
+											
 										}
 										if (template != 'theme') {
 											jQuery('#mo_theme_template').hide();

@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140515 =
+* #bugFix fixed an issue when selecting a squeeze page template when the editor was in text view was causing an error.
 = Version 20140514 =
 * Changed squeeze page modal to use jquery ui dialog to fix issue with chrome browser not showing squeeze page content.
 * Removed squeeze page cache compatible option as it is not needed
