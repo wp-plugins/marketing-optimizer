@@ -104,10 +104,6 @@ class mo_sp_post_type {
 				$this,
 				'mo_sp_track_conversion' 
 		) );
-		add_action ( 'wp_ajax_mo_sp_get_template_content', array (
-				$this,
-				'mo_sp_get_template_content' 
-		) );
 		add_action ( 'wp_ajax_nopriv_mo_sp_track_conversion', array (
 				$this,
 				'mo_sp_track_conversion' 
@@ -900,22 +896,13 @@ class mo_sp_post_type {
 			return true;
 		}
 	}
-	public function mo_sp_get_template_content() {
-		// echo 'hit ajax template';
-		if (isset ( $_POST ['template'] ) && $_POST ['template']) {
-			$template_name = $_POST ['template'];
-		}
-		if ($template_name != 'theme') {
-			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
-			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
-			
-			if (! $template) {
-				$template = 'Failed to load selected template';
-			}
-			wp_send_json ( $template );
-		} else {
-			die ();
-		}
+	public function mo_sp_get_template_via_curl($url) {
+		$ch = curl_init ();
+		curl_setopt ( $ch, CURLOPT_URL, $url );
+		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+		$template = curl_exec ( $ch );
+		curl_close ( $ch );
+		return $template;
 	}
 	public function mo_sp_get_template($template) {
 		global $post;
@@ -1039,7 +1026,7 @@ class mo_sp_post_type {
 								     	&& (mouseX >= 0 && mouseX <= window.innerWidth)) 
 								     		return; 
 								     	if(!spShown()){ 
-							 				jQuery("#mo_sp_iframe").prop("src","'.$mo_sp_url.'");
+							 				jQuery("#mo_sp_iframe").prop("src","' . $mo_sp_url . '");
 								     		mo_sp.dialog("open")
 								     	}
 								     	counter++; 
@@ -1049,7 +1036,7 @@ class mo_sp_post_type {
 								     false); 
 							 } 
 							 if(!spShown()){
-									jQuery(\'body\').append(\'<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:'.$modal_length.'px;width:'.$modal_width.'px;"></iframe></div>\');
+									jQuery(\'body\').append(\'<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:' . $modal_length . 'px;width:' . $modal_width . 'px;"></iframe></div>\');
 									var width = ' . $modal_width . ';
 									var height = ' . $modal_length . ';
 									mo_sp = jQuery("#mo_sp_container");
@@ -1079,7 +1066,7 @@ class mo_sp_post_type {
 							
 									function mo_sp_show_sp(){
 										if(!spShown()){
-													jQuery("#mo_sp_iframe").prop("src","'.$mo_sp_url.'");
+													jQuery("#mo_sp_iframe").prop("src","' . $mo_sp_url . '");
 											mo_sp.dialog("open");
 											}
 										}

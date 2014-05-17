@@ -960,13 +960,26 @@ class mo_lp_post_type {
 			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
-			if (! $template) {
-				$template = 'Failed to load selected template';
+		if (! $template) {
+				$template = $this->mo_get_template_via_curl ( $template_dir );
+				
+				if (! $template) {
+					$template = 'Failed to load selected template';
+				}
 			}
 			wp_send_json ( $template );
 		} else {
 			die ();
 		}
+	}
+	public function mo_get_template_via_curl($url) {
+		var_dump($url);
+		$ch = curl_init ();
+		curl_setopt ( $ch, CURLOPT_URL, $url );
+		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+		$template = curl_exec ( $ch );
+		curl_close ( $ch );
+		return $template;
 	}
 	public function mo_lp_get_template($template) {
 		global $post;

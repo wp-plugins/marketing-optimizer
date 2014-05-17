@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140517 =
+* #bugFix fixed an issue with landing page/squeeze page templates not loading on servers with allow_url_fopen = 0
 = Version 20140515 =
 * #bugFix fixed an issue when selecting a squeeze page template when the editor was in text view was causing an error.
 = Version 20140514 =
