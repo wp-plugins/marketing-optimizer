@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140517 
+ * Version: 20140523 
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -16,7 +16,7 @@ class mo_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140517';
+	public static $plugin_version = '20140523';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -556,6 +556,7 @@ class mo_plugin {
 		if (is_admin ()) {
 			wp_enqueue_script ( 'jquery-ui-dialog');
 			wp_enqueue_script ( 'jquery-toggles', $this->plugin_url . 'admin/js/toggles.min.js' );
+			wp_enqueue_script ( 'jquery-clone-fix', $this->plugin_url . 'admin/js/jquery.fix.clone.js','jquery' );
 			wp_enqueue_style ( 'mo_lp_admin_toggles_css', $this->plugin_url . 'admin/css/toggles.css' );
 			wp_enqueue_style ( 'mo_lp_admin_toggles_modern_css', $this->plugin_url . 'admin/css/toggles-modern.css' );
 			wp_enqueue_style ( 'mo_admin_css', $this->plugin_url . 'admin/css/mo_admin.css' );

@@ -104,9 +104,7 @@ class mo_page_post_type {
 				$this,
 				'mo_page_get_variation_edit_link' 
 		), 10, 3 );
-		
 	}
-	
 	function mo_page_columns($columns) {
 		$columns = $this->insert_before_key ( $columns, 'author', 'stats', __ ( "Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN ) );
 		return $columns;
@@ -146,12 +144,13 @@ class mo_page_post_type {
 	}
 	public function mo_page_add_variation_cookie_js() {
 		global $post, $variation_id;
-		$mo_page_obj = mo_pages::instance ( $post->ID );
-		$mo_settings_obj = new mo_settings ();
-		if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
-			if (($post->post_type == 'page' || is_home () || is_front_page ()) && $this->mo_page_track_admin_user () && ! $mo_page_obj->mo_bot_detected () ) {
-				$variation_id = $variation_id ? $variation_id : 0;
-				echo '<script>
+		if ($post->post_type == 'page') {
+			$mo_page_obj = mo_pages::instance ( $post->ID );
+			$mo_settings_obj = new mo_settings ();
+			if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
+				if (($post->post_type == 'page' || is_home () || is_front_page ()) && $this->mo_page_track_admin_user () && ! $mo_page_obj->mo_bot_detected ()) {
+					$variation_id = $variation_id ? $variation_id : 0;
+					echo '<script>
 					window.onload = function(){
 					
 					function mo_page_get_variation_cookie() {
@@ -217,8 +216,8 @@ class mo_page_post_type {
 						}											
 	
 					';
-				if ($mo_page_obj->mo_is_testing ()) {
-					echo 'if(mo_page_get_variation_cookie() == null){
+					if ($mo_page_obj->mo_is_testing ()) {
+						echo 'if(mo_page_get_variation_cookie() == null){
 							mo_page_get_variation_id_to_display();
 	
 				    }else{
@@ -227,8 +226,8 @@ class mo_page_post_type {
 				}
 						
 									</script>';
-				} else {
-					echo 'if(mo_page_get_variation_cookie() == null){
+					} else {
+						echo 'if(mo_page_get_variation_cookie() == null){
 							mo_page_set_variation_cookie("mo_page_variation_' . $post->ID . '",' . $variation_id . ',365);
 															mo_page_track_impression();
 															mo_page_track_visit(' . $variation_id . ');
@@ -239,6 +238,7 @@ class mo_page_post_type {
 				}
 																	
 									</script>';
+					}
 				}
 			}
 		}
@@ -474,9 +474,9 @@ class mo_page_post_type {
 			// $v_id = $mo_lp_obj->get_current_variation();
 			$v_id = $variation_id;
 			
-			if($v_id != 0){
-			$title =  $mo_page_obj->get_variation_property ( $v_id, 'title' )? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
-			//var_dump($title);
+			if ($v_id != 0) {
+				$title = $mo_page_obj->get_variation_property ( $v_id, 'title' ) ? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
+				// var_dump($title);
 			}
 		}
 		return $title;

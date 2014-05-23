@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140523 =
+* #bugFix fixed an issue with previewing pages, landing pages, and squeeze pages not showing correct preview.
+* #bugFix fixed an issue with squeeze page close button was sometimes behind the modal.
 = Version 20140517 =
 * #bugFix fixed an issue with landing page/squeeze page templates not loading on servers with allow_url_fopen = 0
 = Version 20140515 =

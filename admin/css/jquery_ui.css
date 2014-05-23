@@ -1816,10 +1816,11 @@ height: 32px;
     padding: 1px;
     position: absolute;
     right: -15px;
-    top: -9%;
+    top: -17px;
     width: 32px;
 	background: url(images/close.png) no-repeat;
 	border:none;
+	z-index: 999;
 }
 #mo_sp_container .ui-state-default .ui-icon, #mo_sp_container .ui-widget-content .ui-icon{
 	background:none;
