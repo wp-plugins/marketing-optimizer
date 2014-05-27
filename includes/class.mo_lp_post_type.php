@@ -1,5 +1,6 @@
 <?php
 class mo_lp_post_type {
+
 	public function __construct() {
 		add_action ( 'admin_init', array (
 				$this,
@@ -143,7 +144,6 @@ class mo_lp_post_type {
 				$this,
 				'mo_lp_get_template' 
 		) );
-		// add_action('wp_head',array($this,''))
 	}
 	
 	// ***********ADDS 'CLEAR STATS' BUTTON TO POSTS EDITING AREA******************/
@@ -157,6 +157,7 @@ class mo_lp_post_type {
 		}
 		return $actions;
 	}
+
 	public function mo_lp_add_variation_cookie_js() {
 		global $post, $variation_id;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
@@ -249,6 +250,7 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_category_register_taxonomy() {
 		$args = array (
 				'hierarchical' => true,
@@ -263,6 +265,7 @@ class mo_lp_post_type {
 				'mo_landing_page' 
 		), $args );
 	}
+
 	public function mo_lp_clear_stats() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -273,7 +276,7 @@ class mo_lp_post_type {
 		exit ();
 	}
 	
-	// populate collumsn for landing pages
+	// populate collumns for landing pages
 	public function mo_lp_column($column) {
 		global $post;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
@@ -303,7 +306,7 @@ class mo_lp_post_type {
 				break;
 		}
 	}
-	
+
 	/**
 	 * *******PREPARE COLUMNS FOR IMPRESSIONS AND CONVERSIONS**************
 	 */
@@ -312,8 +315,6 @@ class mo_lp_post_type {
 	public function mo_lp_columns($columns) {
 		$columns = array (
 				"cb" => "<input type=\"checkbox\" />",
-				// "ID" => "ID",
-				// "thumbnail-lander" => __( "Preview" , mo_plugin::MO_LP_TEXT_DOMAIN),
 				"title" => __ ( "Landing Page Title", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				"stats" => __ ( "Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				"impressions" => __ ( "Impressions", mo_plugin::MO_LP_TEXT_DOMAIN ),
@@ -323,6 +324,7 @@ class mo_lp_post_type {
 		);
 		return $columns;
 	}
+
 	public function mo_lp_conversion() {
 		global $post;
 		if (! isset ( $_GET ['preview'] ) && $this->mo_lp_track_admin_user ()) {
@@ -356,6 +358,7 @@ class mo_lp_post_type {
 </script>';
 		}
 	}
+
 	public function mo_lp_flush_rewrite_rules() {
 		$activation_check = get_option ( 'mo_lp_plugin_activated', 0 );
 		
@@ -365,12 +368,12 @@ class mo_lp_post_type {
 			update_option ( 'mo_lp_plugin_activated', '0' );
 		}
 	}
+
 	public function mo_lp_get_post_template_for_template_loader($template) {
 		global $post, $variation_id;
 		if ($post && $post->post_type == 'mo_landing_page') {
 			$post_id = $post->ID;
 			$mo_lp_obj = mo_landing_pages::instance ( $post_id );
-			// $v_id = $mo_lp_obj->get_current_variation();
 			$v_id = $variation_id;
 			
 			$post_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
@@ -382,6 +385,7 @@ class mo_lp_post_type {
 		}
 		return $template;
 	}
+
 	public function mo_lp_get_variation_content($content) {
 		global $post, $variation_id;
 		$post_id = $post->ID;
@@ -394,6 +398,7 @@ class mo_lp_post_type {
 		}
 		return $content;
 	}
+
 	public function mo_lp_get_variation_content_for_editor($content, $post_id) {
 		if (get_post_type ( $post_id ) == 'mo_landing_page') {
 			
@@ -409,16 +414,15 @@ class mo_lp_post_type {
 		}
 		return $content;
 	}
+
 	public function mo_lp_get_variation_edit_link($link, $id, $context) {
 		if (get_post_type ( $id ) == 'mo_landing_page') {
-			// $mo_lp_obj = mo_landing_pages::instance ( $id );
-			// $v_id = $mo_lp_obj->get_current_variation ();
-			
 			return $link . '&mo_lp_variation_id=0';
 		} else {
 			return $link;
 		}
 	}
+
 	public function mo_lp_get_variation_id_to_display() {
 		if (isset ( $_POST ['action'] ) && isset ( $_POST ['post_id'] )) {
 			if ($_POST ['action'] == 'mo_lp_get_variation_id_to_display' && $_POST ['post_id'] > 0) {
@@ -435,33 +439,33 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_get_variation_meta_title($title, $sep, $seplocation) {
 		global $post, $variation_id;
 		if (get_post_type ( $post->ID ) == 'mo_landing_page') {
 			
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
-			// $v_id = $mo_lp_obj->get_current_variation();
 			$v_id = $variation_id;
 			try {
 				$title = $mo_lp_obj->get_variation_property ( $v_id, 'title' ) . ' | ';
 			} catch ( Exception $e ) {
 				$title = '';
 			}
-			
 		}
 		return $title;
 	}
+
 	public function mo_lp_get_variation_permalink($permalink, $post) {
 		global $variation_id;
 		if ($post->post_type == 'mo_landing_page') {
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
-			// $v_id = $mo_lp_obj->get_current_variation ();
 			$v_id = $variation_id;
 			
 			$permalink = $permalink;
 		}
 		return $permalink;
 	}
+
 	public function mo_lp_get_variation_title($title, $id) {
 		global $variation_id, $pagenow;
 		if (get_post_type ( $id ) == 'mo_landing_page') {
@@ -476,6 +480,7 @@ class mo_lp_post_type {
 		}
 		return $title;
 	}
+
 	public function mo_lp_get_variation_title_for_editor($title, $id) {
 		if (get_post_type ( $id ) == 'mo_landing_page') {
 			$mo_lp_obj = mo_landing_pages::instance ( $id );
@@ -485,6 +490,7 @@ class mo_lp_post_type {
 		}
 		return $title;
 	}
+
 	public function mo_lp_post_type_register() {
 		$slug = get_option ( 'mo_lp_permalink_prefix', 'molp' );
 		
@@ -508,8 +514,6 @@ class mo_lp_post_type {
 				'public' => true,
 				'publicly_queryable' => true,
 				'show_ui' => true,
-				// 'show_ui_nav_menus' => false,
-				// 'show_in_menu' => false,
 				'query_var' => true,
 				'menu_icon' => plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
@@ -539,6 +543,7 @@ class mo_lp_post_type {
 				"rewrite" => true 
 		) );
 	}
+
 	public function mo_lp_show_aggregated_stats($type_of_stat) {
 		global $post;
 		$landing_page_obj = mo_landing_pages::instance ( $post->ID );
@@ -576,6 +581,7 @@ class mo_lp_post_type {
 			return $conversion_rate;
 		}
 	}
+
 	public function mo_lp_show_stats_list() {
 		global $post;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
@@ -592,8 +598,6 @@ class mo_lp_post_type {
 					    <th class="mo_stats_header_cell">Confidence</th>
 						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
-			
-			// echo "<ul class='mo_lp_stats_list'>";
 			
 			$first_status = get_post_meta ( $post->ID, 'mo_lp_variation_status', true ); // Current status
 			$i = 0;
@@ -687,6 +691,7 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_track_visit() {
 		$response = false;
 		if ($_POST ['action'] == 'mo_lp_track_visit') {
@@ -772,6 +777,7 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_track_conversion() {
 		if (isset ( $_POST ['cookie'] ) && $_POST ['cookie']) {
 			$cookieArr = json_decode ( stripslashes ( $_POST ['cookie'] ) );
@@ -807,6 +813,7 @@ class mo_lp_post_type {
 		}
 		return;
 	}
+
 	public function mo_lp_track_impression() {
 		if (mo_lp_track_admin_user ()) {
 			if (isset ( $_POST ['action'] ) && $_POST ['action'] == 'mo_lp_track_impression') {
@@ -836,6 +843,7 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_set_variation_id() {
 		global $post, $variation_id;
 		if ($post && $post->post_type == 'mo_landing_page') {
@@ -843,6 +851,7 @@ class mo_lp_post_type {
 			$variation_id = $mo_lp_obj->get_current_variation ();
 		}
 	}
+
 	public function mo_lp_pause_variation() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -853,6 +862,7 @@ class mo_lp_post_type {
 		wp_redirect ( wp_get_referer () );
 		// exit ();
 	}
+
 	public function mo_lp_delete_variation() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -862,12 +872,14 @@ class mo_lp_post_type {
 		}
 		wp_redirect ( wp_get_referer () );
 	}
+
 	public function mo_lp_add_shortcodes() {
 		add_shortcode ( 'mo_lp_conversion', array (
 				$this,
 				'mo_lp_conversion' 
 		) );
 	}
+
 	public function mo_lp_is_ab_testing() {
 		global $post;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
@@ -880,6 +892,7 @@ class mo_lp_post_type {
 			}
 		}
 	}
+
 	public function mo_lp_get_cache_compatible_js() {
 		global $post;
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
@@ -940,6 +953,7 @@ class mo_lp_post_type {
  </script>';
 		}
 	}
+
 	function mo_lp_track_admin_user() {
 		if (current_user_can ( 'manage_options' )) {
 			if (get_option ( 'mo_lp_track_admin' ) == 'true') {
@@ -951,6 +965,7 @@ class mo_lp_post_type {
 			return true;
 		}
 	}
+
 	public function mo_lp_get_template_content() {
 		// echo 'hit ajax template';
 		if (isset ( $_POST ['template'] ) && $_POST ['template']) {
@@ -960,7 +975,7 @@ class mo_lp_post_type {
 			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
-		if (! $template) {
+			if (! $template) {
 				$template = $this->mo_get_template_via_curl ( $template_dir );
 				
 				if (! $template) {
@@ -972,8 +987,9 @@ class mo_lp_post_type {
 			die ();
 		}
 	}
+
 	public function mo_get_template_via_curl($url) {
-		var_dump($url);
+		var_dump ( $url );
 		$ch = curl_init ();
 		curl_setopt ( $ch, CURLOPT_URL, $url );
 		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
@@ -981,6 +997,7 @@ class mo_lp_post_type {
 		curl_close ( $ch );
 		return $template;
 	}
+
 	public function mo_lp_get_template($template) {
 		global $post;
 		if ($post->post_type == 'mo_landing_page') {

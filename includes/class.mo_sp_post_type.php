@@ -416,9 +416,6 @@ class mo_sp_post_type {
 	}
 	public function mo_sp_get_variation_edit_link($link, $id, $context) {
 		if (get_post_type ( $id ) == 'mo_sp') {
-			// $mo_sp_obj = mo_landing_pages::instance ( $id );
-			// $v_id = $mo_sp_obj->get_current_variation ();
-			
 			return $link . '&mo_sp_variation_id=0';
 		} else {
 			return $link;
@@ -445,7 +442,6 @@ class mo_sp_post_type {
 		if (get_post_type ( $post->ID ) == 'mo_sp') {
 			
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
-			// $v_id = $mo_sp_obj->get_current_variation();
 			$v_id = $variation_id;
 			try {
 				$title = $mo_sp_obj->get_variation_property ( $v_id, 'title' ) . ' | ';
@@ -459,7 +455,6 @@ class mo_sp_post_type {
 		global $variation_id;
 		if ($post->post_type == 'mo_sp') {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
-			// $v_id = $mo_sp_obj->get_current_variation ();
 			$v_id = $variation_id;
 			
 			$permalink = $permalink;
@@ -512,8 +507,6 @@ class mo_sp_post_type {
 				'public' => true,
 				'publicly_queryable' => true,
 				'show_ui' => true,
-				// 'show_ui_nav_menus' => false,
-				// 'show_in_menu' => false,
 				'query_var' => true,
 				'menu_icon' => plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
@@ -596,8 +589,6 @@ class mo_sp_post_type {
 					    <th class="mo_stats_header_cell">Confidence</th>
 						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
-			
-			// echo "<ul class='mo_sp_stats_list'>";
 			
 			$first_status = get_post_meta ( $post->ID, 'mo_sp_variation_status', true ); // Current status
 			$i = 0;
@@ -758,7 +749,6 @@ class mo_sp_post_type {
 						unset ( $group_data [$lp_id] );
 						
 						$this_data = json_encode ( $group_data );
-						// print_r($this_data);
 						$new_post = array (
 								'ID' => $group_id,
 								'post_title' => get_the_title (),
@@ -768,7 +758,6 @@ class mo_sp_post_type {
 								'post_author' => 1,
 								'post_type' => 'sp-group' 
 						);
-						// print_r($new_post);
 						$post_id = wp_update_post ( $new_post );
 					}
 				endwhile
@@ -856,7 +845,6 @@ class mo_sp_post_type {
 			$mo_sp_obj->pause_variation ( $post_id, $v_id );
 		}
 		wp_redirect ( wp_get_referer () );
-		// exit ();
 	}
 	public function mo_sp_delete_variation() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
@@ -972,7 +960,6 @@ class mo_sp_post_type {
 				$mo_sp_url = get_permalink ( $post_id ) . '?mo_sp_variation_id=' . $v_id;
 				$modal_width = get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_width_' . $v_id, true ) : 250;
 				$modal_length = get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) ? get_post_meta ( $post_id, 'mo_sp_modal_length_' . $v_id, true ) : 250;
-				// if ( ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || isset ( $_COOKIE ['mo_page_variation_' . $post->ID] ))) {
 				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || ! $mo_page_obj->mo_is_testing ()) {
 					echo '<script>
 							jQuery(document).ready(function($){
@@ -1066,7 +1053,7 @@ class mo_sp_post_type {
 							
 									function mo_sp_show_sp(){
 										if(!spShown()){
-													jQuery("#mo_sp_iframe").prop("src","' . $mo_sp_url . '");
+													jQuery("#mo_sp_iframe").prop("src","'. $mo_sp_url . '");
 											mo_sp.dialog("open");
 											}
 										}
@@ -1090,7 +1077,6 @@ class mo_sp_post_type {
 		}
 		update_post_meta ( $v->post_id, 'mo_sp_post_types', json_encode ( $post_types_arr ) );
 		wp_send_json ( 'true' );
-		// echo $post_type;
 	}
 }
 $mo_sp_post_type_obj = new mo_sp_post_type ();

@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin 
  * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140523 
+ * Version: 20140527
  * Description: Create Landing Pages for Wordpress 
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -16,7 +16,7 @@ class mo_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140523';
+	public static $plugin_version = '20140527';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -40,10 +40,10 @@ class mo_plugin {
 		 * User Configurable Variables
 		 * ***********************************
 		 */
-		require_once ('class.mo_ab_testing.php');
-		require_once ('class.mo_landing_pages.php');
-		require_once ('class.mo_variation.php');
-		require_once ('class.mo_settings.php');
+		require_once ('includes/class.mo_ab_testing.php');
+		require_once ('includes/class.mo_landing_pages.php');
+		require_once ('includes/class.mo_variation.php');
+		require_once ('includes/class.mo_settings.php');
 		include ('includes/class.mo_page_post_type.php');
 		include ('includes/class.mo_lp_post_type.php');
 		if(class_exists("GFFormsModel")){

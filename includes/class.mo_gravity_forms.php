@@ -1,5 +1,6 @@
 <?php
 class mo_gravity_forms {
+
 	public function __construct() {
 		if (is_admin ()) {
 			add_action ( 'admin_head', array (
@@ -22,8 +23,8 @@ class mo_gravity_forms {
 				$this,
 				"mo_paged_post_to_marketing_optimizer" 
 		), 10, 3 );
-		
 	}
+
 	public static function mo_get_gf_dropdown() {
 		$forms = GFFormsModel::get_forms ( true );
 		$gf_dropdown = '<select name="mo_gf_form" id="mo_gf_form">';
@@ -34,6 +35,7 @@ class mo_gravity_forms {
 		$gf_dropdown .= '</select>';
 		return $gf_dropdown;
 	}
+
 	public function mo_gf_form_field_mapping() {
 		if (isset ( $_POST ['form_id'] ) && $_POST ['form_id'] > 0) {
 			$form_id = $_POST ['form_id'];
@@ -42,6 +44,7 @@ class mo_gravity_forms {
 			die ();
 		}
 	}
+
 	public function mo_get_form_fields_by_id($form_id) {
 		if (isset ( $form_id ) && $form_id > 0) {
 			$form_meta_arr = GFFormsModel::get_form_meta ( $form_id );
@@ -63,6 +66,7 @@ class mo_gravity_forms {
 			return $form_fields_arr;
 		}
 	}
+
 	public function mo_get_form_field_mapping_view($form_id, $form_field_mappings) {
 		$formFieldMappingArr = $this->mo_get_form_field_mapping ( $form_id );
 		$table = '<table style="margin-bottom:15px;">';
@@ -85,15 +89,16 @@ class mo_gravity_forms {
 		
 		foreach ( $form_field_mappings as $k => $v ) {
 			if ($formFieldMappingArr) {
-				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" value="' . $formFieldMappingArr [$k] . '" /></td></tr>';
+				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" value="' . $formFieldMappingArr [$k] . '" /></td></tr>';
 			} else {
-				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/'.mo_plugin::MO_DIRECTORY.'/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
+				$table .= '<tr><td>' . $v . '</td><td><img src="' . plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/move.png" /></td><td><input type="text" name="gfffm[' . $k . ']" /></td></tr>';
 			}
 		}
 		$table .= '</tbody>';
 		$table .= '</table>';
 		return $table;
 	}
+
 	public static function mo_save_form_field_mapping($form_id, $fieldMappingArr) {
 		if ($form_id && count ( $fieldMappingArr ) > 0) {
 			$form_id = trim ( $form_id );
@@ -110,6 +115,7 @@ class mo_gravity_forms {
 			update_option ( 'mo_form_field_mapping_' . $form_id, serialize ( $formFieldsArr ) );
 		}
 	}
+
 	public static function mo_get_form_field_mapping($form_id) {
 		if ($form_id) {
 			return unserialize ( get_option ( 'mo_form_field_mapping_' . $form_id ) );
@@ -117,6 +123,7 @@ class mo_gravity_forms {
 			return false;
 		}
 	}
+
 	function mo_post_to_marketing_optimizer($entry, $form) {
 		$post_url = 'http://app.marketingoptimizer.com/remote/form_post.php';
 		$form_id = $entry ['form_id'];
@@ -142,6 +149,7 @@ class mo_gravity_forms {
 			) );
 		}
 	}
+
 	function mo_paged_post_to_marketing_optimizer($form, $coming_from_page, $current_page) {
 		$post_url = 'http://app.marketingoptimizer.com/remote/form_post.php';
 		$form_id = $form ['id'];
@@ -178,6 +186,7 @@ class mo_gravity_forms {
 			}
 		}
 	}
+
 	function mo_gf_javascript() {
 		echo '<script>
 				jQuery(document).ready(function($) {

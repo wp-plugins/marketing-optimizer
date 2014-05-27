@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140527 =
+* Code refactoring.
 = Version 20140523 =
 * #bugFix fixed an issue with previewing pages, landing pages, and squeeze pages not showing correct preview.
 * #bugFix fixed an issue with squeeze page close button was sometimes behind the modal.

@@ -1,5 +1,6 @@
 <?php
 class mo_page_post_type {
+
 	public function __construct() {
 		add_action ( 'init', array (
 				$this,
@@ -105,10 +106,12 @@ class mo_page_post_type {
 				'mo_page_get_variation_edit_link' 
 		), 10, 3 );
 	}
+
 	function mo_page_columns($columns) {
 		$columns = $this->insert_before_key ( $columns, 'author', 'stats', __ ( "Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN ) );
 		return $columns;
 	}
+
 	public function mo_page_column($column) {
 		global $post;
 		$mo_page_obj = mo_pages::instance ( $post->ID );
@@ -127,6 +130,7 @@ class mo_page_post_type {
 				break;
 		}
 	}
+
 	function insert_before_key($original_array, $original_key, $insert_key, $insert_value) {
 		$new_array = array ();
 		$inserted = false;
@@ -142,6 +146,7 @@ class mo_page_post_type {
 		
 		return $new_array;
 	}
+
 	public function mo_page_add_variation_cookie_js() {
 		global $post, $variation_id;
 		if ($post->post_type == 'page') {
@@ -243,6 +248,7 @@ class mo_page_post_type {
 			}
 		}
 	}
+
 	public function mo_page_get_variation_id_to_display() {
 		if (isset ( $_POST ['action'] ) && isset ( $_POST ['post_id'] )) {
 			if ($_POST ['action'] == 'mo_page_get_variation_id_to_display' && $_POST ['post_id'] > 0) {
@@ -259,6 +265,7 @@ class mo_page_post_type {
 			}
 		}
 	}
+
 	public static function mo_page_track_impression() {
 		if (mo_lp_track_admin_user ()) {
 			if (isset ( $_POST ['action'] ) && $_POST ['action'] == 'mo_page_track_impression') {
@@ -288,6 +295,7 @@ class mo_page_post_type {
 			}
 		}
 	}
+
 	public function mo_page_track_conversion() {
 		if (isset ( $_POST ['cookie'] ) && $_POST ['cookie']) {
 			$cookieArr = json_decode ( stripslashes ( $_POST ['cookie'] ) );
@@ -323,6 +331,7 @@ class mo_page_post_type {
 		}
 		return;
 	}
+
 	public function mo_page_track_visit() {
 		$response = false;
 		if ($_POST ['action'] == 'mo_page_track_visit') {
@@ -347,6 +356,7 @@ class mo_page_post_type {
 				'incremented_visits' => $visits 
 		) );
 	}
+
 	public function mo_page_get_variation_title_for_editor($title, $id) {
 		global $pagenow;
 		if (get_post_type ( $id ) == 'page') {
@@ -359,6 +369,7 @@ class mo_page_post_type {
 		}
 		return $title;
 	}
+
 	public function mo_page_set_variation_id() {
 		global $post, $variation_id;
 		if ($post) {
@@ -366,6 +377,7 @@ class mo_page_post_type {
 			$variation_id = $mo_page_obj->get_current_variation ();
 		}
 	}
+
 	public function mo_page_get_variation_content_for_editor($content, $post_id) {
 		if (get_post_type ( $post_id ) == 'page') {
 			$mo_page_obj = mo_pages::instance ( $post_id );
@@ -377,6 +389,7 @@ class mo_page_post_type {
 		}
 		return $content;
 	}
+
 	public function mo_page_get_variation_content($content) {
 		global $post, $variation_id;
 		$post_id = $post->ID;
@@ -395,6 +408,7 @@ class mo_page_post_type {
 		}
 		return $content;
 	}
+
 	public function mo_page_show_stats_list() {
 		global $post;
 		$mo_page_obj = mo_pages::instance ( $post->ID );
@@ -466,6 +480,7 @@ class mo_page_post_type {
 			echo "</table>";
 		}
 	}
+
 	public function mo_page_get_variation_meta_title($title, $sep, $seplocation) {
 		global $post, $variation_id;
 		if (get_post_type ( $post->ID ) == 'page') {
@@ -481,6 +496,7 @@ class mo_page_post_type {
 		}
 		return $title;
 	}
+
 	public function mo_page_get_variation_title($title, $id) {
 		global $variation_id, $pagenow;
 		if (get_post_type ( $id ) == 'page') {
@@ -496,6 +512,7 @@ class mo_page_post_type {
 		}
 		return $title;
 	}
+
 	public function mo_page_get_mo_website_tracking_js() {
 		global $post, $variation_id;
 		
@@ -545,6 +562,7 @@ class mo_page_post_type {
 			}
 		}
 	}
+
 	public function mo_page_pause_variation() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -555,6 +573,7 @@ class mo_page_post_type {
 		wp_redirect ( wp_get_referer () );
 		// exit ();
 	}
+
 	public function mo_page_delete_variation() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -564,6 +583,7 @@ class mo_page_post_type {
 		}
 		wp_redirect ( wp_get_referer () );
 	}
+
 	public function mo_page_is_ab_testing() {
 		global $post;
 		$mo_page_obj = mo_pages::instance ( $post->ID );
@@ -576,6 +596,7 @@ class mo_page_post_type {
 			}
 		}
 	}
+
 	public function mo_page_get_cache_compatible_js() {
 		global $post;
 		$mo_page_obj = mo_pages::instance ( $post->ID );
@@ -634,6 +655,7 @@ if (isIE()) {
  </script>';
 		}
 	}
+
 	function mo_page_track_admin_user() {
 		if (current_user_can ( 'manage_options' )) {
 			if (get_option ( 'mo_lp_track_admin' ) == 'true') {
@@ -645,6 +667,7 @@ if (isIE()) {
 			return true;
 		}
 	}
+
 	public function mo_page_add_clear_tracking($actions, $post) {
 		if ($post->post_type == 'page') {
 			$last_reset = get_post_meta ( $post->ID, 'mo_lp_stat_reset_date', true ) ? get_post_meta ( $post->ID, 'mo_lp_stat_reset_date', true ) : 'Never';
@@ -655,6 +678,7 @@ if (isIE()) {
 		}
 		return $actions;
 	}
+
 	public function mo_page_clear_stats() {
 		if (isset ( $_GET ['post'] ) && $_GET ['post']) {
 			$post_id = $_GET ['post'];
@@ -664,6 +688,7 @@ if (isIE()) {
 		wp_redirect ( wp_get_referer () );
 		exit ();
 	}
+
 	public function mo_page_add_shortcodes() {
 		add_shortcode ( 'mo_page_conversion', array (
 				$this,
@@ -682,6 +707,7 @@ if (isIE()) {
 				'mo_phone_shortcode' 
 		) );
 	}
+
 	public function mo_page_conversion() {
 		global $post;
 		if (! isset ( $_GET ['preview'] ) && $this->mo_page_track_admin_user ()) {
@@ -715,16 +741,15 @@ if (isIE()) {
 </script>';
 		}
 	}
+
 	public function mo_page_get_variation_edit_link($link, $id, $context) {
 		if (get_post_type ( $id ) == 'page') {
-			// $mo_lp_obj = mo_landing_pages::instance ( $id );
-			// $v_id = $mo_lp_obj->get_current_variation ();
-			
 			return $link . '&mo_page_variation_id=0';
 		} else {
 			return $link;
 		}
 	}
+
 	function mo_phone_shortcode($attributes, $content = null) {
 		$mo_settings_obj = new mo_settings ();
 		if ($mo_settings_obj->get_mo_phone_tracking () == 'true') {

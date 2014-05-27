@@ -1,5 +1,6 @@
 <?php
 class mo_sp_metaboxes {
+
 	public function __construct() {
 		add_action ( 'edit_form_after_title', array (
 				$this,
@@ -34,11 +35,12 @@ class mo_sp_metaboxes {
 				'mo_sp_display_meta_box_select_template_container' 
 		) );
 	}
+
 	function mo_sp_ab_testing_add_tabs() {
 		global $post;
 		$post_type_is = get_post_type ( $post->ID );
 		$permalink = get_permalink ( $post->ID );
-		// Only show lp tabs on landing pages post types (for now)
+		// Only show sp tabs on squeeze pages post types (for now)
 		if ($post_type_is === "mo_sp") {
 			$current_variation_id = mo_squeeze_pages::instance ( $post->ID )->get_current_variation ();
 			if (isset ( $_GET ['new_meta_key'] ))
@@ -89,10 +91,10 @@ class mo_sp_metaboxes {
 			$edit_link = (isset ( $_GET ['mo_sp_variation_id'] )) ? '?mo_sp_variation_id=' . $_GET ['mo_sp_variation_id'] . '' : '?mo_sp_variation_id=0';
 			$post_link = get_permalink ( $post->ID );
 			$post_link = preg_replace ( '/\?.*/', '', $post_link );
-			// echo "<a rel='".$post_link."' id='launch-visual-editer' class='button-primary new-save-lp-frontend' href='$post_link$edit_link&template-customize=on'>Launch Visual Editor</a>";
 			echo '</h2>';
 		}
 	}
+
 	function mo_sp_add_description_input_box($post) {
 		if ($post->post_type == 'mo_sp') {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
@@ -101,6 +103,7 @@ class mo_sp_metaboxes {
 			echo "<div id='mo_sp_description_div'><div id='description_wrap'><input placeholder='" . __ ( 'Add Description for this variation.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='description' name='description' id='description' value='{$mo_sp_description}' style='width:100%;line-height:1.7em'></div></div>";
 		}
 	}
+
 	function mo_sp_display_meta_boxes($post) {
 		add_meta_box ( 'mo_sp_templates', 'Current Selected Template', array (
 				$this,
@@ -121,10 +124,11 @@ class mo_sp_metaboxes {
 				'mo_sp_get_sp_settings_metabox' 
 		), 'mo_sp', 'normal', 'high' );
 	}
+
 	function mo_sp_display_meta_box_variation_stats($post) {
 		if ('mo_sp' == $post->post_type) {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
-			$mo_sp_variation_ids_arr = $mo_sp_obj->get_variation_ids_arr();
+			$mo_sp_variation_ids_arr = $mo_sp_obj->get_variation_ids_arr ();
 			echo '<table class="mo_meta_box_stats_table">
 							  <tr class="mo_stats_header_row">
 							    <th class="mo_stats_header_cell">ID</th>
@@ -134,7 +138,7 @@ class mo_sp_metaboxes {
 							    <th class="mo_stats_header_cell">CR%</th>
 							    <th class="mo_stats_header_cell">Status</th>
 							  </tr>';
-			foreach($mo_sp_variation_ids_arr as $v){
+			foreach ( $mo_sp_variation_ids_arr as $v ) {
 				$letter = mo_lp_ab_key_to_letter ( $v );
 				$impressions = $mo_sp_obj->get_variation_property ( $v, 'impressions' ) ? $mo_sp_obj->get_variation_property ( $v, 'impressions' ) : 0;
 				$visits = $mo_sp_obj->get_variation_property ( $v, 'visitors' ) ? $mo_sp_obj->get_variation_property ( $v, 'visitors' ) : 0;
@@ -142,7 +146,7 @@ class mo_sp_metaboxes {
 				$conversion_rate = $mo_sp_obj->get_variation_property ( $v, 'conversion_rate' ) ? number_format ( $mo_sp_obj->get_variation_property ( $v, 'conversion_rate' ), 1 ) * 100 : 0;
 				$status = $mo_sp_obj->get_variation_property ( $v, 'status' );
 				$status_text = $status ? 'pause' : 'unpause';
-					
+				
 				echo '<tr>';
 				echo '<td class="mo_stats_cell"><a title="click to edit this variation" href="/wp-admin/post.php?post=' . $post->ID . '&mo_sp_variation_id=' . $v . '&action=edit">' . $letter . '</a> </td>';
 				echo '<td class="mo_stats_cell">' . $impressions . '</td>';
@@ -155,10 +159,13 @@ class mo_sp_metaboxes {
 			echo '</table>';
 		}
 	}
+
 	function mo_sp_get_template_selected_metabox($post) {
 		$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 		$v_id = $mo_sp_obj->get_current_variation ();
 		$template = $mo_sp_obj->get_variation_property ( $v_id, 'template' ) ? $mo_sp_obj->get_variation_property ( $v_id, 'template' ) : 'mo_sp_blank';
+		$templates_arr = mo_sp_get_templates ();
+		$template_name = $templates_arr [$template] ['title'];
 		if ($template == 'theme') {
 			$theme_template = $mo_sp_obj->get_variation_property ( $v_id, 'theme_template' );
 			$template_dir = get_template_directory_uri ();
@@ -168,8 +175,8 @@ class mo_sp_metaboxes {
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field ( 'mo_get_template_selected_metabox', 'mo_get_template_selected_metabox_nonce' );
 		echo '<div id="mo_templates" class="postbox">
-				<h3 class="hndle">Landing Page Template: 
-					<span id="mo_template_name">' . $template . '</span>
+				<h3 class="hndle">Template: 
+					<span id="mo_template_name">' . $template_name . '</span>
 				</h3>
 				<div id="mo_template_image_container">
 					<span id="mo_template_image">
@@ -193,6 +200,7 @@ class mo_sp_metaboxes {
 											</div>
 				</div>';
 	}
+
 	function mo_sp_post_template_meta_box($post) {
 		if ('mo_sp' == $post->post_type && 0 != count ( get_page_templates () )) {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
@@ -209,6 +217,7 @@ class mo_sp_metaboxes {
 		?>
 		<?php
 	}
+
 	function mo_sp_save_meta($post_id) {
 		global $post;
 		
@@ -262,6 +271,7 @@ class mo_sp_metaboxes {
 			$post = get_post ( $post_id );
 		}
 	}
+
 	public function mo_sp_variation_id_metabox($post) {
 		if ($post->post_type == 'mo_sp') {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
@@ -270,6 +280,7 @@ class mo_sp_metaboxes {
 			echo "<div id='mo_sp_variation_id_div'><div id='variation_id_wrap'><input placeholder='" . __ ( 'Add the marketing optimizer variation id.', mo_plugin::MO_LP_TEXT_DOMAIN ) . "' type='text' class='variation_id' name='variation_id' id='variation_id' value='{$mo_sp_variation_id}' style='width:100%;line-height:1.7em'></div></div>";
 		}
 	}
+
 	public function mo_sp_content_save_pre($content) {
 		global $post;
 		if ($post && $post->post_type == 'mo_sp') {
@@ -281,6 +292,7 @@ class mo_sp_metaboxes {
 		}
 		return $content;
 	}
+
 	public function mo_sp_title_save_pre($title) {
 		global $post;
 		if ($post && $post->post_type == 'mo_sp') {
@@ -311,42 +323,46 @@ class mo_sp_metaboxes {
 		
 		$template = get_post_meta ( $post->ID, 'lp-selected-template', true );
 		echo '<div id="mo_template_select_container" style="' . $toggle . '">
-<div class="mo_template_select_heading"><h1>Select Your Squeeze Page Template</h1></div>
-';
-		// '<div class="controls">
-		// <h3>Filter Controls</h3>
-		// <ul>
-		// <li class="filter active" data-filter="all">Show All</li>
-		// <li class="filter" data-filter="category_1">Category 1</li>
-		// <li class="filter" data-filter="category_2">Category 2</li>
-		// <li class="filter" data-filter="category_3">Category 3</li>
-		// <li class="filter" data-filter="category_3 category_1">Category 1 &amp; 3</li>
-		// </ul>
-		// </div>';
+					<div class="mo_template_select_heading">
+						<h1>Select Your Squeeze Page Template</h1>
+					</div>';
 		echo '<ul id="Grid" style=" ">';
 		foreach ( mo_sp_get_templates () as $k => $v ) {
 			// echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><span style=""><a href="#" id="defualt" class="mo_sp_template_select">Select</a></span> | <span style=""><a href="#">Preview</a></span></li>';
-			echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><div>' . $v ['title'] . '</div><a href="#" label="' . $k . '" id="' . $k . '" class="mo_template_select"><img class="mo_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" /></a><span style=""><a href="#" label="' . $k . '" id="' . $k . '" class="mo_template_select">Select</a></span> </li>';
+			echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;">
+						<div class="mo_template_title">' . $v ['title'] . '</div>
+							<a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select">
+								<img class="mo_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" />
+							</a>
+							<span style="">
+								<a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select">
+									Select
+								</a>
+							</span>
+				 </li>';
 		}
 		
-		echo '<li class="gap"></li> <!-- "gap" elements fill in the gaps in justified grid -->
-</ul></div>';
+		echo '<li class="gap">
+				</li> <!-- "gap" elements fill in the gaps in justified grid -->
+		</ul></div>';
 	}
+
 	function mo_sp_add_template_dialog_box() {
 		global $post;
-		if (isset($post) && $post->post_type == 'mo_sp') {
-		echo '<div id="dialog-confirm" title="Change Template" style="display:none;">
+		if (isset ( $post ) && $post->post_type == 'mo_sp') {
+			echo '<div id="dialog-confirm" title="Change Template" style="display:none;">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Changing the template will replace the current content with the new template. Are you sure you want to do this?</p>
 </div>';
 		}
 	}
+
 	function mo_sp_get_sp_settings_metabox() {
 		global $post;
 		if ($post->post_type == 'mo_sp') {
 			$mo_sp_obj = mo_squeeze_pages::instance ( $post->ID );
 			$v_id = $mo_sp_obj->get_current_variation ();
-			$post_types = json_decode ( $mo_sp_obj->get_variation_property ( $v_id, 'post_types' ), true )?json_decode ( $mo_sp_obj->get_variation_property ( $v_id, 'post_types' ), true ):json_decode ( $mo_sp_obj->get_variation_property ( 0, 'post_types' ), true );
-			$post_type_lp = (isset($post_types ['lp'])&& $post_types['lp'] )? 'checked' : '';
+			$post_types = json_decode ( $mo_sp_obj->get_variation_property ( $v_id, 'post_types' ), true ) ? json_decode ( $mo_sp_obj->get_variation_property ( $v_id, 'post_types' ), true ) : json_decode ( $mo_sp_obj->get_variation_property ( 0, 'post_types' ), true );
+			$post_type_lp = (isset ( $post_types ['lp'] ) && $post_types ['lp']) ? 'checked' : '';
 			$post_type_posts = (isset ( $post_types ['posts'] ) && $post_types ['posts']) ? 'checked' : '';
 			$post_type_pages = (isset ( $post_types ['pages'] ) && $post_types ['pages']) ? 'checked' : '';
 			$post_type_cats = (isset ( $post_types ['cats'] ) && $post_types ['cats']) ? 'checked' : '';

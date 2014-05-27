@@ -3,6 +3,7 @@ class mo_squeeze_pages extends mo_ab_testing {
 	public $post_type = 'mo_sp';
 	public $meta_value_prefix = 'mo_sp_';
 	public static $instance = null;
+
 	public static function instance($post_id) {
 		if ($post_id) {
 			if (! isset ( self::$instance [$post_id] ) || self::$instance [$post_id] === null) {
@@ -11,17 +12,12 @@ class mo_squeeze_pages extends mo_ab_testing {
 			return self::$instance [$post_id];
 		}
 	}
+
 	public function __construct($post_id) {
 		parent::__construct ( $post_id );
-		//$this->set_variations_arr ( $this->get_variation_ids_arr () );
-// 		foreach ( $this->get_variations_arr () as $k => $var_obj ) {
-// 			if (( int ) $var_obj->get_status ()) {
-// 				$this->set_active_variation_count ( ($this->get_active_variation_count () + 1) );
-// 			}
-// 		}
 		$this->set_current_variation ();
-		
 	}
+
 	public function set_variations_arr($variation_ids_arr) {
 		if (is_array ( $variation_ids_arr ) && ! empty ( $variation_ids_arr )) {
 			$this->variations_arr = array ();
@@ -32,6 +28,7 @@ class mo_squeeze_pages extends mo_ab_testing {
 			throw new InvalidArgumentException ( 'Not a valid array or array is empty' );
 		}
 	}
+
 	public function set_current_variation() {
 		global $post, $pagenow;
 		if (isset ( $_GET ['mo_sp_variation_id'] )) {
