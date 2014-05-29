@@ -27,6 +27,12 @@ function mo_sp_get_templates() {
 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_newsletter/screenshot.png',
 					'height' => 157, 
 					'width' => 550, 
+			),
+			'mo_sp_blog' => array (
+					'title' => 'Blog',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_blog/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
 			)
 	);
 	return $templates_array;

@@ -94,6 +94,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140529 =
+* #bugFix fixed an issue with squeeze page save and preview feature always creating an new modal on click.
+* #bugFix fixed an issue with save and preview feature always opening a new window, now opens a new tab and refreshes the preview tab when you save and preview.
+* Added 2 new squeeze page templates.
 = Version 20140527 =
 * Code refactoring.
 = Version 20140523 =

@@ -114,7 +114,9 @@ jQuery(document).ready(function($) {
 		}).done(function(data, status, xhr) {
 		    width = jQuery('input[name="modal_width"]').val() ? jQuery('input[name="modal_width"]').val() : 250;
 		    height = jQuery('input[name="modal_height"]').val() ? jQuery('input[name="modal_height"]').val() : 250;
-		    jQuery('body').append('<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:100%;width:100%;"></iframe></div>');
+		    if (!jQuery('#mo_sp_container').length) {
+			jQuery('body').append('<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:100%;width:100%;"></iframe></div>');
+		    }
 		    jQuery("#mo_sp_iframe").prop("src", url);
 		    mo_sp = jQuery("#mo_sp_container");
 		    mo_sp.dialog({
@@ -155,13 +157,14 @@ jQuery(document).ready(function($) {
 	    event.preventDefault();
 
 	    form.unbind('submit').bind('submit', function() {
+		var preview_win = window.open('', 'mo_lp_preview');
 		request = jQuery.ajax({
 		    type : "POST",
 		    url : form.attr('action'),
 		    data : data,
 
 		}).done(function(data, status, xhr) {
-		    window.open(url,'_blank','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,copyhistory=yes,resizable=yes');
+		    preview_win.location = url;
 		});
 		return false;
 	    });
@@ -183,13 +186,14 @@ jQuery(document).ready(function($) {
 	    event.preventDefault();
 
 	    form.unbind('submit').bind('submit', function() {
+		var preview_win = window.open('', 'mo_page_preview');
 		request = jQuery.ajax({
 		    type : "POST",
 		    url : form.attr('action'),
 		    data : data,
 
 		}).done(function(data, status, xhr) {
-		    window.open(url,'_blank','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,copyhistory=yes,resizable=yes');
+		    preview_win.location = url;
 		});
 		return false;
 	    });
