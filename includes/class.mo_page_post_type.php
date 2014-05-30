@@ -515,49 +515,50 @@ class mo_page_post_type {
 
 	public function mo_page_get_mo_website_tracking_js() {
 		global $post, $variation_id;
-		
-		$mo_settings_obj = new mo_settings ();
-		if ($mo_settings_obj->get_mo_account_id ()) {
-			$mo_page_obj = mo_pages::instance ( $post->ID );
-			if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
-				if (is_null ( $variation_id )) {
-					$v_id = $mo_page_obj->get_current_variation ();
-				} else {
-					$v_id = $variation_id;
-				}
-				$website_tracking_js = '';
-				$website_tracking_js .= "\n<!-- Start of Asynchronous Tracking Code --> \n";
-				$website_tracking_js .= "<script type='text/javascript'> \n";
-				$website_tracking_js .= "var _apVars = _apVars || []; \n";
-				$website_tracking_js .= "_apVars.push(['_trackPageview']); \n";
-				$website_tracking_js .= "_apVars.push(['_setAccount','" . $mo_settings_obj->get_mo_account_id () . "']); \n";
-				
-				if (( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) > 0) {
-					$website_tracking_js .= "_apVars.push([ '_trackVariation','" . ( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) . "']); \n";
-				}
-				if ($mo_settings_obj->get_mo_phone_tracking () == 'true') {
-					$website_tracking_js .= "_apVars.push([ '_publishPhoneNumber' ]); \n";
-					if ($mo_settings_obj->get_mo_phone_publish_cls ()) {
-						$website_tracking_js .= "_apVars.push([ '_setPhonePublishCls', '" . $mo_settings_obj->get_mo_phone_publish_cls () . "' ]); \n";
+		if ($post->post_type == 'page') {
+			$mo_settings_obj = new mo_settings ();
+			if ($mo_settings_obj->get_mo_account_id ()) {
+				$mo_page_obj = mo_pages::instance ( $post->ID );
+				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
+					if (is_null ( $variation_id )) {
+						$v_id = $mo_page_obj->get_current_variation ();
 					} else {
-						$website_tracking_js .= "_apVars.push([ '_setPhonePublishCls', 'phonePublishCls' ]); \n";
+						$v_id = $variation_id;
 					}
-					if ($mo_settings_obj->get_mo_phone_tracking_default_number ()) {
-						$website_tracking_js .= "_apVars.push([ '_setDefaultPhoneNumber', '" . $mo_settings_obj->get_mo_phone_tracking_default_number () . "' ]);\n";
+					$website_tracking_js = '';
+					$website_tracking_js .= "\n<!-- Start of Asynchronous Tracking Code --> \n";
+					$website_tracking_js .= "<script type='text/javascript'> \n";
+					$website_tracking_js .= "var _apVars = _apVars || []; \n";
+					$website_tracking_js .= "_apVars.push(['_trackPageview']); \n";
+					$website_tracking_js .= "_apVars.push(['_setAccount','" . $mo_settings_obj->get_mo_account_id () . "']); \n";
+					
+					if (( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) > 0) {
+						$website_tracking_js .= "_apVars.push([ '_trackVariation','" . ( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) . "']); \n";
 					}
-					if ($mo_settings_obj->get_mo_phone_tracking_thank_you_url ()) {
-						$website_tracking_js .= "_apVars.push([ '_redirectConversionUrl','" . $mo_settings_obj->get_mo_phone_tracking_thank_you_url () . "']); \n";
+					if ($mo_settings_obj->get_mo_phone_tracking () == 'true') {
+						$website_tracking_js .= "_apVars.push([ '_publishPhoneNumber' ]); \n";
+						if ($mo_settings_obj->get_mo_phone_publish_cls ()) {
+							$website_tracking_js .= "_apVars.push([ '_setPhonePublishCls', '" . $mo_settings_obj->get_mo_phone_publish_cls () . "' ]); \n";
+						} else {
+							$website_tracking_js .= "_apVars.push([ '_setPhonePublishCls', 'phonePublishCls' ]); \n";
+						}
+						if ($mo_settings_obj->get_mo_phone_tracking_default_number ()) {
+							$website_tracking_js .= "_apVars.push([ '_setDefaultPhoneNumber', '" . $mo_settings_obj->get_mo_phone_tracking_default_number () . "' ]);\n";
+						}
+						if ($mo_settings_obj->get_mo_phone_tracking_thank_you_url ()) {
+							$website_tracking_js .= "_apVars.push([ '_redirectConversionUrl','" . $mo_settings_obj->get_mo_phone_tracking_thank_you_url () . "']); \n";
+						}
 					}
-				}
-				$website_tracking_js .= "(function(d){ \n";
-				$website_tracking_js .= "var t = d.createElement(\"script\"), s = d.getElementsByTagName(\"script\")[0]; \n";
-				$website_tracking_js .= "t.src =  \"//app.marketingoptimizer.com/remote/ap.js\"; \n";
-				$website_tracking_js .= "s.parentNode.insertBefore(t, s); \n";
-				$website_tracking_js .= "})(document); \n";
-				$website_tracking_js .= "</script> \n";
-				$website_tracking_js .= "<!-- End of Asynchronous Tracking Code --> \n";
-				if (! $mo_page_obj->mo_bot_detected () || $this->mo_page_track_admin_user ()) {
-					echo $website_tracking_js;
+					$website_tracking_js .= "(function(d){ \n";
+					$website_tracking_js .= "var t = d.createElement(\"script\"), s = d.getElementsByTagName(\"script\")[0]; \n";
+					$website_tracking_js .= "t.src =  \"//app.marketingoptimizer.com/remote/ap.js\"; \n";
+					$website_tracking_js .= "s.parentNode.insertBefore(t, s); \n";
+					$website_tracking_js .= "})(document); \n";
+					$website_tracking_js .= "</script> \n";
+					$website_tracking_js .= "<!-- End of Asynchronous Tracking Code --> \n";
+					if (! $mo_page_obj->mo_bot_detected () || $this->mo_page_track_admin_user ()) {
+						echo $website_tracking_js;
+					}
 				}
 			}
 		}

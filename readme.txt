@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140530 =
+* #bugFix fixed an issue with marketing optimizer tracking code not tracking squeeze pages correctly.
+* Squeeze page templates now automatically fill out the modal height and width.
 = Version 20140529 =
 * #bugFix fixed an issue with squeeze page save and preview feature always creating an new modal on click.
 * #bugFix fixed an issue with save and preview feature always opening a new window, now opens a new tab and refreshes the preview tab when you save and preview.

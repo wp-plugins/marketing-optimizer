@@ -967,7 +967,7 @@ class mo_lp_post_type {
 	}
 
 	public function mo_lp_get_template_content() {
-		// echo 'hit ajax template';
+		$response_arr = array();
 		if (isset ( $_POST ['template'] ) && $_POST ['template']) {
 			$template_name = $_POST ['template'];
 		}
@@ -982,7 +982,11 @@ class mo_lp_post_type {
 					$template = 'Failed to load selected template';
 				}
 			}
-			wp_send_json ( $template );
+			$templates_arr = mo_sp_get_templates();
+			$response_arr['content'] = $template;
+			$response_arr['modal_height'] = $templates_arr[$template_name]['height'];
+			$response_arr['modal_width'] = $templates_arr[$template_name]['width'];
+			wp_send_json ( $response_arr );
 		} else {
 			die ();
 		}

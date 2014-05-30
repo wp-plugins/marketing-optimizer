@@ -25,8 +25,8 @@ function mo_sp_get_templates() {
 			'mo_sp_newsletter' => array (
 					'title' => 'Newsletter',
 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_newsletter/screenshot.png',
-					'height' => 157, 
-					'width' => 550, 
+					'height' => 179, 
+					'width' => 700, 
 			),
 			'mo_sp_blog' => array (
 					'title' => 'Blog',

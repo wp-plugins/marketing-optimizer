@@ -32,11 +32,20 @@ jQuery(document).ready(function($) {
 		template : template
 	    };
 	    jQuery.post(ajaxurl, data, function(response) {
+		console.log(response);
+		console.log(response.modal_height.length);
+		console.log(response.modal_width.length);
+		if (response.modal_height) {
+		    jQuery('input[name="modal_height"]').val(response.modal_height);
+		}
+		if (response.modal_width) {
+		    jQuery('input[name="modal_width"]').val(response.modal_width);
+		}
 		if (typeof tinymce.get("content") != 'undefined' && tinymce.get("content") != null) {
 		    tinymce.get("content").focus();
-		    tinymce.activeEditor.setContent(response);
+		    tinymce.activeEditor.setContent(response.content);
 		} else {
-		    jQuery("#content").val(response);
+		    jQuery("#content").val(response.content);
 		}
 
 	    });
@@ -48,6 +57,9 @@ jQuery(document).ready(function($) {
 	    } else {
 		jQuery("#content").val("");
 	    }
+	    jQuery('input[name="modal_height"]').val('');
+
+	    jQuery('input[name="modal_width"]').val('');
 
 	}
 	if (template != 'theme') {
@@ -118,6 +130,7 @@ jQuery(document).ready(function($) {
 			jQuery('body').append('<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:100%;width:100%;"></iframe></div>');
 		    }
 		    jQuery("#mo_sp_iframe").prop("src", url);
+		    console.log(url);
 		    mo_sp = jQuery("#mo_sp_container");
 		    mo_sp.dialog({
 			modal : true,
