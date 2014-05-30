@@ -32,9 +32,6 @@ jQuery(document).ready(function($) {
 		template : template
 	    };
 	    jQuery.post(ajaxurl, data, function(response) {
-		console.log(response);
-		console.log(response.modal_height.length);
-		console.log(response.modal_width.length);
 		if (response.modal_height) {
 		    jQuery('input[name="modal_height"]').val(response.modal_height);
 		}
