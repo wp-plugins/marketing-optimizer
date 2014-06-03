@@ -34,6 +34,12 @@ function mo_sp_get_templates() {
 					'height' => 364, 
 					'width' => 860, 
 			)
+// 			'mo_sp_email' => array (
+// 					'title' => 'Email',
+// 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_email/screenshot.png',
+// 					'height' => 364, 
+// 					'width' => 860, 
+// 			)
 	);
 	return $templates_array;
 }

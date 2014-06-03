@@ -491,7 +491,6 @@ class mo_page_post_type {
 			
 			if ($v_id != 0) {
 				$title = $mo_page_obj->get_variation_property ( $v_id, 'title' ) ? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
-				// var_dump($title);
 			}
 		}
 		return $title;

@@ -205,7 +205,6 @@ class mo_lp_post_type {
 														xmlhttp.onreadystatechange = function () {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
-											console.log(response);
 							        }
 		
 						}
@@ -967,11 +966,12 @@ class mo_lp_post_type {
 	}
 
 	public function mo_lp_get_template_content() {
-		$response_arr = array();
+		$response_arr = array ();
 		if (isset ( $_POST ['template'] ) && $_POST ['template']) {
 			$template_name = $_POST ['template'];
 		}
 		if ($template_name != 'theme') {
+			
 			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
 			
@@ -979,13 +979,18 @@ class mo_lp_post_type {
 				$template = $this->mo_get_template_via_curl ( $template_dir );
 				
 				if (! $template) {
-					$template = 'Failed to load selected template';
+					$template = @file_get_contents ( ABSPATH . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name . '/' . $template_name . '.php' );
+					if (! $template) {
+						$template = 'Failed to load selected template';
+					}
 				}
 			}
-			$templates_arr = mo_sp_get_templates();
-			$response_arr['content'] = $template;
-			$response_arr['modal_height'] = $templates_arr[$template_name]['height'];
-			$response_arr['modal_width'] = $templates_arr[$template_name]['width'];
+			$templates_arr = mo_sp_get_templates ();
+			$response_arr ['content'] = $template;
+			if (isset($_POST['type']) && $_POST['type'] == 'mo_sp') {
+				$response_arr ['modal_height'] = $templates_arr [$template_name] ['height'];
+				$response_arr ['modal_width'] = $templates_arr [$template_name] ['width'];
+			}
 			wp_send_json ( $response_arr );
 		} else {
 			die ();
@@ -993,7 +998,6 @@ class mo_lp_post_type {
 	}
 
 	public function mo_get_template_via_curl($url) {
-		var_dump ( $url );
 		$ch = curl_init ();
 		curl_setopt ( $ch, CURLOPT_URL, $url );
 		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );

@@ -22,6 +22,7 @@ jQuery(document).ready(function($) {
 	var label = jQuery(this).attr('label');
 	var template_image = "#" + template + " .mo_template_thumbnail";
 	var template_img_obj = jQuery(template_image).attr("src");
+	var post_type = jQuery('#post_type').val();
 	jQuery("#mo_template_name").text(label);
 	jQuery("#mo_current_template").html('<input type="hidden" name="mo_template" value="' + template + '">');
 	jQuery("#mo_template_image #c_temp").attr("src", template_img_obj);
@@ -29,6 +30,7 @@ jQuery(document).ready(function($) {
 	if (template != 'mo_sp_blank') {
 	    var data = {
 		action : 'mo_lp_get_template_content',
+		type : post_type,
 		template : template
 	    };
 	    jQuery.post(ajaxurl, data, function(response) {
@@ -127,7 +129,6 @@ jQuery(document).ready(function($) {
 			jQuery('body').append('<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:100%;width:100%;"></iframe></div>');
 		    }
 		    jQuery("#mo_sp_iframe").prop("src", url);
-		    console.log(url);
 		    mo_sp = jQuery("#mo_sp_container");
 		    mo_sp.dialog({
 			modal : true,

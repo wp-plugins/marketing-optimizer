@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140603 =
+* #bugFix fixed issue with squeeze page templates not loading on servers restricting allow url fopen and file_get_contents.
+* #bugFix fixed issue with javascript templates other than squeeze pages.
 = Version 20140530 =
 * #bugFix fixed an issue with marketing optimizer tracking code not tracking squeeze pages correctly.
 * Squeeze page templates now automatically fill out the modal height and width.
