@@ -55,11 +55,6 @@ if ($_POST) {
 			break;
 		case 'mo_sp_general_settings' :
 			$mo_settings_obj->set_mo_sp_permalink_prefix ( $_POST ['mo_sp_permalink_prefix'] );
-			if (! isset ( $_POST ['mo_sp_cache_compatible'] )) {
-				$mo_settings_obj->set_mo_sp_cache_compatible ( 'false' );
-			} else {
-				$mo_settings_obj->set_mo_sp_cache_compatible ( $_POST ['mo_sp_cache_compatible'] );
-			}
 			if (! isset ( $_POST ['mo_sp_track_admin'] )) {
 				$mo_settings_obj->set_mo_sp_track_admin ( 'false' );
 			} else {
