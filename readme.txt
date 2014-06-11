@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140611 =
+* #bugFix fixed issue with form shortcodes.
 = Version 20140604 =
 * #bugFix fixed an issue with squeeze page settings not saving.
 = Version 20140603 =

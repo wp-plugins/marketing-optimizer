@@ -192,7 +192,9 @@ class mo_sp_metaboxes {
 	<option value="default">';
 		_e ( 'Default Template' );
 		echo '</option>';
-		page_template_dropdown ( $theme_template );
+		if (isset ( $theme_template ) && $theme_template) {
+			page_template_dropdown ( $theme_template );
+		}
 		echo '</select></div>';
 		
 		echo '<div id="mo_template_change">

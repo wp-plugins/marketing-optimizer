@@ -149,7 +149,7 @@ class mo_page_post_type {
 
 	public function mo_page_add_variation_cookie_js() {
 		global $post, $variation_id;
-		if ($post->post_type == 'page') {
+		if (is_object($post) && $post->post_type == 'page') {
 			$mo_page_obj = mo_pages::instance ( $post->ID );
 			$mo_settings_obj = new mo_settings ();
 			if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
@@ -706,6 +706,10 @@ if (isIE()) {
 				$this,
 				'mo_phone_shortcode' 
 		) );
+		add_shortcode ( 'mo_form', array (
+				$this,
+				'mo_form_shortcode' 
+		) );
 	}
 
 	public function mo_page_conversion() {
@@ -762,6 +766,14 @@ if (isIE()) {
 			}
 		} else {
 			return '<span style="color:red;">(Phone tracking is currently disabled, enable phone tracking <a href="/wp-admin/admin.php?page=marketing-optimizer-settings">here</a> to use phone tracking short codes.)';
+		}
+	}
+	
+	function mo_form_shortcode($attributes, $content = null) {
+		if (isset ( $attributes ['id'] )) {
+			return '<script type="text/javascript" src="//app.marketingoptimizer.com/remote/ap_js.php?f=' . $attributes ['id'] . '&o=' . get_option ( 'mo_account_id' ) . '"></script>';
+		} elseif (get_option ( 'mo_form_default_id' )) {
+			return '<script type="text/javascript" src="//app.marketingoptimizer.com/remote/ap_js.php?f=' . get_option ( 'mo_form_default_id' ) . '&o=' . get_option ( 'mo_account_id' ) . '"></script>';
 		}
 	}
 }
