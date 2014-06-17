@@ -149,7 +149,7 @@ class mo_page_post_type {
 
 	public function mo_page_add_variation_cookie_js() {
 		global $post, $variation_id;
-		if (is_object($post) && $post->post_type == 'page') {
+		if (is_object ( $post ) && $post->post_type == 'page') {
 			$mo_page_obj = mo_pages::instance ( $post->ID );
 			$mo_settings_obj = new mo_settings ();
 			if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
@@ -514,8 +514,9 @@ class mo_page_post_type {
 
 	public function mo_page_get_mo_website_tracking_js() {
 		global $post, $variation_id;
-			$mo_settings_obj = new mo_settings ();
-			if ($mo_settings_obj->get_mo_account_id ()) {
+		$mo_settings_obj = new mo_settings ();
+		if ($mo_settings_obj->get_mo_account_id ()) {
+			if (is_object ( $post ) && $post->post_type == 'page') {
 				$mo_page_obj = mo_pages::instance ( $post->ID );
 				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
 					if (is_null ( $variation_id )) {
@@ -559,6 +560,7 @@ class mo_page_post_type {
 					}
 				}
 			}
+		}
 	}
 
 	public function mo_page_pause_variation() {
@@ -766,7 +768,7 @@ if (isIE()) {
 			return '<span style="color:red;">(Phone tracking is currently disabled, enable phone tracking <a href="/wp-admin/admin.php?page=marketing-optimizer-settings">here</a> to use phone tracking short codes.)';
 		}
 	}
-	
+
 	function mo_form_shortcode($attributes, $content = null) {
 		if (isset ( $attributes ['id'] )) {
 			return '<script type="text/javascript" src="//app.marketingoptimizer.com/remote/ap_js.php?f=' . $attributes ['id'] . '&o=' . get_option ( 'mo_account_id' ) . '"></script>';

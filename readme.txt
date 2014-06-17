@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20140617 =
+* #bugFix fixed an issue with javascript tracking code method for pages causing error on other types of posts.
 = Version 20140613 =
 * #bugFix fixed an issue with marketing optimizer tracking javascript only working on pages.
 = Version 20140611 =
