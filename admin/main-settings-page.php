@@ -7,6 +7,10 @@ if (isset ( $_GET ['tab'] )) {
 }
 $mo_settings_obj = new mo_settings ();
 if ($_POST) {
+	if(isset($_POST['action']) && $_POST['action'] == 'mo_gf_field_mapping'){
+		
+		mo_gravity_forms::mo_save_form_field_mapping($_POST['mo_gf_form'], $_POST);
+	}
 	echo '<div class="updated" style="float:left;" >The Marketing Optimizer plugin settings have been updated</div>';
 	
 	switch ($active_tab) {
@@ -379,7 +383,7 @@ switch ($active_tab) {
 		</fieldset>
 		<div id="form_field_mapping_table"></div>
 		<p class="submit">
-			<input type="submit" class="button-primary"
+			<input type="submit" class="button-primary mo_gf_submit"
 				value="<?php _e('Save Changes') ?>" />
 		</p>
 	</div>
