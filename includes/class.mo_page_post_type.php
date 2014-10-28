@@ -4,106 +4,106 @@ class mo_page_post_type {
 	public function __construct() {
 		add_action ( 'init', array (
 				$this,
-				'mo_page_add_shortcodes' 
+				'mo_page_add_shortcodes'
 		) );
 		add_action ( 'wp_footer', array (
 				$this,
-				'mo_page_add_variation_cookie_js' 
+				'mo_page_add_variation_cookie_js'
 		) );
 		add_action ( 'wp_ajax_mo_page_get_variation_id_to_display', array (
 				$this,
-				'mo_page_get_variation_id_to_display' 
+				'mo_page_get_variation_id_to_display'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_page_get_variation_id_to_display', array (
 				$this,
-				'mo_page_get_variation_id_to_display' 
+				'mo_page_get_variation_id_to_display'
 		) );
 		add_action ( 'wp_ajax_mo_page_track_visit', array (
 				$this,
-				'mo_page_track_visit' 
+				'mo_page_track_visit'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_page_track_visit', array (
 				$this,
-				'mo_page_track_visit' 
+				'mo_page_track_visit'
 		) );
 		add_action ( 'wp_ajax_mo_page_track_conversion', array (
 				$this,
-				'mo_page_track_conversion' 
+				'mo_page_track_conversion'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_page_track_conversion', array (
 				$this,
-				'mo_page_track_conversion' 
+				'mo_page_track_conversion'
 		) );
 		add_action ( 'wp_ajax_mo_page_track_impression', array (
 				$this,
-				'mo_page_track_impression' 
+				'mo_page_track_impression'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_page_track_impression', array (
 				$this,
-				'mo_page_track_impression' 
+				'mo_page_track_impression'
 		) );
-		
+
 		add_filter ( 'manage_pages_columns', array (
 				$this,
-				'mo_page_columns' 
+				'mo_page_columns'
 		) );
 		add_filter ( 'title_edit_pre', array (
 				$this,
-				'mo_page_get_variation_title_for_editor' 
+				'mo_page_get_variation_title_for_editor'
 		), 10, 2 );
 		add_action ( 'wp', array (
 				$this,
-				'mo_page_set_variation_id' 
+				'mo_page_set_variation_id'
 		) );
 		add_filter ( 'content_edit_pre', array (
 				$this,
-				'mo_page_get_variation_content_for_editor' 
+				'mo_page_get_variation_content_for_editor'
 		), 10, 2 );
 		add_filter ( 'the_content', array (
 				$this,
-				'mo_page_get_variation_content' 
+				'mo_page_get_variation_content'
 		), 10 );
 		add_action ( "manage_pages_custom_column", array (
 				$this,
-				"mo_page_column" 
+				"mo_page_column"
 		) );
 		add_filter ( 'wp_title', array (
 				$this,
-				'mo_page_get_variation_meta_title' 
+				'mo_page_get_variation_meta_title'
 		), 10, 3 );
 		add_filter ( 'the_title', array (
 				$this,
-				'mo_page_get_variation_title' 
+				'mo_page_get_variation_title'
 		), 10, 2 );
 		add_action ( 'wp_footer', array (
 				$this,
-				'mo_page_get_mo_website_tracking_js' 
+				'mo_page_get_mo_website_tracking_js'
 		) );
 		add_action ( 'admin_action_mo_page_pause_variation', array (
 				$this,
-				'mo_page_pause_variation' 
+				'mo_page_pause_variation'
 		) );
 		add_action ( 'admin_action_mo_page_delete_variation', array (
 				$this,
-				'mo_page_delete_variation' 
+				'mo_page_delete_variation'
 		) );
 		add_filter ( 'page_row_actions', array (
 				$this,
-				'mo_page_add_clear_tracking' 
+				'mo_page_add_clear_tracking'
 		), 10, 2 );
 		add_action ( 'admin_action_mo_page_clear_stats', array (
 				$this,
-				'mo_page_clear_stats' 
+				'mo_page_clear_stats'
 		) );
 		if (get_option ( 'mo_lp_cache_compatible' ) == 'true' && ! isset ( $_GET ['mo_page_variation_id'] ) && ! isset ( $_GET ['t'] )) {
 			add_action ( 'wp_head', array (
 					$this,
-					'mo_page_get_cache_compatible_js' 
+					'mo_page_get_cache_compatible_js'
 			) );
 		}
 		add_filter ( 'get_edit_post_link', array (
 				$this,
-				'mo_page_get_variation_edit_link' 
+				'mo_page_get_variation_edit_link'
 		), 10, 3 );
 	}
 
@@ -125,7 +125,7 @@ class mo_page_post_type {
 			case 'date' :
 				break;
 			case 'stats' :
-				
+
 				$this->mo_page_show_stats_list ();
 				break;
 		}
@@ -134,16 +134,16 @@ class mo_page_post_type {
 	function insert_before_key($original_array, $original_key, $insert_key, $insert_value) {
 		$new_array = array ();
 		$inserted = false;
-		
+
 		foreach ( $original_array as $key => $value ) {
-			
+
 			if (! $inserted && $key === $original_key) {
 				$new_array [$insert_key] = $insert_value;
 				$inserted = true;
 			}
 			$new_array [$key] = $value;
 		}
-		
+
 		return $new_array;
 	}
 
@@ -157,7 +157,7 @@ class mo_page_post_type {
 					$variation_id = $variation_id ? $variation_id : 0;
 					echo '<script>
 					window.onload = function(){
-					
+
 					function mo_page_get_variation_cookie() {
 						var cookies = document.cookie.split(/;\s*/);
 						for ( var i = 0; i < cookies.length; i++) {
@@ -188,7 +188,7 @@ class mo_page_post_type {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
 							        }
-	
+
 						}
 					}
 					function mo_page_track_visit(v_id){
@@ -200,7 +200,7 @@ class mo_page_post_type {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
 							        }
-	
+
 						}
 					}
 					function mo_page_get_variation_id_to_display(){
@@ -218,30 +218,30 @@ class mo_page_post_type {
 															mo_page_track_visit(' . $variation_id . ');
 								        }
 						}
-						}											
-	
+						}
+
 					';
 					if ($mo_page_obj->mo_is_testing ()) {
 						echo 'if(mo_page_get_variation_cookie() == null){
 							mo_page_get_variation_id_to_display();
-	
+
 				    }else{
 							mo_page_track_impression();
 					}
 				}
-						
+
 									</script>';
 					} else {
 						echo 'if(mo_page_get_variation_cookie() == null){
 							mo_page_set_variation_cookie("mo_page_variation_' . $post->ID . '",' . $variation_id . ',365);
 															mo_page_track_impression();
 															mo_page_track_visit(' . $variation_id . ');
-	
+
 				    }else{
 							mo_page_track_impression();
 					}
 				}
-																	
+
 									</script>';
 					}
 				}
@@ -280,14 +280,14 @@ class mo_page_post_type {
 							$mo_page_obj->set_variation_property ( $v_id, 'impressions', $impressions );
 							$mo_page_obj->save ();
 							wp_send_json ( array (
-									'impressions' => $impressions 
+									'impressions' => $impressions
 							) );
 						} else {
 							$impressions = 1;
 							$mo_page_obj->set_variation_property ( $v_id, 'impressions', $impressions );
 							$mo_page_obj->save ();
 							wp_send_json ( array (
-									'impressions' => $impressions 
+									'impressions' => $impressions
 							) );
 						}
 					}
@@ -322,7 +322,7 @@ class mo_page_post_type {
 						return wp_send_json ( array (
 								'v_id' => $v_id,
 								'post_id' => $page_id,
-								'conversions' => $conversions 
+								'conversions' => $conversions
 						) );
 					}
 				}
@@ -339,7 +339,7 @@ class mo_page_post_type {
 			$v_id = $_POST ['v_id'];
 			$mo_page_obj = mo_pages::instance ( $post_id );
 			$current_visits = $mo_page_obj->get_variation_property ( $v_id, 'visitors' );
-			
+
 			if ($current_visits) {
 				$visits = $current_visits + 1;
 				$mo_page_obj->set_variation_property ( $v_id, 'visitors', $visits );
@@ -353,7 +353,7 @@ class mo_page_post_type {
 		wp_send_json ( array (
 				'post_id' => $post_id,
 				'current_visits' => $current_visits,
-				'incremented_visits' => $visits 
+				'incremented_visits' => $visits
 		) );
 	}
 
@@ -363,7 +363,7 @@ class mo_page_post_type {
 			$mo_page_obj = mo_pages::instance ( $id );
 			$v_id = $mo_page_obj->get_current_variation ();
 			if ($pagenow != 'edit.php' && ( int ) $v_id !== 0) {
-				
+
 				$title = $mo_page_obj->get_variation_property ( $v_id, 'title' ) ? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
 			}
 		}
@@ -383,7 +383,7 @@ class mo_page_post_type {
 			$mo_page_obj = mo_pages::instance ( $post_id );
 			$v_id = $mo_page_obj->get_current_variation ();
 			if (( int ) $v_id != 0) {
-				
+
 				$content = $mo_page_obj->get_variation_property ( $v_id, 'content' ) ? $mo_page_obj->get_variation_property ( $v_id, 'content' ) : '';
 			}
 		}
@@ -394,14 +394,14 @@ class mo_page_post_type {
 		global $post, $variation_id;
 		$post_id = $post->ID;
 		if (get_post_type ( $post_id ) == 'page') {
-			
+
 			$mo_page_obj = mo_pages::instance ( $post_id );
 			if (is_null ( $variation_id )) {
 				$v_id = $mo_page_obj->get_current_variation ();
 			} else {
 				$v_id = $variation_id;
 			}
-			
+
 			if (( int ) $v_id !== 0) {
 				$content = $mo_page_obj->get_variation_property ( $v_id, 'content' ) ? $mo_page_obj->get_variation_property ( $v_id, 'content' ) : '';
 			}
@@ -425,16 +425,16 @@ class mo_page_post_type {
 					    <th class="mo_stats_header_cell">Confidence</th>
 						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
-			
+
 			// echo "<ul class='mo_lp_stats_list'>";
-			
+
 			$first_status = get_post_meta ( $post->ID, 'mo_lp_variation_status', true ); // Current status
 			$i = 0;
 			$total_visits = 0;
 			$total_impressions = 0;
 			$total_conversions = 0;
 			foreach ( $variations_arr as $var_obj ) {
-				
+
 				// assign variation id a letter
 				$letter = mo_lp_ab_key_to_letter ( $var_obj->get_id () );
 				// get variation visits
@@ -450,7 +450,7 @@ class mo_page_post_type {
 				// get variation conversions
 				$conversions = $var_obj->get_conversions () ? $var_obj->get_conversions () : 0;
 				(($conversions === "")) ? $total_conversions = 0 : $total_conversions = $conversions;
-				
+
 				// add variaton visits to total
 				$total_visits += $var_obj->get_visitors ();
 				// add variaton impressions to total
@@ -463,10 +463,10 @@ class mo_page_post_type {
 				} else {
 					$conversion_rate = 0;
 				}
-				
+
 				$conversion_rate = round ( $conversion_rate, 3 ) * 100;
 				$cr_array [] = $conversion_rate;
-				
+
 				echo '<tr class="' . $status_class_text . '">';
 				echo '<td class="mo_stats_cell"><a title="' . $description . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_page_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
 				echo '<td class="mo_stats_cell">' . $impressions . '</td>';
@@ -484,11 +484,11 @@ class mo_page_post_type {
 	public function mo_page_get_variation_meta_title($title, $sep, $seplocation) {
 		global $post, $variation_id;
 		if (get_post_type ( $post->ID ) == 'page') {
-			
+
 			$mo_page_obj = mo_pages::instance ( $post->ID );
 			// $v_id = $mo_lp_obj->get_current_variation();
 			$v_id = $variation_id;
-			
+
 			if ($v_id != 0) {
 				$title = $mo_page_obj->get_variation_property ( $v_id, 'title' ) ? $mo_page_obj->get_variation_property ( $v_id, 'title' ) : '';
 			}
@@ -516,9 +516,9 @@ class mo_page_post_type {
 		global $post, $variation_id;
 		$mo_settings_obj = new mo_settings ();
 		if ($mo_settings_obj->get_mo_account_id ()) {
-			if (is_object ( $post ) && $post->post_type == 'page') {
+		//	if (is_object ( $post ) && $post->post_type == 'page') {
 				$mo_page_obj = mo_pages::instance ( $post->ID );
-				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1) {
+				if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_page_obj->get_variation_ids_arr () ) == 1 ) {
 					if (is_null ( $variation_id )) {
 						$v_id = $mo_page_obj->get_current_variation ();
 					} else {
@@ -530,7 +530,7 @@ class mo_page_post_type {
 					$website_tracking_js .= "var _apVars = _apVars || []; \n";
 					$website_tracking_js .= "_apVars.push(['_trackPageview']); \n";
 					$website_tracking_js .= "_apVars.push(['_setAccount','" . $mo_settings_obj->get_mo_account_id () . "']); \n";
-					
+
 					if (( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) > 0) {
 						$website_tracking_js .= "_apVars.push([ '_trackVariation','" . ( int ) $mo_page_obj->get_variation_property ( $v_id, 'variation_id' ) . "']); \n";
 					}
@@ -559,7 +559,7 @@ class mo_page_post_type {
 						echo $website_tracking_js;
 					}
 				}
-			}
+			//}
 		}
 	}
 
@@ -615,7 +615,7 @@ function mo_page_get_variation_cookie() {
 						}
 						return null;
 					}
-function isIE() { 
+function isIE() {
 									return ((navigator.appName == \'Microsoft Internet Explorer\') || ((navigator.appName == \'Netscape\') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
 	 }
 var url = window.location.href;
@@ -650,7 +650,7 @@ if (isIE()) {
     }
     xmlhttp.send();
 }
-}		
+}
 
  </script>';
 		}
@@ -692,23 +692,23 @@ if (isIE()) {
 	public function mo_page_add_shortcodes() {
 		add_shortcode ( 'mo_page_conversion', array (
 				$this,
-				'mo_page_conversion' 
+				'mo_page_conversion'
 		) );
 		add_shortcode ( 'mo_conversion', array (
 				$this,
-				'mo_page_conversion' 
+				'mo_page_conversion'
 		) );
 		add_shortcode ( 'mo_phone', array (
 				$this,
-				'mo_phone_shortcode' 
+				'mo_phone_shortcode'
 		) );
 		add_shortcode ( 'aim_phone', array (
 				$this,
-				'mo_phone_shortcode' 
+				'mo_phone_shortcode'
 		) );
 		add_shortcode ( 'mo_form', array (
 				$this,
-				'mo_form_shortcode' 
+				'mo_form_shortcode'
 		) );
 	}
 
@@ -716,7 +716,7 @@ if (isIE()) {
 		global $post;
 		if (! isset ( $_GET ['preview'] ) && $this->mo_page_track_admin_user ()) {
 			echo '<script type="text/javascript" >
-				
+
 					function mo_page_get_conv_variation_cookie(){
 							var cookies = document.cookie.split(/;\s*/);
 							var cookiesArr = [];
@@ -732,7 +732,7 @@ if (isIE()) {
 									xmlhttp = new XMLHttpRequest();
 									xmlhttp.open("POST","' . admin_url ( 'admin-ajax.php' ) . '" ,true);
 									xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	
+
 									xmlhttp.send("action=mo_page_track_conversion&cookie="+mo_page_get_conv_variation_cookie());
 											xmlhttp.onreadystatechange = function () {
 				        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -741,7 +741,7 @@ if (isIE()) {
 				        }
 					}
 				}
-											
+
 </script>';
 		}
 	}
