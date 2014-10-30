@@ -8,11 +8,11 @@ if (isset ( $_GET ['tab'] )) {
 $mo_settings_obj = new mo_settings ();
 if ($_POST) {
 	if(isset($_POST['action']) && $_POST['action'] == 'mo_gf_field_mapping'){
-		
+
 		mo_gravity_forms::mo_save_form_field_mapping($_POST['mo_gf_form'], $_POST);
 	}
 	echo '<div class="updated" style="float:left;" >The Marketing Optimizer plugin settings have been updated</div>';
-	
+
 	switch ($active_tab) {
 		case 'mo_lp_general_settings' :
 			$mo_settings_obj->set_mo_lp_permalink_prefix ( $_POST ['mo_lp_permalink_prefix'] );
@@ -72,7 +72,7 @@ if ($_POST) {
 			}
 			break;
 	}
-	
+
 	$mo_settings_obj->save ();
 }
 $cache_compatible = $mo_settings_obj->get_mo_lp_cache_compatible () ? $mo_settings_obj->get_mo_lp_cache_compatible () : 'false';
@@ -97,8 +97,8 @@ echo '<script>
 				}else{
 					jQuery(\'[name="mo_lp_track_admin"]\').val("");
 				}
-				});		
-				
+				});
+
 				jQuery(\'.toggle-mosptrackadmin\').toggles({on:' . $mo_sp_track_admin . '});
 				jQuery(\'.toggle-mosptrackadmin\').on(\'toggle\',function(e,active){
 				if(active){
@@ -124,7 +124,7 @@ echo '<script>
 				}
 });
 						});
-									
+
 </script>';
 ?>
 
@@ -150,18 +150,21 @@ echo '<script>
 				href="?page=marketing-optimizer-settings&tab=mo_gf_integration"
 				class="nav-tab  <?php echo $active_tab == 'mo_gf_integration' ? 'nav-tab-active' : ''; ?>">Gravity
 				Forms Integration</a>
+				<a
+				href="?page=marketing-optimizer-settings&tab=mo_shortcodes"
+				class="nav-tab  <?php echo $active_tab == 'mo_shortcodes' ? 'nav-tab-active' : ''; ?>">Shortcodes</a>
 
 		</h2>
 		<div
 			style="padding: 20px; background-color: #ECECEC; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">
 			<form method="post" action="">
-		
+
 <?php
 
 switch ($active_tab) {
 	case 'mo_lp_general_settings' :
 		$mo_lp_permalink = $mo_settings_obj->get_mo_lp_permalink_prefix()?$mo_settings_obj->get_mo_lp_permalink_prefix():'mo_lp';
-		?>		  
+		?>
     <div id="tabs-1">
 					<input type='hidden' name="action" value="mo_lp_plugin_settings" />
 					<table class="form-table">
@@ -211,11 +214,11 @@ switch ($active_tab) {
 							value="<?php _e('Save Changes') ?>" />
 					</p>
 				</div>
-		
+
 		</div>
 		</form>
 			<?php
-		
+
 		break;
 	case 'mo_sp_general_settings' :
 		$mo_sp_permalink = $mo_settings_obj->get_mo_sp_permalink_prefix()?$mo_settings_obj->get_mo_sp_permalink_prefix():'mo_sp';
@@ -268,7 +271,7 @@ switch ($active_tab) {
 	</div>
 	</form>
 					<?php
-		
+
 		break;
 	case 'mo_integration_settings' :
 		?>
@@ -363,7 +366,7 @@ switch ($active_tab) {
 		</p>
 	</div>
 			<?php
-		
+
 		break;
 	case 'mo_gf_integration' :
 		?>
@@ -389,11 +392,47 @@ switch ($active_tab) {
 	</div>
 	</form>
 		<?php
-		
+
 break;
+case 'mo_shortcodes' :
+	?>
+<div id="tabs-4">
+<legend>
+				<b>Shortcodes:</b>
+			</legend>
+			<table class="form-table">
+			<tr>
+							<td style="width: 20%" colspan="2">[mo_form id="XXX"]
+									</td>
+							<td style="width: 50%"><p style="font-style: italic;">Use form shortcode in content and widgets to display a marketing optimizer form. If no id is passed it will display the default form you have set in the marketing optimzer integration settings.</p></td>
+						</tr>
+						<tr>
+							<td style="width: 20%" colspan="2">[mo_phone]
+									</td>
+							<td style="width: 50%"><p style="font-style: italic;">Use phone shortcode in content and widgets to display  marketing optimizer visitor tracking numbers.</p></td>
+						</tr>
+						<tr>
+							<td style="width: 20%" colspan="2">[mo_page_conversion]
+									</td>
+							<td style="width: 50%"><p style="font-style: italic;">Use page conversion shortcode to track page conversions</p></td>
+						</tr>
+						<tr>
+							<td style="width: 20%" colspan="2">[mo_lp_conversion]
+									</td>
+							<td style="width: 50%"><p style="font-style: italic;">Use landing page conversion shortcode to track landing page conversions</p></td>
+						</tr>
+						<tr>
+							<td style="width: 20%" colspan="2">[mo_sp_conversion]
+									</td>
+							<td style="width: 50%"><p style="font-style: italic;">Use squeeze page conversion shortcode to track squeeze page conversions</p></td>
+						</tr>
+			</table>
+</div>
+	<?php
+	break;
 }
 ?>
-		
+
 		</div>
 </div>
 

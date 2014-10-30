@@ -1,10 +1,10 @@
 <?php
 /*
- * Plugin Name: Marketing Optimizer for Wordpress Plugin 
- * URI: http://www.marketingoptimizer.com/?apcid=8381 
- * Version: 20140708
- * Description: Create Landing Pages for Wordpress 
- * Author: Marketing Optimizer, customercare@marketingoptimizer.com 
+ * Plugin Name: Marketing Optimizer for Wordpress Plugin
+ * URI: http://www.marketingoptimizer.com/?apcid=8381
+ * Version: 20141030
+ * Description: Create Landing Pages for Wordpress
+ * Author: Marketing Optimizer, customercare@marketingoptimizer.com
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
  */
 /*===============================================================================
@@ -16,7 +16,7 @@ class mo_plugin {
 	 */
 	CONST MO_LP_TEXT_DOMAIN = 'mo_landing_pages';
 	CONST MO_DIRECTORY = 'marketing-optimizer';
-	public static $plugin_version = '20140708';
+	public static $plugin_version = '20141030';
 	public static $plugin_name = 'marketing-optimizer';
 	public $plugin_prefix;
 	public $menu_title;
@@ -56,21 +56,21 @@ class mo_plugin {
 		include ('includes/class.mo_squeeze_pages.php');
 		include ('includes/class.mo_sp_metaboxes.php');
 		include ('includes/class.mo_sp_variation.php');
-		
+
 		include ('includes/mo_lp_ab_testing.php');
 		include ('includes/mo_lp_templates.php');
-		
+
 		// add admin specific scripts
 		add_action ( 'admin_enqueue_scripts', array (
 				$this,
-				'mo_lp_admin_scripts' 
+				'mo_lp_admin_scripts'
 		) );
-		
+
 		// Plugin Prefix
 		$this->plugin_prefix = 'molp';
 		// Main Menu Item Title : Optional
 		$this->menu_title = 'Maketing Optimizer for Wordpress';
-				
+
 		/**
 		 * ***********************************
 		 * Plugin System Variables
@@ -92,7 +92,7 @@ class mo_plugin {
 		$this->domain = $this->plugin_prefix;
 		// Variable for the Plugin Options Array
 		$this->plugin_options = get_option ( $this->plugin_settings );
-		
+
 		/**
 		 * ***********************************
 		 * Plugin System Function Init
@@ -104,51 +104,51 @@ class mo_plugin {
 		// internationalization
 		add_action ( 'after_setup_theme', array (
 				$this,
-				'internationalize' 
+				'internationalize'
 		) );
 		// Add Top Level Menu Item : Optional
 		add_action ( 'admin_menu', array (
 				$this,
-				'top_level_menu_item' 
+				'top_level_menu_item'
 		) );
 		// Remove Top Level Menu Item in Submenu
 		add_action ( 'admin_menu', array (
 				$this,
-				'remove_duplicate_submenu_item' 
+				'remove_duplicate_submenu_item'
 		) );
 		// Add Submenu Item to Top Level Menu Item : Optional
 		// add_action('admin_menu', array($this, 'sub_menu_item'));
 		// Add Settings Submenu Item to the "Settings" Top Level Menu Item : Optional
 		add_action ( 'admin_menu', array (
 				$this,
-				'settings_sub_menu_item' 
+				'settings_sub_menu_item'
 		) );
 		// Add Links to the Plugin Page in the Description : Optional
 		add_filter ( 'plugin_row_meta', array (
 				$this,
-				'plugin_meta_links' 
+				'plugin_meta_links'
 		), 10, 2 );
 		// Add Settings Link to the Plugin Page Under Plugin's Name : Optional
 		add_filter ( 'plugin_action_links_' . $this->plugin_basename, array (
 				$this,
-				'add_settings_link' 
+				'add_settings_link'
 		) );
 		// Register External CSS and JavaScript files for : Optional
 		add_action ( 'admin_init', array (
 				$this,
-				'register_admin_scripts' 
+				'register_admin_scripts'
 		) );
 		// Enqueue External JavaScript file frontend-scripts.js to the Frontend : Optional
 		add_action ( 'wp_enqueue_scripts', array (
 				$this,
-				'enqueue_frontend_scripts' 
+				'enqueue_frontend_scripts'
 		) );
 		// Enqueue External CSS file frontend-style.css to the Frontend : Optional
 		add_action ( 'wp_print_styles', array (
 				$this,
-				'enqueue_frontend_styles' 
+				'enqueue_frontend_styles'
 		) );
-		
+
 		/**
 		 * ***********************************
 		 * Plugin Custom Function Init
@@ -160,11 +160,11 @@ class mo_plugin {
 		 * the following action and and change 'custom_method_one'
 		 * to your function's unique name
 		 */
-		
+
 		update_option ( 'mo_lp_plugin_activated', '1' );
 	}
 	// End Class Constructor
-	
+
 	/*
 	 * =============================================================================== Plugin System Functions ===============================================================================
 	 */
@@ -177,17 +177,17 @@ class mo_plugin {
 	 * @uses empty()
 	 * @uses register_activation_hook()
 	 * @uses array()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function on_activation() {
 		register_activation_hook ( $this->plugin_basename, array (
 				$this,
-				'load_plugin_options' 
+				'load_plugin_options'
 		) );
 	}
 	// End On Activation
-	
+
 	/**
 	 * On Deactivation
 	 *
@@ -197,17 +197,17 @@ class mo_plugin {
 	 * @uses empty()
 	 * @uses register_deactivation_hook()
 	 * @uses array()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function on_deactivation() {
 		register_deactivation_hook ( $this->plugin_basename, array (
 				$this,
-				'delete_plugin_options' 
+				'delete_plugin_options'
 		) );
 	}
 	// End On Deactivation
-	
+
 	/**
 	 * Load Plugin Options
 	 *
@@ -216,7 +216,7 @@ class mo_plugin {
 	 * options set in the $options_list array.
 	 *
 	 * @uses update_option()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function load_plugin_options() {
@@ -224,32 +224,32 @@ class mo_plugin {
 		$this->mo_migrate_to_new_plugin ();
 	}
 	// End Load Plugin Options
-	
+
 	/**
 	 * Remove Plugin Options
 	 *
 	 * @uses delete_option()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function delete_plugin_options() {
 		delete_option ( $this->plugin_settings );
 	}
 	// End Remove Plugin Options
-	
+
 	/**
 	 * internationalize
 	 *
 	 * Make youe plugin translatable
 	 *
 	 * @uses load_theme_textdomain()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function internationalize() {
 		load_theme_textdomain ( $this->domain, $this->plugin_dir . '/languages' );
 	}
-	
+
 	/**
 	 * Menu Item Title
 	 *
@@ -274,40 +274,40 @@ class mo_plugin {
 		}
 	}
 	// End Menu Item Title
-	
+
 	/**
 	 * Top Level Menu Item
 	 *
 	 * @uses add_menu_page()
 	 * @uses array()
 	 * @uses add_action()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function top_level_menu_item() {
-		$add_top_level_menu_page = add_menu_page ( 
+		$add_top_level_menu_page = add_menu_page (
 				// Page Title
-				$this->menu_title (), 
+				$this->menu_title (),
 				// Menu Title
-				'Marketing Optimizer', 
+				'Marketing Optimizer',
 				// User Capability
-				'manage_options', 
+				'manage_options',
 				// Menu Slug
-				$this->plugin_name . '-settings', 
+				$this->plugin_name . '-settings',
 				// Page Link Function
 				array (
 						$this,
-						'load_plugin_settings_page' 
-				), 
+						'load_plugin_settings_page'
+				),
 				// Icon URL
 				$this->plugin_url . 'images/moicon.png', 100 );
 		add_action ( 'admin_print_styles-' . $add_top_level_menu_page, array (
 				$this,
-				'enqueue_admin_scripts' 
+				'enqueue_admin_scripts'
 		) );
 	}
 	// End Top Level Menu Item
-	
+
 	/**
 	 * Remove Duplicate Submenu Menu Item
 	 *
@@ -318,19 +318,19 @@ class mo_plugin {
 	 * @uses add_submenu_page()
 	 * @uses array()
 	 * @uses add_action()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function remove_duplicate_submenu_item() {
 		$remove_duplicate_submenu_item = add_submenu_page ( $this->plugin_name . '-settings', '', '', 'manage_options', $this->plugin_name . '-settings' );
-		
+
 		add_action ( 'admin_print_styles-' . $remove_duplicate_submenu_item, array (
 				$this,
-				'enqueue_admin_scripts' 
+				'enqueue_admin_scripts'
 		) );
 	}
 	// End Remove Duplicate Submenu Menu Item
-	
+
 	/**
 	 * Submenu Item
 	 *
@@ -345,33 +345,33 @@ class mo_plugin {
 	 * @uses add_action()
 	 * @uses load_plugin_settings_pages_class()
 	 * @uses load_plugin_settings_scripts_class()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function sub_menu_item() {
-		$add_new_submenu_page = add_submenu_page ( 
+		$add_new_submenu_page = add_submenu_page (
 				// Parent Slug
-				$this->plugin_name . '-settings', 
+				$this->plugin_name . '-settings',
 				// Page Title
-				'Templates', 
+				'Templates',
 				// Menu Title
-				'Templates', 
+				'Templates',
 				// User Capability
-				'manage_options', 
+				'manage_options',
 				// Menu Slug
-				'mo-lp-templates', 
+				'mo-lp-templates',
 				// Page Link Function
 				array (
 						$this,
-						'load_plugin_settings_subpage' 
+						'load_plugin_settings_subpage'
 				) );
 		add_action ( 'admin_print_styles-' . $add_new_submenu_page, array (
 				$this,
-				'enqueue_admin_scripts' 
+				'enqueue_admin_scripts'
 		) );
 	}
 	// End Submenu Item
-	
+
 	/**
 	 * Settings Submenu Item
 	 *
@@ -382,33 +382,33 @@ class mo_plugin {
 	 * @uses add_submenu_page()
 	 * @uses array()
 	 * @uses add_action()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function settings_sub_menu_item() {
-		$add_settings_submenu = add_submenu_page ( 
+		$add_settings_submenu = add_submenu_page (
 				// Parent Slug
-				'options-general.php', 
+				'options-general.php',
 				// Page Title
-				$this->menu_title (), 
+				$this->menu_title (),
 				// Menu Title
-				$this->menu_title (), 
+				$this->menu_title (),
 				// User Capability
-				'manage_options', 
+				'manage_options',
 				// Menu Slug
-				'settings-sub-menu', 
+				'settings-sub-menu',
 				// Page Link Function
 				array (
 						$this,
-						'load_plugin_settings_page' 
+						'load_plugin_settings_page'
 				) );
 		add_action ( 'admin_print_styles-' . $add_settings_submenu, array (
 				$this,
-				'enqueue_admin_scripts' 
+				'enqueue_admin_scripts'
 		) );
 	}
 	// End Settings Submenu Item
-	
+
 	/**
 	 * Add Meta Links
 	 *
@@ -417,8 +417,8 @@ class mo_plugin {
 	 * The links will appear in the description
 	 * area on the plugin page.
 	 *
-	 * @param string $links        	
-	 * @param string $file        	
+	 * @param string $links
+	 * @param string $file
 	 * @since 1.0
 	 */
 	public function plugin_meta_links($links, $file) {
@@ -432,7 +432,7 @@ class mo_plugin {
 		return $links;
 	}
 	// End Add Meta Links
-	
+
 	/**
 	 * Add Settings Link
 	 *
@@ -440,7 +440,7 @@ class mo_plugin {
 	 * link Under the Plugin's name
 	 * on the plugin page.
 	 *
-	 * @param string $links        	
+	 * @param string $links
 	 * @uses array()
 	 * @return array_merge
 	 *
@@ -448,11 +448,11 @@ class mo_plugin {
 	 */
 	public function add_settings_link($links) {
 		return array_merge ( array (
-				'settings' => '<a href="options-general.php?page=' . $this->plugin_name . '-settings">' . __ ( "Settings", $this->domain ) . '</a>' 
+				'settings' => '<a href="options-general.php?page=' . $this->plugin_name . '-settings">' . __ ( "Settings", $this->domain ) . '</a>'
 		), $links );
 	}
 	// Settings Submenu Item
-	
+
 	/**
 	 * Main Settings Admin Page
 	 *
@@ -465,7 +465,7 @@ class mo_plugin {
 		include ($this->plugin_dir . 'admin/main-settings-page.php');
 	}
 	// End Main Settings Admin Page
-	
+
 	/**
 	 * Sub Settings Admin Page
 	 *
@@ -478,7 +478,7 @@ class mo_plugin {
 		include ($this->plugin_dir . 'admin/mo-templates-settings.php');
 	}
 	// End Sub Settings Admin Page
-	
+
 	/**
 	 * Register Admin Styles
 	 *
@@ -486,7 +486,7 @@ class mo_plugin {
 	 * file admin-settings-styles.js
 	 *
 	 * @uses wp_register_style()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function register_admin_scripts() {
@@ -497,7 +497,7 @@ class mo_plugin {
 		wp_register_script ( $this->plugin_name . '_admin-settings-js', $this->plugin_url . 'js/admin-settings-scripts.js', false, $this->get_version (), true );
 	}
 	// End Register Settings Page Scripts
-	
+
 	/**
 	 * Enqueue Settings Page Scripts
 	 *
@@ -507,7 +507,7 @@ class mo_plugin {
 	 *
 	 * @uses wp_enqueue_style()
 	 * @uses wp_enqueue_script()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function enqueue_admin_scripts() {
@@ -517,7 +517,7 @@ class mo_plugin {
 		// wp_enqueue_script($this->plugin_name . '_admin-settings-js' );
 	}
 	// End Register Frontend Scripts
-	
+
 	/**
 	 * Enqueue Frontend Scripts
 	 *
@@ -525,14 +525,14 @@ class mo_plugin {
 	 *
 	 * @uses wp_register_script()
 	 * @uses wp_enqueue_script()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_scripts() {
 		wp_enqueue_script ( 'jquery-ui-dialog');
 	}
 	// End Enqueue Frontend Scripts
-	
+
 	/**
 	 * Enqueue Frontend Styles
 	 *
@@ -540,15 +540,15 @@ class mo_plugin {
 	 *
 	 * @uses wp_register_style()
 	 * @uses wp_enqueue_style()
-	 *      
+	 *
 	 * @since 1.0
 	 */
 	public function enqueue_frontend_styles() {
 		wp_enqueue_style ( 'jquery_ui-css', plugins_url ( 'admin/css/jquery_ui.css', __FILE__ ) );
 	}
 	// End Enqueue Frontend Styles
-	
-	
+
+
 	public static function get_version() {
 		return self::$plugin_version;
 	}
@@ -577,7 +577,7 @@ class mo_plugin {
 		}
 		add_action ( 'admin_footer', array (
 				$this,
-				'mo_lp_get_slider_js' 
+				'mo_lp_get_slider_js'
 		) );
 	}
 	public function mo_lp_get_slider_js() {
@@ -600,7 +600,7 @@ class mo_plugin {
 			    });
 						var labelval =  "Exploitation: "+jQuery( "#mo_lp_slider-range-max" ).slider( "value" )+"%/Exploration: "+(100-jQuery( "#mo_lp_slider-range-max" ).slider( "value" ))+"%";
 			    jQuery( "#mo_lp_amount" ).val( labelval );
-			      		
+
 			    jQuery( "#mo_sp_slider-range-max" ).slider({
 			      range: "max",
 			      min: 10,
@@ -615,7 +615,7 @@ class mo_plugin {
 			    });
 						var labelval =  "Exploitation: "+jQuery( "#mo_sp_slider-range-max" ).slider( "value" )+"%/Exploration: "+(100-jQuery( "#mo_sp_slider-range-max" ).slider( "value" ))+"%";
 			    jQuery( "#amount" ).val( labelval );
-				
+
 			  });
 			      		</script>';
 	}

@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20141030 =
+* Added shortcode usage and description to settings.
 = Version 20141028 =
 * #bugFix fixed an issue with marketing optimizer integration code wasn't being output on every post type.
 = Version 20140708 =
