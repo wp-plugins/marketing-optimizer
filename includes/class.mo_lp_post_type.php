@@ -4,86 +4,86 @@ class mo_lp_post_type {
 	public function __construct() {
 		add_action ( 'admin_init', array (
 				$this,
-				'mo_lp_flush_rewrite_rules' 
+				'mo_lp_flush_rewrite_rules'
 		) );
 		add_action ( 'wp', array (
 				$this,
-				'mo_lp_set_variation_id' 
+				'mo_lp_set_variation_id'
 		) );
 		add_action ( 'init', array (
 				$this,
-				'mo_lp_add_shortcodes' 
+				'mo_lp_add_shortcodes'
 		) );
 		// add admin actions
 		add_action ( 'init', array (
 				$this,
-				'mo_lp_post_type_register' 
+				'mo_lp_post_type_register'
 		) );
 		if (is_admin ()) {
-			
+
 			add_action ( 'init', array (
 					$this,
-					'mo_lp_category_register_taxonomy' 
+					'mo_lp_category_register_taxonomy'
 			) );
 			add_action ( 'wp_trash_post', array (
 					$this,
-					'mo_lp_trash_lander' 
+					'mo_lp_trash_lander'
 			) );
 			add_filter ( "manage_edit-mo_landing_page_columns", array (
 					$this,
-					'mo_lp_columns' 
+					'mo_lp_columns'
 			) );
 			add_action ( "manage_mo_landing_page_posts_custom_column", array (
 					$this,
-					"mo_lp_column" 
+					"mo_lp_column"
 			) );
 			add_action ( 'admin_action_mo_lp_clear_stats', array (
 					$this,
-					'mo_lp_clear_stats' 
+					'mo_lp_clear_stats'
 			) );
 			add_action ( 'admin_action_mo_lp_pause_variation', array (
 					$this,
-					'mo_lp_pause_variation' 
+					'mo_lp_pause_variation'
 			) );
 			add_action ( 'admin_action_mo_lp_delete_variation', array (
 					$this,
-					'mo_lp_delete_variation' 
+					'mo_lp_delete_variation'
 			) );
-			
+
 			// add admin filters
 			add_filter ( 'post_row_actions', array (
 					$this,
-					'mo_lp_add_clear_tracking' 
+					'mo_lp_add_clear_tracking'
 			), 10, 2 );
 			add_filter ( 'content_edit_pre', array (
 					$this,
-					'mo_lp_get_variation_content_for_editor' 
+					'mo_lp_get_variation_content_for_editor'
 			), 10, 2 );
 			add_filter ( 'manage_edit-mo_landing_page_sortable_columns', array (
 					$this,
-					'mo_lp_sortable_columns' 
+					'mo_lp_sortable_columns'
 			) );
 			add_filter ( 'title_edit_pre', array (
 					$this,
-					'mo_lp_get_variation_title_for_editor' 
+					'mo_lp_get_variation_title_for_editor'
 			), 10, 2 );
 			add_filter ( 'get_edit_post_link', array (
 					$this,
-					'mo_lp_get_variation_edit_link' 
+					'mo_lp_get_variation_edit_link'
 			), 10, 3 );
 		}
-		
+
 		add_action ( 'wp_ajax_mo_lp_get_variation_id_to_display', array (
 				$this,
-				'mo_lp_get_variation_id_to_display' 
+				'mo_lp_get_variation_id_to_display'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_lp_get_variation_id_to_display', array (
 				$this,
-				'mo_lp_get_variation_id_to_display' 
+				'mo_lp_get_variation_id_to_display'
 		) );
 		add_action ( 'wp_footer', array (
 				$this,
-				'mo_lp_add_variation_cookie_js' 
+				'mo_lp_add_variation_cookie_js'
 		) );
 		add_action ( 'wp_footer', array (
 		$this,
@@ -91,65 +91,65 @@ class mo_lp_post_type {
 				) );
 		add_action ( 'wp_ajax_mo_lp_track_impression', array (
 				$this,
-				'mo_lp_track_impression' 
+				'mo_lp_track_impression'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_lp_track_impression', array (
 				$this,
-				'mo_lp_track_impression' 
+				'mo_lp_track_impression'
 		) );
 		add_action ( 'wp_ajax_mo_lp_track_visit', array (
 				$this,
-				'mo_lp_track_visit' 
+				'mo_lp_track_visit'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_lp_track_visit', array (
 				$this,
-				'mo_lp_track_visit' 
+				'mo_lp_track_visit'
 		) );
 		add_action ( 'wp_ajax_mo_lp_track_conversion', array (
 				$this,
-				'mo_lp_track_conversion' 
+				'mo_lp_track_conversion'
 		) );
 		add_action ( 'wp_ajax_mo_lp_get_template_content', array (
 				$this,
-				'mo_lp_get_template_content' 
+				'mo_lp_get_template_content'
 		) );
 		add_action ( 'wp_ajax_nopriv_mo_lp_track_conversion', array (
 				$this,
-				'mo_lp_track_conversion' 
+				'mo_lp_track_conversion'
 		) );
-		
+
 		add_filter ( 'the_content', array (
 				$this,
-				'mo_lp_get_variation_content' 
+				'mo_lp_get_variation_content'
 		), 10 );
 		add_filter ( 'wp_title', array (
 				$this,
-				'mo_lp_get_variation_meta_title' 
+				'mo_lp_get_variation_meta_title'
 		), 10, 3 );
 		add_filter ( 'template_include', array (
 				$this,
-				'mo_lp_get_post_template_for_template_loader' 
+				'mo_lp_get_post_template_for_template_loader'
 		) );
 		add_filter ( 'post_type_link', array (
 				$this,
-				"mo_lp_get_variation_permalink" 
+				"mo_lp_get_variation_permalink"
 		), 10, 2 );
 		add_filter ( 'the_title', array (
 				$this,
-				'mo_lp_get_variation_title' 
+				'mo_lp_get_variation_title'
 		), 10, 2 );
 		if (get_option ( 'mo_lp_cache_compatible' ) == 'true' && ! isset ( $_GET ['mo_page_variation_id'] ) && ! isset ( $_GET ['t'] )) {
 			add_action ( 'wp_head', array (
 					$this,
-					'mo_lp_get_cache_compatible_js' 
+					'mo_lp_get_cache_compatible_js'
 			) );
 		}
 		add_filter ( 'template_include', array (
 				$this,
-				'mo_lp_get_template' 
+				'mo_lp_get_template'
 		) );
 	}
-	
+
 	// ***********ADDS 'CLEAR STATS' BUTTON TO POSTS EDITING AREA******************/
 	public function mo_lp_add_clear_tracking($actions, $post) {
 		if ($post->post_type == 'mo_landing_page') {
@@ -198,7 +198,7 @@ class mo_lp_post_type {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
 							        }
-		
+
 						}
 					}
 					function mo_lp_track_visit(v_id){
@@ -210,7 +210,7 @@ class mo_lp_post_type {
 							        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							           var response  = xmlhttp.responseText;
 							        }
-		
+
 						}
 					}
 					function mo_lp_get_variation_id_to_display(){
@@ -228,12 +228,12 @@ class mo_lp_post_type {
 															mo_lp_track_visit(' . $variation_id . ');
 								        }
 						}
-	
+
 					}';
 			if ($mo_lp_obj->mo_is_testing ()) {
 				echo 'if(mo_lp_get_variation_cookie() == null){
 							mo_lp_get_variation_id_to_display();
-		
+
 				    }else{
 							mo_lp_track_impression();
 					}
@@ -244,7 +244,7 @@ class mo_lp_post_type {
 							mo_lp_set_variation_cookie("mo_lp_variation_' . $post->ID . '",' . $variation_id . ',365);
 															mo_lp_track_impression();
 															mo_lp_track_visit(' . $variation_id . ');
-	
+
 				    }else{
 							mo_lp_track_impression();
 					}
@@ -261,11 +261,11 @@ class mo_lp_post_type {
 				'singular_label' => __ ( "MO Landing Page Category", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'show_ui' => true,
 				'query_var' => true,
-				"rewrite" => true 
+				"rewrite" => true
 		);
-		
+
 		register_taxonomy ( 'mo_landing_page_category', array (
-				'mo_landing_page' 
+				'mo_landing_page'
 		), $args );
 	}
 
@@ -278,7 +278,7 @@ class mo_lp_post_type {
 		wp_redirect ( wp_get_referer () );
 		exit ();
 	}
-	
+
 	// populate collumns for landing pages
 	public function mo_lp_column($column) {
 		global $post;
@@ -313,7 +313,7 @@ class mo_lp_post_type {
 	/**
 	 * *******PREPARE COLUMNS FOR IMPRESSIONS AND CONVERSIONS**************
 	 */
-	
+
 	// define columns for landing pages
 	public function mo_lp_columns($columns) {
 		$columns = array (
@@ -323,7 +323,7 @@ class mo_lp_post_type {
 				"impressions" => __ ( "Impressions", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				"visits" => __ ( "Visits", mo_plugin::MO_LP_TEXT_DOMAIN ),
 				"conversions" => __ ( "Conversions", mo_plugin::MO_LP_TEXT_DOMAIN ),
-				"cr" => __ ( "Conversion Rate", mo_plugin::MO_LP_TEXT_DOMAIN ) 
+				"cr" => __ ( "Conversion Rate", mo_plugin::MO_LP_TEXT_DOMAIN )
 		);
 		return $columns;
 	}
@@ -348,7 +348,7 @@ class mo_lp_post_type {
 									xmlhttp = new XMLHttpRequest();
 									xmlhttp.open("POST","' . admin_url ( 'admin-ajax.php' ) . '" ,true);
 									xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	
+
 									xmlhttp.send("action=mo_lp_track_conversion&cookie=+mo_lp_get_variation_cookie()");
 											xmlhttp.onreadystatechange = function () {
 				        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -364,7 +364,7 @@ class mo_lp_post_type {
 
 	public function mo_lp_flush_rewrite_rules() {
 		$activation_check = get_option ( 'mo_lp_plugin_activated', 0 );
-		
+
 		if ($activation_check) {
 			global $wp_rewrite;
 			$wp_rewrite->flush_rules ();
@@ -378,7 +378,7 @@ class mo_lp_post_type {
 			$post_id = $post->ID;
 			$mo_lp_obj = mo_landing_pages::instance ( $post_id );
 			$v_id = $variation_id;
-			
+
 			$post_template = $mo_lp_obj->get_variation_property ( $v_id, 'template' );
 			if (! empty ( $post_template ) && $post_template != 'default' && file_exists ( get_template_directory () . "/{$post_template}" )) {
 				$template = get_template_directory () . "/{$post_template}";
@@ -393,10 +393,10 @@ class mo_lp_post_type {
 		global $post, $variation_id;
 		$post_id = $post->ID;
 		if (get_post_type ( $post_id ) == 'mo_landing_page') {
-			
+
 			$mo_lp_obj = mo_landing_pages::instance ( $post_id );
 			$v_id = $mo_lp_obj->get_current_variation ();
-			
+
 			$content = $mo_lp_obj->get_variation_property ( $v_id, 'content' ) ? $mo_lp_obj->get_variation_property ( $v_id, 'content' ) : '';
 		}
 		return $content;
@@ -404,10 +404,10 @@ class mo_lp_post_type {
 
 	public function mo_lp_get_variation_content_for_editor($content, $post_id) {
 		if (get_post_type ( $post_id ) == 'mo_landing_page') {
-			
+
 			$mo_lp_obj = mo_landing_pages::instance ( $post_id );
 			$v_id = $mo_lp_obj->get_current_variation ();
-			
+
 			try {
 				$content = $mo_lp_obj->get_variation_property ( $v_id, 'content' );
 			} catch ( Exception $e ) {
@@ -446,7 +446,7 @@ class mo_lp_post_type {
 	public function mo_lp_get_variation_meta_title($title, $sep, $seplocation) {
 		global $post, $variation_id;
 		if (get_post_type ( $post->ID ) == 'mo_landing_page') {
-			
+
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 			$v_id = $variation_id;
 			try {
@@ -463,7 +463,7 @@ class mo_lp_post_type {
 		if ($post->post_type == 'mo_landing_page') {
 			$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 			$v_id = $variation_id;
-			
+
 			$permalink = $permalink;
 		}
 		return $permalink;
@@ -478,7 +478,7 @@ class mo_lp_post_type {
 			} else {
 				$v_id = 0;
 			}
-			
+
 			$title = $mo_lp_obj->get_variation_property ( $v_id, 'title' ) ? $mo_lp_obj->get_variation_property ( $v_id, 'title' ) : '';
 		}
 		return $title;
@@ -488,7 +488,7 @@ class mo_lp_post_type {
 		if (get_post_type ( $id ) == 'mo_landing_page') {
 			$mo_lp_obj = mo_landing_pages::instance ( $id );
 			$v_id = $mo_lp_obj->get_current_variation ();
-			
+
 			$title = $mo_lp_obj->get_variation_property ( $v_id, 'title' ) ? $mo_lp_obj->get_variation_property ( $v_id, 'title' ) : '';
 		}
 		return $title;
@@ -496,7 +496,7 @@ class mo_lp_post_type {
 
 	public function mo_lp_post_type_register() {
 		$slug = get_option ( 'mo_lp_permalink_prefix', 'molp' );
-		
+
 		$labels = array (
 				'name' => _x ( 'Marketing Optimizer Landing Pages', 'post type general name', mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'menu_name' => _x ( 'Landing Pages', 'post type general name', mo_plugin::MO_LP_TEXT_DOMAIN ),
@@ -509,9 +509,9 @@ class mo_lp_post_type {
 				'search_items' => __ ( 'Search Landing Page', mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'not_found' => __ ( 'Nothing found', mo_plugin::MO_LP_TEXT_DOMAIN ),
 				'not_found_in_trash' => __ ( 'Nothing found in Trash', mo_plugin::MO_LP_TEXT_DOMAIN ),
-				'parent_item_colon' => '' 
+				'parent_item_colon' => ''
 		);
-		
+
 		$args = array (
 				'labels' => $labels,
 				'public' => true,
@@ -521,7 +521,7 @@ class mo_lp_post_type {
 				'menu_icon' => plugins_url () . '/' . mo_plugin::MO_DIRECTORY . '/images/moicon.png',
 				'rewrite' => array (
 						"slug" => "$slug",
-						'with_front' => false 
+						'with_front' => false
 				),
 				'capability_type' => 'post',
 				'hierarchical' => false,
@@ -532,10 +532,10 @@ class mo_lp_post_type {
 						'custom-fields',
 						'thumbnail',
 						'excerpt',
-						'page-attributes' 
-				) 
+						'page-attributes'
+				)
 		);
-		
+
 		register_post_type ( 'mo_landing_page', $args );
 		register_taxonomy ( 'mo_landing_page_cat', 'mo_landing_page-page', array (
 				'hierarchical' => true,
@@ -543,7 +543,7 @@ class mo_lp_post_type {
 				'singular_label' => "Landing Page Category",
 				'show_ui' => true,
 				'query_var' => true,
-				"rewrite" => true 
+				"rewrite" => true
 		) );
 	}
 
@@ -551,11 +551,11 @@ class mo_lp_post_type {
 		global $post;
 		$landing_page_obj = mo_landing_pages::instance ( $post->ID );
 		$variations = $landing_page_obj->get_variations_arr ();
-		
+
 		$visits = 0;
 		$impressions = 0;
 		$conversions = 0;
-		
+
 		foreach ( $variations as $vid ) {
 			$each_visit = $vid->get_visitors ();
 			$each_impression = $vid->get_impressions ();
@@ -601,7 +601,7 @@ class mo_lp_post_type {
 					    <th class="mo_stats_header_cell">Confidence</th>
 						<th class="mo_stats_header_cell">Actions</th>
 					  </tr>';
-			
+
 			$first_status = get_post_meta ( $post->ID, 'mo_lp_variation_status', true ); // Current status
 			$i = 0;
 			$total_visits = 0;
@@ -620,11 +620,11 @@ class mo_lp_post_type {
 					$status_text = $status ? '<i title="Pause Variation" class="fa fa-pause"></i>' : '<i title="UnPause Variation" class="fa fa-play"></i>';
 					$status_class_text = $status ? 'mo_status_unpaused' : 'mo_status_paused';
 					$confidence = $mo_lp_obj->get_confidence ( $var_obj->get_id () );
-					
+
 					// get variation conversions
 					$conversions = $var_obj->get_conversions () ? $var_obj->get_conversions () : 0;
 					(($conversions === "")) ? $total_conversions = 0 : $total_conversions = $conversions;
-					
+
 					// add variaton visits to total
 					$total_visits += $var_obj->get_visitors ();
 					// add variaton impressions to total
@@ -637,10 +637,10 @@ class mo_lp_post_type {
 					} else {
 						$conversion_rate = 0;
 					}
-					
+
 					$conversion_rate = round ( $conversion_rate, 2 ) * 100;
 					$cr_array [] = $conversion_rate;
-					
+
 					echo '<tr class="' . $status_class_text . '">';
 					echo '<td class="mo_stats_cell"><a title="' . $var_obj->get_description () . '" href="/wp-admin/post.php?post=' . $post->ID . '&mo_lp_variation_id=' . $var_obj->get_id () . '&action=edit">' . $letter . '</a> </td>';
 					echo '<td class="mo_stats_cell">' . $impressions . '</td>';
@@ -655,28 +655,28 @@ class mo_lp_post_type {
 			echo "</table>";
 		}
 	}
-	
+
 	// Make these columns sortable
 	public function mo_lp_sortable_columns() {
 		return array (
 				'title' => 'title',
 				'impressions' => 'impressions',
 				'conversions' => 'conversions',
-				'cr' => 'cr' 
+				'cr' => 'cr'
 		);
 	}
-	
+
 	// Add category sort to landing page list
 	public function mo_lp_taxonomy_filter_restrict_manage_posts() {
 		global $typenow;
-		
+
 		if ($typenow === "mo_landing_page") {
 			$post_types = get_post_types ( array (
-					'_builtin' => false 
+					'_builtin' => false
 			) );
 			if (in_array ( $typenow, $post_types )) {
 				$filters = get_object_taxonomies ( $typenow );
-				
+
 				foreach ( $filters as $tax_slug ) {
 					$tax_obj = get_taxonomy ( $tax_slug );
 					(isset ( $_GET [$tax_slug] )) ? $current = $_GET [$tax_slug] : $current = 0;
@@ -688,7 +688,7 @@ class mo_lp_post_type {
 							'selected' => $current,
 							'hierarchical' => $tax_obj->hierarchical,
 							'show_count' => false,
-							'hide_empty' => true 
+							'hide_empty' => true
 					) );
 				}
 			}
@@ -715,36 +715,36 @@ class mo_lp_post_type {
 		wp_send_json ( array (
 				'post_id' => $post_id,
 				'current_visits' => $current_visits,
-				'incremented_visits' => $visits 
+				'incremented_visits' => $visits
 		) );
 	}
-	
+
 	/* perform trash actions for landing pages */
 	public function mo_lp_trash_lander($post_id) {
 		global $post;
-		
+
 		if (! isset ( $post ) || isset ( $_POST ['split_test'] ))
 			return;
-		
+
 		if ($post->post_type == 'revision') {
 			return;
 		}
 		if (defined ( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || (isset ( $_POST ['post_type'] ) && $_POST ['post_type'] == 'revision')) {
 			return;
 		}
-		
+
 		if ($post->post_type == 'mo_landing_page') {
-			
+
 			$lp_id = $post->ID;
-			
+
 			$args = array (
 					'post_type' => 'landing-page-group',
-					'post_satus' => 'publish' 
+					'post_satus' => 'publish'
 			);
-			
+
 			$my_query = null;
 			$my_query = new WP_Query ( $args );
-			
+
 			if ($my_query->have_posts ()) {
 				$i = 1;
 				while ( $my_query->have_posts () ) :
@@ -752,15 +752,15 @@ class mo_lp_post_type {
 					$group_id = get_the_ID ();
 					$group_data = get_the_content ();
 					$group_data = json_decode ( $group_data, true );
-					
+
 					$lp_ids = array ();
 					foreach ( $group_data as $key => $value ) {
 						$lp_ids [] = $key;
 					}
-					
+
 					if (in_array ( $lp_id, $lp_ids )) {
 						unset ( $group_data [$lp_id] );
-						
+
 						$this_data = json_encode ( $group_data );
 						// print_r($this_data);
 						$new_post = array (
@@ -770,7 +770,7 @@ class mo_lp_post_type {
 								'post_status' => 'publish',
 								'post_date' => date ( 'Y-m-d H:i:s' ),
 								'post_author' => 1,
-								'post_type' => 'landing-page-group' 
+								'post_type' => 'landing-page-group'
 						);
 						// print_r($new_post);
 						$post_id = wp_update_post ( $new_post );
@@ -807,7 +807,7 @@ class mo_lp_post_type {
 						return wp_send_json ( array (
 								'v_id' => $v_id,
 								'post_id' => $page_id,
-								'conversions' => $conversions 
+								'conversions' => $conversions
 						) );
 					}
 				}
@@ -831,14 +831,14 @@ class mo_lp_post_type {
 							$mo_lp_obj->set_variation_property ( $v_id, 'impressions', $impressions );
 							$mo_lp_obj->save ();
 							wp_send_json ( array (
-									'impressions' => $impressions 
+									'impressions' => $impressions
 							) );
 						} else {
 							$impressions = 1;
 							$mo_lp_obj->set_variation_property ( $v_id, 'impressions', $impressions );
 							$mo_lp_obj->save ();
 							wp_send_json ( array (
-									'impressions' => $impressions 
+									'impressions' => $impressions
 							) );
 						}
 					}
@@ -879,7 +879,7 @@ class mo_lp_post_type {
 	public function mo_lp_add_shortcodes() {
 		add_shortcode ( 'mo_lp_conversion', array (
 				$this,
-				'mo_lp_conversion' 
+				'mo_lp_conversion'
 		) );
 	}
 
@@ -901,7 +901,7 @@ class mo_lp_post_type {
 		$mo_lp_obj = mo_landing_pages::instance ( $post->ID );
 		if ($post->post_type == 'mo_landing_page' && $mo_lp_obj->mo_is_testing () && ! $mo_lp_obj->mo_bot_detected () && defined ( 'DOING_AJAX' ) && DOING_AJAX && (! isset ( $_GET ['mo_lp_variation_id'] ) || ! isset ( $_GET ['t'] ))) {
 			echo '<script type="text/javascript">
-	
+
 						function mo_lp_get_variation_cookie() {
 												var cookies = document.cookie.split(/;\s*/);
 												for ( var i = 0; i < cookies.length; i++) {
@@ -918,7 +918,7 @@ class mo_lp_post_type {
 						function isIE() {
 							return ((navigator.appName == \'Microsoft Internet Explorer\') || ((navigator.appName == \'Netscape\') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
 						}
-						
+
 						var url = window.location.href;
 						var params = "";
 						url = url.split("?");
@@ -928,7 +928,7 @@ class mo_lp_post_type {
 							params = "&"+url[1];
 						}
 						variation_id = mo_lp_get_variation_cookie();
-							
+
 						if (isIE()) {
 						        if (variation_id != null) {
 						            window.location =  url[0] + "?mo_lp_variation_id=" + mo_lp_get_variation_cookie()+params;
@@ -951,8 +951,8 @@ class mo_lp_post_type {
 						    }
 						    xmlhttp.send();
 						}
-	
-	
+
+
  </script>';
 		}
 	}
@@ -975,13 +975,13 @@ class mo_lp_post_type {
 			$template_name = $_POST ['template'];
 		}
 		if ($template_name != 'theme') {
-			
+
 			$template_dir = site_url () . '/' . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name;
 			$template = @file_get_contents ( $template_dir . '/' . $template_name . '.php' );
-			
+
 			if (! $template) {
 				$template = $this->mo_get_template_via_curl ( $template_dir );
-				
+
 				if (! $template) {
 					$template = @file_get_contents ( ABSPATH . PLUGINDIR . '/' . mo_plugin::MO_DIRECTORY . '/templates/' . $template_name . '/' . $template_name . '.php' );
 					if (! $template) {
@@ -1027,11 +1027,11 @@ class mo_lp_post_type {
 					$website_tracking_js .= "var _apVars = _apVars || []; \n";
 					$website_tracking_js .= "_apVars.push(['_trackPageview']); \n";
 					$website_tracking_js .= "_apVars.push(['_setAccount','" . $mo_settings_obj->get_mo_account_id () . "']); \n";
-						
+
 					if (( int ) $mo_lp_obj->get_variation_property ( $v_id, 'variation_id' ) > 0) {
 						$website_tracking_js .= "_apVars.push([ '_trackVariation','" . ( int ) $mo_lp_obj->get_variation_property ( $v_id, 'variation_id' ) . "']); \n";
 					}
-					if ($mo_settings_obj->get_mo_phone_tracking () == 'true') {
+				if ($mo_settings_obj->get_mo_phone_tracking () == 'true') {
 						$website_tracking_js .= "_apVars.push([ '_publishPhoneNumber' ]); \n";
 						if ($mo_settings_obj->get_mo_phone_publish_cls ()) {
 							$website_tracking_js .= "_apVars.push([ '_setPhonePublishCls', '" . $mo_settings_obj->get_mo_phone_publish_cls () . "' ]); \n";
@@ -1043,6 +1043,9 @@ class mo_lp_post_type {
 						}
 						if ($mo_settings_obj->get_mo_phone_tracking_thank_you_url ()) {
 							$website_tracking_js .= "_apVars.push([ '_redirectConversionUrl','" . $mo_settings_obj->get_mo_phone_tracking_thank_you_url () . "']); \n";
+						}
+						if($mo_settings_obj->get_mo_phone_ctc()){
+							$website_tracking_js .= " _apVars.push([ '_phoneMobileCtc', true ]); \n";
 						}
 					}
 					$website_tracking_js .= "(function(d){ \n";

@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20141113 =
+* Added the option to make visitor level phone tracking numbers click to call for mobile phones
 = Version 20141030 =
 * Added shortcode usage and description to settings.
 = Version 20141028 =

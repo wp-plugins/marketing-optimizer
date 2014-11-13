@@ -1,6 +1,6 @@
 <?php
 class mo_settings {
-	
+
 	// general settings
 	public $mo_lp_permalink_prefix;
 	public $mo_lp_variation_pages;
@@ -20,6 +20,7 @@ class mo_settings {
 	public $mo_phone_publish_cls;
 	public $mo_phone_tracking_default_number;
 	public $mo_phone_tracking_thank_you_url;
+	public $mo_phone_ctc;
 	public $mo_form_default_id;
 	public function __construct() {
 		foreach ( get_object_vars ( $this ) as $property => $value ) {
@@ -125,6 +126,12 @@ class mo_settings {
 	public function set_mo_phone_tracking_thank_you_url($value) {
 		$this->mo_phone_tracking_thank_you_url = $value;
 	}
+	public function get_mo_phone_ctc(){
+		return $this->mo_phone_ctc;
+	}
+	public function set_mo_phone_ctc($value){
+		$this->mo_phone_ctc = $value;
+	}
 	public function get_mo_form_default_id() {
 		return $this->mo_form_default_id;
 	}
@@ -132,7 +139,7 @@ class mo_settings {
 		$this->mo_form_default_id = $value;
 	}
 	public function save() {
-		
+
 		foreach ( get_object_vars ( $this ) as $property => $value ) {
 			if (property_exists ( $this, $property )) {
 				$function_name = 'get_' . $property;

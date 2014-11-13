@@ -53,6 +53,11 @@ if ($_POST) {
 			if (isset ( $_POST ['mo_phone_tracking_thank_you_url'] )) {
 				$mo_settings_obj->set_mo_phone_tracking_thank_you_url ( $_POST ['mo_phone_tracking_thank_you_url'] );
 			}
+			if (! isset ( $_POST ['mo_phone_ctc'] )) {
+				$mo_settings_obj->set_mo_phone_ctc ( 'false' );
+			} else {
+				$mo_settings_obj->set_mo_phone_ctc ( $_POST ['mo_phone_ctc'] );
+			}
 			if (isset ( $_POST ['mo_form_default_id'] )) {
 				$mo_settings_obj->set_mo_form_default_id ( $_POST ['mo_form_default_id'] );
 			}
@@ -80,6 +85,7 @@ $track_admin = $mo_settings_obj->get_mo_lp_track_admin () ? $mo_settings_obj->ge
 $mo_sp_track_admin = $mo_settings_obj->get_mo_sp_track_admin () ? $mo_settings_obj->get_mo_sp_track_admin () : 'false';
 $mo_integration = $mo_settings_obj->get_mo_marketing_optimizer () ? $mo_settings_obj->get_mo_marketing_optimizer () : 'false';
 $mo_phone_tracking = $mo_settings_obj->get_mo_phone_tracking () ? $mo_settings_obj->get_mo_phone_tracking () : 'false';
+$mo_phone_ctc = $mo_settings_obj->get_mo_phone_ctc()?$mo_settings_obj->get_mo_phone_ctc():'false';
 echo '<script>
 	jQuery(document).ready(function(){
 				jQuery(\'.toggle-cachecompatible\').toggles({on:' . $cache_compatible . '});
@@ -123,6 +129,15 @@ echo '<script>
 					jQuery(\'[name="mo_phone_tracking"]\').val("");
 				}
 });
+										jQuery(\'.toggle-phone-ctc\').toggles({on:' . $mo_phone_ctc . '});
+				jQuery(\'.toggle-phone-ctc\').on(\'toggle\',function(e,active){
+				if(active){
+					jQuery(\'[name="mo_phone_ctc"]\').val("true");
+				}else{
+					jQuery(\'[name="mo_phone_ctc"]\').val("");
+				}
+});
+
 						});
 
 </script>';
@@ -317,6 +332,15 @@ switch ($active_tab) {
 						value="<?php echo $mo_settings_obj->get_mo_phone_tracking() == 'true'?'true':''; ?>" /></td>
 					<td style="width: 50%"><p style="font-style: italic;">Turn on/off
 							phone number tracking.</p></td>
+				</tr>
+				<tr valign="top">
+					<td style="width: 20%">Mobile Click to Call:</td>
+					<td style="width: 30%"><div
+							class="toggle-phone-ctc toggle-modern"></div> <input
+						type="hidden" name="mo_phone_ctc"
+						value="<?php echo $mo_settings_obj->get_mo_phone_ctc() == 'true'?'true':''; ?>" /></td>
+					<td style="width: 50%"><p style="font-style: italic;">Turn on/off
+							mobile phone click to call.</p></td>
 				</tr>
 				<tr valign="top">
 					<td style="width: 20%">Phone Publish Class:</td>
