@@ -3,7 +3,7 @@ Contributors: activeinternetmarketing
 Donate link:
 Tags: a b test, a b testing, a/b test, a/b testing, ab test, abtesting, analytics, click tracking, content experiments, conversion pages, conversion optimization, conversion rate optimization, cpa, goal tracking, marketing optimizer, multivariate, multivariate test, landing page, landing pages, split testing, active internet marketing, cro, call tracking, statistics, stats, conversions, analytics, testing, experiments, metrics, gravity forms
 Requires at least: 3.3
-Tested up to: 3.8.1
+Tested up to: 4.0.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -94,6 +94,8 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20141121 =
+* Added compatibility for wordpress 4.0.1
 = Version 20141113 =
 * Added the option to make visitor level phone tracking numbers click to call for mobile phones
 = Version 20141030 =
