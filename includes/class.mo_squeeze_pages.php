@@ -15,21 +15,20 @@ class mo_squeeze_pages extends mo_ab_testing {
 
 	public function __construct($post_id) {
 		parent::__construct ( $post_id );
-		$this->set_current_variation ();
-	}
-
-	public function set_variations_arr($variation_ids_arr) {
-		if (is_array ( $variation_ids_arr ) && ! empty ( $variation_ids_arr )) {
-			$this->variations_arr = array ();
-			foreach ( $variation_ids_arr as $id ) {
-				$this->variations_arr [$id] = new mo_sp_variation ( $this->get_post_id (), $id, $this->get_meta_value_prefix () );
-			}
-		} else {
-			throw new InvalidArgumentException ( 'Not a valid array or array is empty' );
-		}
-	}
-
-	public function set_current_variation() {
+		 $this->set_current_variation ();
+                 add_action ( 'wp_enqueue_scripts', array ($this,'remove_default_stylesheet') , 20);
+        }
+        
+        public function remove_default_stylesheet() {
+            wp_dequeue_style( 'twentyfifteen-style' );
+            wp_deregister_style( 'twentyfifteen-style' );
+            wp_dequeue_style('screen');
+            wp_deregister_style('screen');
+            wp_dequeue_script( 'site' );
+            wp_deregister_script( 'site' );
+        }
+        
+        public function set_current_variation() {
 		global $post, $pagenow;
 		if (isset ( $_GET ['mo_sp_variation_id'] )) {
 			$this->current_variation = $_GET ['mo_sp_variation_id'];

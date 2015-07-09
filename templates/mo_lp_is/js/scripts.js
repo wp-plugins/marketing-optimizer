@@ -96,8 +96,8 @@ jQuery(document).ready(function($) {
 	// 	}
 	// });
 			
-	$('.alert-message').alert();
+	//$('.alert-message').alert();
 	
-	$('.dropdown-toggle').dropdown();
+	//$('.dropdown-toggle').dropdown();
  
 });

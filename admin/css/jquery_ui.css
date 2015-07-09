@@ -64,7 +64,7 @@
 }
 
 .ui-widget-overlay {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -1777,11 +1777,11 @@ body .ui-tooltip {
 }
 
 .ui-widget-overlay {
-	z-index: 99 !important;
-	background: #aaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
-		repeat;
-	opacity: .3;
-	filter: Alpha(Opacity = 30)
+	z-index: 999 !important;
+	background: #000;
+	opacity: .8;
+	position:fixed;
+	filter: Alpha(Opacity = 80)
 }
 
 .ui-widget-shadow {

@@ -18,6 +18,16 @@
 	text-align:center;
 	font-size:10px !important;
 }
+.mo_stats_d {
+    float: left !important;
+    padding: 8px 10px !important;
+}
+.mo_stats_r {
+    float: left !important;
+    padding: 8px 12px ;
+    font-size: 10px !important;
+    font-weight: normal !important;
+}
 .column-impressions{
 	width:10%;
 }
@@ -30,7 +40,12 @@
 .column-cr{
 	width:10%;
 }
-
+.mo_meta_box_stats_table{
+	width:100%;
+}
+.mo_meta_box_stats_table a{
+	text-decoration:none;;
+}
 .mo_meta_box_stats_table th{
 	width:43px !important;
 	font-size:14px !important;
@@ -61,3 +76,81 @@
 	margin-bottom:10px;
 	overflow:hidden;
 }
+/*================= added by rhizonex =======================*/
+.block-title {
+  background: none repeat scroll 0 0 #ccc;
+  font-size: 20px;
+  padding: 10px 0 10px 10px;
+}
+.marketing-block-content{
+	padding: 20px; 
+	background-color: #ECECEC; 
+	border-left: 1px solid #ccc; 
+	border-right: 1px solid #ccc; 
+	border-bottom: 1px solid #ccc;
+}
+.marketing-setting-block {
+  margin-bottom: 10px;
+  position: relative;
+}
+.gravity-disabled-mask {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+}
+
+.column-impressions {
+  width: 115px;
+}
+.column-visits {
+  width: 80px;
+}
+.column-conversions {
+  width: 115px;
+}
+.column-cr {
+  width: 142px;
+}
+.column-ID {
+  width: 70px;
+}
+
+.nav-tab-div {
+  display: inline-block;
+  position:relative;
+}
+.nav-tab-delete {
+  color: #000;
+  display: none;
+  font-size: 15px;
+  position: absolute;
+  right: 6px;
+  text-decoration: none;
+  top: -10px;
+}
+.nav-tab-div:hover .nav-tab-delete{display:block;}
+.disable-phone-tracking {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+  color: #d21700;
+  height: 100%;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: 999;
+}
+.disable-phone-tracking > div {
+  font-size: 15px;
+  padding-top: 10px;
+}
+.marketing-setting-block p.submit {
+  margin-top: 0;
+  max-width: 100%;
+  padding: 0;
+  text-align: left;
+  margin-left: 10px;
+}
+#side-sortables{position:absolute !important;}
+
+#adminmenuwrap {z-index:1 !important;}

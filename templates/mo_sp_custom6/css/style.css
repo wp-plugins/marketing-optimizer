@@ -1,0 +1,55 @@
+body{ margin:0; padding:0; background-color:#202020;font-family: 'Raleway', sans-serif;}
+h1,h2,h3,h4,h5,h6,P{margin:0; padding:0;}
+
+.pad{ padding:20px 20px 20px 20px;}
+.main-popup{width:774px; height:500px; margin:0px auto 0 auto;background-color:#fff;border-radius:20px;}
+
+h1.heading1{ text-align: center; font-size:24px; color:#373737;font-family: 'Raleway', sans-serif; font-weight:600; margin:20px 0 10px 20px;}
+
+h1 span{ color:#90a33f; font-size:18px;}
+
+.clear{ clear:both;}
+h2.heading2{ text-align:left; margin-top:0; font-size:18px;color:#90a33f;font-family: 'Raleway', sans-serif; font-weight:600; padding-top:10px; padding-left:20px;}
+.pad{ padding:20px 27px 20px 20px;}
+.mar20{ margin-right:30px;}
+.left-sec{width:100%;}
+.right-sec{    background-color: #fef4cc; border:1px solid #f1bf56;
+    float: left;
+    height: 77px;
+    padding: 39px 0 0 40px; margin-left:10px;
+    width: 660px;}
+.marimg{  margin-bottom: -17px;
+    margin-left: 243px;
+    margin-top: 39px;}
+	.input-box{ width:215px; height:34px;float:left;margin-right:30px; }
+	
+		.inputb{  width:215px; height:34px; padding-left:10px; font-family: 'Raleway', sans-serif;border:1px solid #f1bf56; }
+		
+		.button{ float:left;  cursor:pointer;width:130px; height:34px; background: #ffd65e; /* Old browsers */
+background: -moz-linear-gradient(top, #ffd65e 0%, #febf04 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #ffd65e 0%,#febf04 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #ffd65e 0%,#febf04 100%); /* IE10+ */
+background: linear-gradient(to bottom, #ffd65e 0%,#febf04 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */color:#8a260c;font-family: 'Raleway', sans-serif; font-size:12px; text-transform:uppercase; font-weight:600; border-radius:5px; border:1px solid #e2990a ; height:35px;}
+		
+			.button:hover{ background: #febf04; /* Old browsers */
+background: -moz-linear-gradient(top, #febf04 0%, #ffd65e 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#febf04), color-stop(100%,#ffd65e)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #febf04 0%,#ffd65e 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #febf04 0%,#ffd65e 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #febf04 0%,#ffd65e 100%); /* IE10+ */
+background: linear-gradient(to bottom, #febf04 0%,#ffd65e 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#febf04', endColorstr='#ffd65e',GradientType=0 ); /* IE6-9 */}
+			
+			.list{ font-family:"Times New Roman", Times, serif; font-style:italic; margin:0; padding:0; margin-left:100px; margin-bottom:40px; margin-top:10px;}
+			.list li{ margin:0; padding:0; list-style-image:url(../images/tick2.png); background-repeat:no-repeat; background-position:left; font-size:18px; line-height:30px; color:#545454;}
+			
+			.smalltext{font-family: 'Raleway', sans-serif; font-size:14px; color: #5d9618; text-align:left;padding:30px 0 0 20px; text-align:center;}
+			.padleft{ margin-left:20px;}
+			
+			.pright{ margin-right:100px;}
+			
+			
+			

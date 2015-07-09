@@ -1,0 +1,26 @@
+body{ margin:0; padding:0; background-color:#666;font-family: 'Raleway', sans-serif;}
+h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
+.main-popup{width:764px; height:325px; margin:0px auto 0 auto;background-color:#ffffff;}
+
+h1.headign1{ text-align:left; margin: 0; font-size:24px; color:#000;font-family: 'Raleway', sans-serif; font-weight:600; margin-bottom:57px;}
+
+h2.headign2{ text-align:left; margin: 0; font-size:30px; color:#fff;font-family: 'Raleway', sans-serif; font-weight:600; padding-top:10px; padding-bottom:20px; padding-left:20px;}
+.pad{ padding:30px 27px 20px 30px;}
+.mar20{ margin-right:30px;}
+.left-sec{width:365px; float:left;}
+.right-sec{ width:340px;  float:right;  background-color:#1ca3dd;border-radius:15px;}
+.marimg{  margin-bottom: -17px;
+    margin-left: 243px;
+    margin-top: 39px;}
+	.input-box{ width:280px; height:40px; margin:0 auto 20px auto; }
+	
+		.inputb{  border-radius:5px; width:265px; height:40px; border:1px solid #CCC; padding-left:10px; font-family: 'Raleway', sans-serif; }
+		
+		.button.popup{ border-radius:5px; cursor:pointer;width:280px; height:53px; background-color:#f68b29; color:#FFF; border:0px;font-family: 'Raleway', sans-serif; font-size:24px; text-transform:uppercase; font-weight:600; border:1px solid #c45d04; text-shadow:1px 1px 1px #b85e0b;}
+		
+			.button.popup:hover{ background-color:#333;border:1px solid #000;}
+			
+			.list{ margin:0; padding:0; margin-left:25px;}
+			.list li{ margin:0; padding:0; list-style-image:url(../images/tick.png); background-repeat:no-repeat; background-position:left; font-size:14px; line-height:30px;}
+			
+			.smalltext{ont-family: 'Raleway', sans-serif; font-size:12px; color:#FFF; text-align:center; line-height:30px;}

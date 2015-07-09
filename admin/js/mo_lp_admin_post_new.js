@@ -104,7 +104,8 @@ jQuery(document).ready(function($) {
     }
     if (jQuery('#post_type').val() == 'mo_sp') {
 	var v_id = jQuery('#mo_sp_open_variation').val();
-	var url = jQuery('#post-preview').attr('href') + '?mo_sp_variation_id=' + v_id + '&preview=true';
+        var link_ch = (jQuery('#permalink_structure').val()=="")?'&':'?';
+	var url = jQuery('#post-preview').attr('href') + link_ch+'mo_sp_variation_id=' + v_id + '&preview=true';
 	jQuery('#post-preview').hide();
 	jQuery('#preview-action').append('<a class="preview button" href="' + url + '" id="mo-sp-post-preview" target="wp-preview-769" style="display: block;">Save & Preview</a>');
 	jQuery('#mo-sp-post-preview').click(function(event) {
@@ -123,14 +124,15 @@ jQuery(document).ready(function($) {
 		    data : data,
 
 		}).done(function(data, status, xhr) {
-		    width = jQuery('input[name="modal_width"]').val() ? jQuery('input[name="modal_width"]').val() : 250;
+                    width = jQuery('input[name="modal_width"]').val() ? jQuery('input[name="modal_width"]').val() : 250;
 		    height = jQuery('input[name="modal_height"]').val() ? jQuery('input[name="modal_height"]').val() : 250;
 		    if (!jQuery('#mo_sp_container').length) {
 			jQuery('body').append('<div id="mo_sp_container" style="display:none;"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button><iframe id="mo_sp_iframe" src="" style="border:none;height:100%;width:100%;"></iframe></div>');
 		    }
 		    jQuery("#mo_sp_iframe").prop("src", url);
 		    mo_sp = jQuery("#mo_sp_container");
-		    mo_sp.dialog({
+                    
+                    mo_sp.dialog({
 			modal : true,
 			autoOpen : false,
 			height : height,
@@ -139,6 +141,10 @@ jQuery(document).ready(function($) {
 			maxWidth : width,
 			dialogClass : "mo_sp_modal",
 			open : function() {
+                            jQuery(this).parent().css('position', 'fixed');
+                            jQuery(this).parent().removeClass("ui-corner-all");
+                            jQuery(this).parent().css('border','0px');
+                            jQuery(this).parent().css('top', '25%');
 			    jQuery('.ui-widget-overlay').bind('click', function() {
 				mo_sp.dialog('close');
 			    });
@@ -155,7 +161,8 @@ jQuery(document).ready(function($) {
 	});
     } else if (jQuery('#post_type').val() == 'mo_landing_page') {
 	var v_id = jQuery('#mo_lp_open_variation').val();
-	var url = jQuery('#post-preview').attr('href') + '?mo_lp_variation_id=' + v_id + '&preview=true';
+        var link_ch = (jQuery('#permalink_structure').val()=="")?'&':'?';
+        var url = jQuery('#post-preview').attr('href') +link_ch+'mo_lp_variation_id=' + v_id + '&preview=true';
 	jQuery('#post-preview').hide();
 	jQuery('#preview-action').append('<a class="preview button" href="' + url + '" id="mo-sp-post-preview" target="wp-preview-769" style="display: block;">Save & Preview</a>');
 	jQuery('#mo-sp-post-preview').click(function(event) {
@@ -184,7 +191,14 @@ jQuery(document).ready(function($) {
 
     } else if (jQuery('#post_type').val() == 'page') {
 	var v_id = jQuery('#mo_page_open_variation').val();
-	var url = jQuery('#post-preview').attr('href') + '?mo_page_variation_id=' + v_id + '&preview=true';
+        var temp_url = jQuery('#post-preview').attr('href');
+        var link_ch = (jQuery('#permalink_structure').val()=="")?'&':'?';
+        if(jQuery('#permalink_structure').val()=="") {
+            if(temp_url.indexOf("page_id=")== -1){
+                link_ch = '?';
+            }
+        }
+	var url = jQuery('#post-preview').attr('href') + link_ch+'mo_page_variation_id=' + v_id + '&preview=true';
 	jQuery('#post-preview').hide();
 	jQuery('#preview-action').append('<a class="preview button" href="' + url + '" id="mo-sp-post-preview" target="wp-preview-769" style="display: block;">Save & Preview</a>');
 	jQuery('#mo-sp-post-preview').click(function(event) {
@@ -195,8 +209,7 @@ jQuery(document).ready(function($) {
 	    target = $this.attr('target');
 	    event.stopPropagation();
 	    event.preventDefault();
-
-	    form.unbind('submit').bind('submit', function() {
+            form.unbind('submit').bind('submit', function() {
 		var preview_win = window.open('', 'mo_page_preview');
 		request = jQuery.ajax({
 		    type : "POST",
@@ -211,5 +224,11 @@ jQuery(document).ready(function($) {
 	    form.submit();
 	});
     }
-
+    jQuery(".custom_trigger").trigger("click");
+    jQuery(".wp-editor-wrap").css('z-index',0);
+    jQuery(".template_preview").fancybox();
 });
+
+
+
+    

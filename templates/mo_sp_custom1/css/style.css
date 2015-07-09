@@ -1,0 +1,23 @@
+body{ margin:0; padding:0; background-color:#666;}
+h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
+.main-popup{width:700px; height:430px; margin:0px auto 0 auto; border:6px solid #00aeef; background-color:#FFF;}
+
+h1.heading1{ text-align:center; font-size:30px; color:#484848; font-family: 'Oswald', sans-serif; font-weight:400; margin-top:30px;}
+
+h2.heading2{ text-align:center; font-size:18px; color:#00aeef; font-family: 'Raleway', sans-serif; font-weight:300; margin-top:0px !important;}
+
+.fl{float:left;}
+.fr{float:right;}
+.pad{ padding:40px 0 0 80px;}
+.mar20{ margin-right:30px;}
+.graybox{ width:387px; height:205px;  background-color:#f1f1f1; padding-top:25px;}
+.marimg{  margin-bottom: -17px;
+    margin-left: 243px;
+    margin-top: 39px;}
+	.input-box{ width:326px; height:40px; margin:0 auto 30px auto; }
+	
+		.inputb{ width:316px; height:40px; border:1px solid #CCC; padding-left:10px; font-family: 'Raleway', sans-serif; }
+		
+		.button{ cursor:pointer;width:328px; height:40px; background-color:#9eb538; color:#FFF; border:0px;font-family: 'Raleway', sans-serif; font-size:16px; text-transform:uppercase; font-weight:600;}
+		
+			.button:hover{ background-color:#88a01e;}

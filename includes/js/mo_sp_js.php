@@ -30,10 +30,8 @@ $modal_height = get_post_meta($v_id,'mo_sp_modal_height_'.$v_id,true);
 echo'
 
 jQuery(document).ready(function($){
-	jQuery(\'body\').append(\'<a href="'. $mo_sp_url.'" target="_blank" class="nyroModal">MO SP</a><div id="mo_sp_container" style="width:500px;height:500px;display:none;">mo squeeze page test</div>\');
-
-				
-	mo_sp = jQuery(".nyroModal").nyroModal([sizes:{initW: '.$modal_width.',initH:'. $modal_height.'}).nmCall();
+	jQuery(\'body\').append(\'<a href="'. $mo_sp_url.'" target="_blank" class="nyroModal">MO SP</a><div id="mo_sp_container" style="width:500px;height:500px;display:none;">mo pop up test</div>\');
+        mo_sp = jQuery(".nyroModal").nyroModal([sizes:{initW: '.$modal_width.',initH:'. $modal_height.'}).nmCall();
 	
 });';
 

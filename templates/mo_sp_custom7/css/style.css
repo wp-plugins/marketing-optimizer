@@ -1,0 +1,28 @@
+body{ margin:0; padding:0; background-color:#373431;font-family: 'Raleway', sans-serif;}
+h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
+.main-popup{width:820px; height:316px; margin:0px auto 0 auto;background-color:#e9e9e9; border:5px solid #fff;}
+
+h1.heading1{ text-align:left; font-size:24px; color:#000;font-family: 'Raleway', sans-serif; font-weight:600; margin:20px;}
+
+h2.heading2{ text-align: center; margin:0; font-size:18px; color:#fff;font-family: 'Raleway', sans-serif; font-weight:600; padding-top:10px; padding-bottom:10px; padding-left:20px;}
+.pad{ padding:30px 27px 20px 30px;}
+.mar20{ margin-right:30px;}
+.left-sec{width:467px; float:left;}
+.right-sec{ width:340px;  float:right;  background-color:#ea9923;}
+.marimg{  margin-bottom: -17px;
+    margin-left: 243px;
+    margin-top: 39px;}
+	.input-box{ width:210px; height:40px; margin:0 auto 20px auto; }
+	
+		.inputb{  width:210px; height:40px; border:1px solid #b77f2c; padding-left:10px; font-family: 'Raleway', sans-serif; }
+		
+		.button.popup{  cursor:pointer;width:222px; height:48px; background-color:#5da20a; color:#FFF; border:0px;font-family: 'Raleway', sans-serif; font-size:18px; text-transform:uppercase; font-weight:600; border:1px solid #b77f2c; text-shadow:1px 1px 1px #b85e0b;}
+		
+			.button.popup:hover{ background-color:#333;border:1px solid #000;}
+			
+			.list{ margin:0; padding:0; margin-left:25px;}
+			.list li{ margin:0; padding:0; list-style-image:url(../images/tick.png); background-repeat:no-repeat; background-position:left; font-size:14px; line-height:30px;}
+			
+			.smalltext{font-family: 'Raleway', sans-serif; font-size:14px; color:#fff; text-align: center; line-height:22px; margin: 18px 0;}
+			
+			.psmalltext{font-family: 'Raleway', sans-serif; font-size:13px; color:#000; text-align: left; line-height:22px;margin: 15px 0 15px 20px;}

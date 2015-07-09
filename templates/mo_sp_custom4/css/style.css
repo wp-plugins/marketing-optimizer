@@ -1,0 +1,26 @@
+body{ margin:0; padding:0; background-color:#666;font-family: 'Raleway', sans-serif;}
+h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
+.main-popup{width:366px; margin:0px auto 0 auto;background-color:#0e0e0e; border:2px solid #8d8d8d;}
+
+h1.heading1{ text-align: center; margin:0; font-size:24px; color:#fff;font-family: 'Raleway', sans-serif; font-weight:600; margin-bottom:57px;}
+
+h2{ text-align:left; font-size:30px; color:#fff;font-family: 'Raleway', sans-serif; font-weight:600; padding-top:10px; padding-bottom:20px; padding-left:20px;}
+.pad{ padding:40px 27px 20px 40px;}
+.mar20{ margin-right:30px;}
+.left-sec{width:100%;}
+.right-sec{ width:100%;}
+.marimg{  margin-bottom: -17px;
+    margin-left: 243px;
+    margin-top: 39px;}
+	.input-box{ width:250px; height:40px; margin:0 auto 20px auto; }
+	
+		.inputb{  border-radius:5px; width:250px; height:40px; border:1px solid #CCC; padding-left:10px; font-family: 'Raleway', sans-serif; }
+		
+		.button.popup{ border-radius:5px; cursor:pointer;width:252px; height:53px; background-color:#e78426; color:#FFF; border:0px;font-family: 'Raleway', sans-serif; font-size:24px; text-transform:uppercase; font-weight:600;}
+		
+			.button.popup:hover{ background-color:#ff7c00;}
+			
+			.list{ margin:0; padding:0; margin-left:25px; margin-bottom:40px;}
+			.list li{ margin:0; padding:0; list-style-image:url(../images/bullet.png); background-repeat:no-repeat; background-position:left; font-size:14px; line-height:30px; color:#FFF;}
+			
+			.smalltext{ont-family: 'Raleway', sans-serif; font-size:12px; color: #9b9b9b; text-align:center; line-height:30px;}

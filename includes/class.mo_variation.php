@@ -14,7 +14,7 @@ class mo_variation {
 	public $prefix;
 	public $theme_template;
 	public function __construct($post_id, $id, $prefix = '') {
-		if ($post_id) {
+                if ($post_id) {
 			$this->set_post_id ( $post_id );
 			if ($prefix) {
 				$this->set_prefix ( $prefix );
@@ -108,7 +108,7 @@ class mo_variation {
 	public function get_title() {
 		return $this->title;
 	}
-	public function set_title($title) {
+	public function set_title($title) {	   
 		$this->title = $title;
 	}
 	public function get_variation_id() {
@@ -124,7 +124,6 @@ class mo_variation {
 		$this->visitors = $visitors;
 	}
 	public function save() {
-		// save the title
 		update_post_meta ( $this->get_post_id (), $this->prefix . 'title_' . $this->get_id (), $this->get_title () );
 		update_post_meta ( $this->get_post_id (), $this->prefix . 'description_' . $this->get_id (), $this->get_description () );
 		update_post_meta ( $this->get_post_id (), $this->prefix . 'content_' . $this->get_id (), $this->get_content () );
@@ -142,16 +141,16 @@ class mo_variation {
 		update_post_meta ( $this->get_post_id (), $this->prefix . 'conversions_' . $this->get_id (), 0 );
 		update_post_meta ( $this->get_post_id (), $this->prefix . 'stat_reset_date', time() );
 	}
-	public function delete(){
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'title_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'description_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'content_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'impressions_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'visitors_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'conversions_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'variation_id_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'status_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'template_' . $this->get_id () );
-		delete_post_meta ( $this->get_post_id (), $this->prefix . 'theme_template_' . $this->get_id () );
+	public function delete(){	   
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix() . 'title_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (),$this->get_prefix()  . 'description_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'content_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'impressions_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (),$this->get_prefix()  . 'visitors_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'conversions_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'variation_id_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'status_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix() . 'template_' . $this->get_id () );
+		delete_post_meta ( $this->get_post_id (), $this->get_prefix()  . 'theme_template_' . $this->get_id () );
 	}
 }

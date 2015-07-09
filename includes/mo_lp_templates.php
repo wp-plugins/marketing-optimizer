@@ -12,7 +12,39 @@ function mo_lp_get_templates() {
 			'mo_lp_is' => array (
 					'title' => 'Product',
 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_is/screenshot.png' 
-			) 
+			),
+			'mo_lp_form1' => array (
+					'title' => 'Custom Template1',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form1/screenshot.png' 
+			), 
+			'mo_lp_form2' => array (
+					'title' => 'Custom Template2',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form2/screenshot.png' 
+			),
+			'mo_lp_form3' => array (
+					'title' => 'Custom Template3',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form3/screenshot.png' 
+			),
+			'mo_lp_form4' => array (
+					'title' => 'Custom Template4',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form4/screenshot.png' 
+			),
+			'mo_lp_form5' => array (
+					'title' => 'Custom Template5',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form5/screenshot.png' 
+			),
+			'mo_lp_form6' => array (
+					'title' => 'Custom Template6',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form6/screenshot.png' 
+			),
+			'mo_lp_form7' => array (
+					'title' => 'Custom Template7',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form7/screenshot.png' 
+			),
+			'mo_lp_form8' => array (
+					'title' => 'Custom Template8',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_lp_form8/screenshot.png' 
+			)				
 	);
 	return $templates_array;
 }
@@ -33,13 +65,120 @@ function mo_sp_get_templates() {
 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_blog/screenshot.png',
 					'height' => 364, 
 					'width' => 860, 
+			),
+			'mo_sp_custom1' => array (
+					'title' => 'Custom Popup1',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom1/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom2' => array (
+					'title' => 'Custom Popup2',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom2/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom3' => array (
+					'title' => 'Custom Popup3',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom3/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom4' => array (
+					'title' => 'Custom Popup4',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom4/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom5' => array (
+					'title' => 'Custom Popup5',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom5/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom6' => array (
+					'title' => 'Custom Popup6',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom6/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom7' => array (
+					'title' => 'Custom Popup7',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom7/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_sp_custom8' => array (
+					'title' => 'Custom Popup8',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_custom8/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
 			)
-// 			'mo_sp_email' => array (
-// 					'title' => 'Email',
-// 					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_sp_email/screenshot.png',
-// 					'height' => 364, 
-// 					'width' => 860, 
-// 			)
+	);
+	return $templates_array;
+}
+function mo_ct_get_templates() {
+	$templates_array = array (
+			'mo_ct_blank' => array (
+					'title' => 'Blank',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_blank/screenshot.png' 
+			),
+			'mo_ct_newsletter' => array (
+					'title' => 'Newsletter',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_newsletter/screenshot.png',
+					'height' => 179, 
+					'width' => 700, 
+			),
+			
+			'mo_ct_advertisement1' => array (
+					'title' => 'Advertisement1',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement1/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement2' => array (
+					'title' => 'Advertisement2',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement2/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement3' => array (
+					'title' => 'Advertisement3',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement3/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement4' => array (
+					'title' => 'Advertisement4',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement4/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement5' => array (
+					'title' => 'Advertisement5',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement5/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement6' => array (
+					'title' => 'Advertisement6',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement6/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement7' => array (
+					'title' => 'Advertisement7',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement7/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			),
+			'mo_ct_advertisement8' => array (
+					'title' => 'Advertisement8',
+					'thumbnail' => plugins_url() . '/'.mo_plugin::MO_DIRECTORY.'/templates/mo_ct_advertisement8/screenshot.png',
+					'height' => 364, 
+					'width' => 860, 
+			)
+
 	);
 	return $templates_array;
 }

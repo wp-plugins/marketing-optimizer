@@ -35,13 +35,13 @@ function mo_lp_ab_key_to_letter($key) {
 }
 
 function mo_lp_track_admin_user() {
-	if (current_user_can ( 'manage_options' )) {
-		if (get_option ( 'mo_lp_track_admin' ) == 'true') {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return true;
-	}
+    if (current_user_can('manage_options')) {
+        if (get_option('mo_lp_track_admin') == 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }

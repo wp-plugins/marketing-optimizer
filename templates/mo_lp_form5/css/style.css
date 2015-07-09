@@ -1,0 +1,83 @@
+body{ margin:0px;padding:0px;font-size:14px!important;font-family:arial!important;}
+ul,p,h1,h2,h3,h4,h5,h6{ margin:0px!important;;padding:0px!important;;list-style:none!important;}
+p{ line-height:23px;}
+.fl{float:left;}
+.fr{float:right;}
+.clear{clear:both;}
+
+.header{
+	min-height:100px;
+ }
+ .logo{ padding-top:35px;}
+.phno{padding-top:30px;color:#0F66AB;font-size:36px;font-family: 'Oswald', sans-serif!important;}
+ .body_bg{
+	 background: #1b6099; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIxJSIgc3RvcC1jb2xvcj0iIzFiNjA5OSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUzJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg2JSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top,  #1b6099 1%, #ffffff 53%, #ffffff 86%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#1b6099), color-stop(53%,#ffffff), color-stop(86%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #1b6099 1%,#ffffff 53%,#ffffff 86%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #1b6099 1%,#ffffff 53%,#ffffff 86%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #1b6099 1%,#ffffff 53%,#ffffff 86%); /* IE10+ */
+background: linear-gradient(to bottom,  #1b6099 1%,#ffffff 53%,#ffffff 86%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1b6099', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
+
+min-height:400px;
+padding:50px 0px;
+ }
+ 
+.container{ width:960px;margin:0px auto;} 
+.banner-prt{ width:55%;background:#fff;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;padding:30px 20px 20px;box-shadow:1px 0px 4px #2e2e2e;-moz-box-shadow:1px 0px 4px #2e2e2e;-webkit-box-shadow:1px 0px 4px #2e2e2e;}
+.form-prt{ width:33%;margin-left:55px;background:#FFF1D2;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;padding:10px;box-shadow:1px 0px 4px #2e2e2e;
+-moz-box-shadow:1px 0px 4px #2e2e2e;-webkit-box-shadow:1px 0px 4px #2e2e2e;}
+.img_bg{ margin-bottom:20px;}
+.img_bg img{ max-width:100%;}
+.orng_hdng{ font-size:24px;color:#FF9C3F;font-weight:normal;font-family: 'Oswald', sans-serif;}
+.form-prt h1{ text-align:center;font-size:30px;text-transform:uppercase;color:#24679E;font-family: 'Oswald', sans-serif!important;margin:0px!important;}
+.form-prt p{ text-align:center;line-height:20px;}
+.form-prt table{border:none!important;}
+.form-prt table tr td{border:none!important;padding:7px 5px!important;}
+.form-prt input[type='text'],textarea{ border-radius:5px!important;-moz-border-radius:5px!important;-webkit-border-radius:5px!important;height:43px!important;padding:10px!important;border:1px solid #E7C67F!important;background:#fff!important;width:99%!important;}
+textarea{ height:100px!important;}
+.form-prt input[type='submit']{ width:99%!important;background:#FF7900!important;color:#fff!important;text-align:center;padding:12px 0px!important;border-radius:5px!important;-moz-border-radius:5px!important;-webkit-border-radius:5px!important;border:none!important;text-transform:uppercase!important;font-weight:bold!important;cursor:pointer;}
+.grey_bg{
+	margin-top:30px;
+	padding-top:50px;
+}
+.lft_cont{ width:58%;padding:10px;}
+.rht_cont{ width:32%;padding:10px;margin-left:39px;}
+.lft_cont h1,.rht_cont h1{ font-family: 'Lato', sans-serif!important;font-size:24px;margin:0px !important;}
+.lft_cont ul li{ background:url(../images/bullet1.jpg) 0px 4px no-repeat!important;padding-left:35px!important;margin-top:20px!important;}
+.writer_name{ display:block;font-size:12px;color:#FF9D42;font-weight:bold;margin-top:10px;}
+.rht_cont ul li{background:url(../images/bullet2.jpg) 0px 4px no-repeat!important;padding-left:25px!important;margin-top:20px!important;}
+.footer{
+	background: #eaebed; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VhZWJlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #eaebed 0%, #ffffff 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaebed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #eaebed 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #eaebed 0%,#ffffff 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #eaebed 0%,#ffffff 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #eaebed 0%,#ffffff 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaebed', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
+ padding:50px 0px 40px; 
+margin-top:20px;
+}
+
+@media all and (max-width:1400px){
+	.container{width:98%;}
+	.logo{ width:30%;}
+	.logo img{max-width:100%;}
+}
+@media all and (max-width:1000px){
+	.form-prt{ margin-left:45px;width:30%;}
+}
+@media all and  (max-width:750px){
+	.banner-prt,.form-prt,.lft_cont,.rht_cont{ width:90%;float:none;margin:0px auto 10px;}
+	.img_bg{text-align:center;}
+	.phno{ font-size:20px;margin-right:10px;}
+}
+@media all and (max-width:400px){
+	.banner-prt{ width:85%!important;}	
+}
