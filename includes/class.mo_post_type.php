@@ -66,7 +66,7 @@ class mo_post_type {
     
     public function mo_add_variation_cookie_js() {
         global $post, $variation_id;
-        
+        $variation_id = ($variation_id=="")?0:$variation_id;
         $mo_obj = $this->get_obj($post); 
         if ($post->post_type == $this->get_mo_pt_post_type() && $this->mo_track_admin_user() && !$mo_obj->mo_bot_detected()) {
             define( 'DONOTCACHEPAGE', true );
@@ -238,7 +238,7 @@ class mo_post_type {
                         <div class="mo_stats_header_row" style="float:left; width:400px;">
                           <div class="mo_stats_header_cell mo_stats_d" >ID</div>
                           <div class="mo_stats_header_cell mo_stats_d" style="padding:8px 16.5px;" >Imp</div>
-                          <div class="mo_stats_header_cell mo_stats_d" style="width:30px;">Visits</div>
+                          <div class="mo_stats_header_cell mo_stats_d" style="width:31px;">Visits</div>
                           <div class="mo_stats_header_cell mo_stats_d" style="width:31px;">Conv</div>
                           <div class="mo_stats_header_cell mo_stats_d" style="width:31px;">CR</div>
                           <div class="mo_stats_header_cell mo_stats_d" >Confidence</div>
@@ -282,7 +282,7 @@ class mo_post_type {
                     echo '<div class="' . $status_class_text . '" style="float:left; width:400px;">';
                     echo '<div class="mo_stats_header_cell mo_stats_r" style="padding:8px 13.5px;">'.$url.'</div>';
                     echo '<div class="mo_stats_header_cell mo_stats_r" style="width:18px;" >'.$impressions.'</div>';
-                    echo '<div class="mo_stats_header_cell mo_stats_r" style="width:26px;">'.$visits.'</div>';
+                    echo '<div class="mo_stats_header_cell mo_stats_r" style="width:27px;">'.$visits.'</div>';
                     echo '<div class="mo_stats_header_cell mo_stats_r" style="width:27px;">'.$conversions .'</div>';
                     echo '<div class="mo_stats_header_cell mo_stats_r" style="width:27px;">'.$conversion_rate.'</div>';
                     echo '<div class="mo_stats_header_cell mo_stats_r" style="padding:8px 34px;">'.$confidence.'</div>';
@@ -290,16 +290,6 @@ class mo_post_type {
                     echo '<div class="mo_stats_cell mo_stats_r" style="border-right:0px;" ><a target="_blank" href="' . get_permalink($post->ID) . $link_ch . ''.$this->get_mo_pt_short_type().'_variation_id=' . $var_obj->get_id() . '" <i class="fa fa-search"></i></a> | ' . sprintf('<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', ''.$this->get_mo_pt_short_type().'_pause_variation', $post->ID, $var_obj->get_id()) . ' | ' . sprintf('<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', $this->get_mo_pt_short_type().'_delete_variation', $post->ID, $var_obj->get_id()) . '</div>';
                     echo '</div>';
                     
-                    /*echo '<tr class="' . $status_class_text . '">';
-                    echo '<td class="mo_stats_cell">'.$url.'</td>';
-                    echo '<td class="mo_stats_cell">' . $impressions . '</td>';
-                    echo '<td class="mo_stats_cell">' . $visits . '</td>';
-                    echo '<td class="mo_stats_cell">' . $conversions . '</td>';
-                    echo '<td class="mo_stats_cell">' . $conversion_rate . '%</td>';
-                    echo '<td class="mo_stats_cell">' . $confidence . '</td>';
-                    $link_ch = (get_option('permalink_structure') == "") ? '&' : '?';
-                    echo '<td class="mo_stats_cell"><a target="_blank" href="' . get_permalink($post->ID) . $link_ch . ''.$this->get_mo_pt_short_type().'_variation_id=' . $var_obj->get_id() . '" <i class="fa fa-search"></i></a> | ' . sprintf('<a href="admin.php?action=%s&post=%s&v_id=%s">' . $status_text . ' </a>', ''.$this->get_mo_pt_short_type().'_pause_variation', $post->ID, $var_obj->get_id()) . ' | ' . sprintf('<a href="admin.php?action=%s&post=%s&v_id=%s"><i title="Delete Variation" style="color:red;" class="fa fa-trash-o"></i></a>', $this->get_mo_pt_short_type().'_delete_variation', $post->ID, $var_obj->get_id()) . '</td>';
-                    echo '</tr>';*/
                 }
             }
             

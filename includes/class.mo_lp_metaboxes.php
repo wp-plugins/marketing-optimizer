@@ -24,13 +24,17 @@ class mo_lp_metaboxes extends mo_metaboxes {
 				'mo_lp_add_bulk_option' 
 		) );
                 
-                add_action ( 'admin_action_bulk_reset_status', array (
+                /*add_action ( 'admin_action_bulk_reset_status', array (
+				$this,
+				'mo_lp_bulk_reset_status' 
+		) );*/
+                
+                add_action ( 'load-edit.php', array (
 				$this,
 				'mo_lp_bulk_reset_status' 
 		) );
                 
-                
-		add_action ( 'save_post', array (
+                add_action ( 'save_post', array (
 				$this,
 				'mo_lp_save_meta' 
 		) );

@@ -94,6 +94,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20150710 =
+* #bugFix fixed issue with variation testing stats not displaying correctly.
+* #bugFix changed api url to production.
+* #bugFix fixed an issue with reset all stats not appearing in bulk action menu at the bottom.
 = Version 20150709 =
 * #bugFix fixed an issue with template preview where the last previewed template would show up breifly before the new preview was loaded.
 * #bugFix fixed an issue with template preview modal was not centered on the screen.

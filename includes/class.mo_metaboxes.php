@@ -174,10 +174,12 @@ class mo_metaboxes {
      * Bulk reset status  
      */
     public function mo_bulk_reset_status(){
-        $post_array = $_REQUEST['post'];
-        foreach ($post_array as $key=>$post_id){
-            $mo_obj = $this->get_obj_by_type($_REQUEST['post_type'],$post_id);
-            $mo_obj->clear_stats();
+        if($_REQUEST['action']=='bulk_reset_status' || $_REQUEST['action2']=='bulk_reset_status' ) {
+            $post_array = $_REQUEST['post'];
+            foreach ($post_array as $key=>$post_id){
+                $mo_obj = $this->get_obj_by_type($_REQUEST['post_type'],$post_id);
+                $mo_obj->clear_stats();
+            }
         }
     }
     

@@ -3,7 +3,7 @@
 class mo_api
 {
 
-    const APIURI = 'http://development.marketingoptimizer.com/api/v1/';
+    const APIURI = 'https://app.marketingoptimizer.com/api/v1/';
 
     private $cookie_name = 'mo_api_live';
 
