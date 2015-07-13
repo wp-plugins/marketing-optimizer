@@ -94,6 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 20150713 =
+* #bugFix custom fields remove for CTA 
+* #bugFix update Pop-Ups preview image
 = Version 20150710 =
 * #bugFix fixed issue with variation testing stats not displaying correctly.
 * #bugFix changed api url to production.

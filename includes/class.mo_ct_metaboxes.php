@@ -60,6 +60,12 @@ class mo_ct_metaboxes extends mo_metaboxes {
             $this,
             'mo_ct_get_ct_settings_metabox'
         ), 'mo_ct', 'normal', 'high');
+        
+        delete_post_meta_by_key( 'mo_ct_post_types' );
+        for($i=0; $i<5; $i++){
+            delete_post_meta_by_key( 'mo_ct_modal_width_'.$i );
+            delete_post_meta_by_key( 'mo_ct_modal_height_'.$i );
+        }
     }
 
     function mo_ct_display_meta_box_variation_stats($post){
@@ -94,6 +100,7 @@ class mo_ct_metaboxes extends mo_metaboxes {
                 $mo_ct_obj->save();
                 $mo_ct_obj->set_variations_arr_custom($mo_ct_obj->get_variation_ids_arr());
             }
+            
             if (! isset($_POST['mo_ct_post_types'])) {
                 $_POST['mo_ct_post_types']['lp'] = 0;
                 $_POST['mo_ct_post_types']['posts'] = 0;
