@@ -46,6 +46,8 @@ class mo_settings{
     public $mo_phone_tracking_thank_you_url;
 
     public $mo_form_default_id;
+    
+    public $mo_phone_ctc;
 
     public function __construct(){
         foreach (get_object_vars($this) as $property => $value) {
@@ -222,6 +224,14 @@ class mo_settings{
 
     public function set_mo_form_default_id($value){
         $this->mo_form_default_id = $value;
+    }
+    
+    public function get_mo_phone_ctc() {
+        return $this->mo_phone_ctc;
+    }
+
+    public function set_mo_phone_ctc($value) {
+        $this->mo_phone_ctc = $value;
     }
 
     public function save(){

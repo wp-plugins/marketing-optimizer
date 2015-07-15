@@ -509,7 +509,7 @@ class mo_metaboxes {
                     $preview =  ' | <a href="' . $img_path . '"   class="template_preview">Preview</a>';    
                 }
             
-            echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><div style="color:#444;">' . $v ['title'] . '</div><a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select"><img class="mo_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" /></a><span style=""><a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select">Select</a> '.$preview.' </span> </li>';
+            echo '<li class="mix category_1 mix_all" data-cat="1" style=" display: inline-block; opacity: 1;"><div style="color:#444; padding:5px 0px;">' . $v ['title'] . '</div><a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select"><img class="mo_template_thumbnail" width="200" height="200" src="' . $v ['thumbnail'] . '" /></a><span style=""><a href="#" label="' . $v ['title'] . '" id="' . $k . '" class="mo_template_select">Select</a> '.$preview.' </span> </li>';
         }
 
         echo '<li class="gap"></li> <!-- "gap" elements fill in the gaps in justified grid -->

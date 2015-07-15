@@ -982,6 +982,9 @@ class mo_post_type {
 							if ($mo_settings_obj->get_mo_phone_tracking_thank_you_url ()) {
 								$website_tracking_js .= "_apVars.push([ '_redirectConversionUrl','" . $mo_settings_obj->get_mo_phone_tracking_thank_you_url () . "']); \n";
 							}
+                                                        if($mo_settings_obj->get_mo_phone_ctc()){
+                                                                $website_tracking_js .= "_apVars.push([ '_phoneMobileCtc', true ]); \n";
+                                                        }
 						}
 						
 						$website_tracking_js .= "(function(d){ \n";

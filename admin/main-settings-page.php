@@ -43,6 +43,11 @@ if ($_POST) {
             if (isset ( $_POST ['mo_phone_tracking_default_number'] )) {
                     $mo_settings_obj->set_mo_phone_tracking_default_number ( $_POST ['mo_phone_tracking_default_number'] );
             }
+            if (!isset($_POST ['mo_phone_ctc'])) {
+                    $mo_settings_obj->set_mo_phone_ctc('false');
+            } else {
+                    $mo_settings_obj->set_mo_phone_ctc($_POST ['mo_phone_ctc']);
+            }
             if (isset ( $_POST ['mo_phone_tracking_thank_you_url'] )) {
                     $thanks_page = strtolower($_POST ['mo_phone_tracking_thank_you_url']);
                     if($thanks_page!="") {
@@ -82,7 +87,7 @@ $mo_sp_track_admin = $mo_settings_obj->get_mo_sp_track_admin () ? $mo_settings_o
 $mo_integration = $mo_settings_obj->get_mo_marketing_optimizer () ? $mo_settings_obj->get_mo_marketing_optimizer () : 'false';
 $mo_phone_tracking = $mo_settings_obj->get_mo_phone_tracking () ? $mo_settings_obj->get_mo_phone_tracking () : 'false';
 $mo_is_gravityforms_active = ( class_exists( 'GFForms' ) ) ? true : false;
-
+$mo_phone_ctc = $mo_settings_obj->get_mo_phone_ctc()?$mo_settings_obj->get_mo_phone_ctc():'false';
 echo '<script>
         var mo_account_id = "";
         mo_account_id = "'.$mo_settings_obj->get_mo_account_id().'";
@@ -136,6 +141,15 @@ echo '<script>
 				jQuery(\'[name="mo_phone_tracking"]\').val("");
 			}
 		});
+                
+                jQuery(\'.toggle-phone-ctc\').toggles({on:' . $mo_phone_ctc . '});
+                        jQuery(\'.toggle-phone-ctc\').on(\'toggle\',function(e,active){
+                        if(active){
+                                jQuery(\'[name="mo_phone_ctc"]\').val("true");
+                        }else{
+                                jQuery(\'[name="mo_phone_ctc"]\').val("");
+                        }
+                });
 	});
 									
 </script>';
@@ -262,6 +276,13 @@ echo '<script>
 						<input type="hidden" name="mo_phone_tracking" value="<?php echo $mo_settings_obj->get_mo_phone_tracking() == 'true'?'true':''; ?>" /></td>
 						<td style="width: 50%"><p style="font-style: italic;">Turn on/off phone number tracking.</p></td>
 					</tr>
+                                        
+                                        <tr valign="top">
+                                            <td style="width: 20%">Mobile Click to Call:</td>
+                                            <td style="width: 30%"><div class="toggle-phone-ctc toggle-modern"></div> 
+                                            <input type="hidden" name="mo_phone_ctc"  value="<?php echo $mo_settings_obj->get_mo_phone_ctc() == 'true' ? 'true' : ''; ?>" /></td>
+                                            <td style="width: 50%"><p style="font-style: italic;">Turn on/off mobile phone click to call.</p></td>
+                                        </tr>
 					
 					<tr valign="top">
 						<td style="width: 20%">Phone Publish Class:</td>
