@@ -128,6 +128,7 @@ class mo_metaboxes {
         if ($post->post_type === $this->get_mo_post_type()) {
             $v_id = $mo_obj->get_current_variation();
             $mo_description = $mo_obj->get_variation_property($v_id, 'description');
+            $mo_description = ($mo_description=="" && $v_id==0)?$post->post_title:$mo_description;
             echo "<div id='" . $this->get_mo_short_type() . "_description_div'><div id='description_wrap'><input placeholder='" . __('Add Description for this variation.', mo_plugin::MO_LP_TEXT_DOMAIN) . "' type='text' class='description' name='description' id='description' value='{$mo_description}' style='width:100%;line-height:1.7em'></div></div>";
         }
     }

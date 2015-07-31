@@ -522,12 +522,14 @@ class mo_post_type {
      * Get variation content for editor 
      */
     public function mo_get_variation_content_for_editor($content, $post_id) {
+        global $post;
         if (get_post_type($post_id) === $this->get_mo_pt_post_type()) {
             $mo_obj = $this->get_obj_by_type($post_id);
             $v_id = $mo_obj->get_current_variation();
 
             try {
                 $content = $mo_obj->get_variation_property($v_id, 'content');
+                $content = ($content_tmp=="" && $v_id==0)?$post->post_content:$content;
             } catch (Exception $e) {
                 $content = '';
             }

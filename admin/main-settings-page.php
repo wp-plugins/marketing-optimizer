@@ -32,6 +32,13 @@ if ($_POST) {
             if (isset ( $_POST ['mo_password'] )) {
                     $mo_settings_obj->set_mo_password ( $_POST ['mo_password'] );
             }
+			if(isset($_POST['mo_username']) && isset($_POST['mo_password'])){
+                require_once (WP_PLUGIN_DIR . '/marketing-optimizer/includes/'.'class.mo_autoloader.php');
+                 $mo_api_auth_obj = new mo_api_auth($mo_settings_obj->get_mo_username(), $mo_settings_obj->get_mo_password());
+                $mo_api_auth_obj->set_is_new_session(true)->execute();
+                $decodec_result = json_decode($mo_api_auth_obj->get_response(), true);
+                $mo_settings_obj->set_mo_account_id($decodec_result['data']['account_id']);
+            }
             if (! isset ( $_POST ['mo_phone_tracking'] )) {
                     $mo_settings_obj->set_mo_phone_tracking ( 'false' );
             } else {

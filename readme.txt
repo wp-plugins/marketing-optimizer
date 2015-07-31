@@ -94,12 +94,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
-= Version 20150715 =
-* #enhancement added more relevant names to calls-to-action and pop up templates.
-* #enhancement added click to call to Marketing Optmizer visitor level tracking numbers.
-= Version 20150713 =
-* #bugFix custom fields remove for CTA.
-* #bugFix update Pop-Ups preview image.
+= Version 20150731 =
+* #bugFix fixed an issue with content not being shown in editor when activating the plugin.
+* #bugFix fixed an issue when changing marketing optimizer integration login credentials it was not updating the account id.
 = Version 20150710 =
 * #bugFix fixed issue with variation testing stats not displaying correctly.
 * #bugFix changed api url to production.
