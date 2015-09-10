@@ -31,7 +31,7 @@ class mo_landing_pages extends mo_ab_testing {
             }
         }
         
-	public function set_current_variation() {
+	public function set_current_variation($current_variation = false) {
 		global $post, $pagenow;
                 if (isset($_GET ['mo_lp_variation_id'])) {
                     $this->current_variation = $_GET ['mo_lp_variation_id'];

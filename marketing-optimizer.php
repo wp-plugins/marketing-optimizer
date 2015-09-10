@@ -3,7 +3,7 @@
 /*
  * Plugin Name: Marketing Optimizer for Wordpress Plugin
  * URI: http://www.marketingoptimizer.com/?apcid=8381
- * Version: 20150731
+ * Version: 20151009
  * Description: Create Landing Pages for Wordpress
  * Author: Marketing Optimizer, customercare@marketingoptimizer.com
  * Author URI: http://www.marketingoptimizer.com/?apcid=8381
@@ -23,7 +23,7 @@ class mo_plugin
 
     CONST MO_DIRECTORY = 'marketing-optimizer';
 
-    public static $plugin_version = '20150731';
+    public static $plugin_version = '20151009';
 
     public static $plugin_name = 'marketing-optimizer';
 
@@ -112,11 +112,11 @@ class mo_plugin
             define('WP_MO_PLUGIN_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins');
         }
         // The Plugin URL Path
-        $this->plugin_url = WP_PLUGIN_URL . '/' . str_replace(basename(__FILE__), "", plugin_basename(__FILE__));
+        self::$plugin_url = WP_PLUGIN_URL . '/' . str_replace(basename(__FILE__), "", plugin_basename(__FILE__));
         // The Plugin DIR Path
         $this->plugin_dir = WP_PLUGIN_DIR . '/' . str_replace(basename(__FILE__), "", plugin_basename(__FILE__));
         // The Plugin Name. Dirived from the plugin folder name.
-        $this->plugin_name = basename(dirname(__FILE__));
+        self::$plugin_name = basename(dirname(__FILE__));
         // The Plugin Basename
         $this->plugin_basename = plugin_basename(__FILE__);
         // Variable for the Plugin Settings
@@ -340,7 +340,7 @@ class mo_plugin
      */
     public function menu_title()
     {
-        $generic = ucwords(str_replace("-", " ", $this->plugin_name));
+        $generic = ucwords(str_replace("-", " ", self::$plugin_name));
         if (! isset($this->menu_title)) {
             return $generic;
         } else {
@@ -368,14 +368,14 @@ class mo_plugin
             // User Capability
             'manage_options', 
             // Menu Slug
-            $this->plugin_name . '-settings', 
+            self::$plugin_name . '-settings', 
             // Page Link Function
             array(
                 $this,
                 'load_plugin_settings_page'
             ), 
             // Icon URL
-            $this->plugin_url . 'images/moicon.png', 100);
+            self::$plugin_url . 'images/moicon.png', 100);
         add_action('admin_print_styles-' . $add_top_level_menu_page, array(
             $this,
             'enqueue_admin_scripts'
@@ -398,7 +398,7 @@ class mo_plugin
      */
     public function remove_duplicate_submenu_item()
     {
-        $remove_duplicate_submenu_item = add_submenu_page($this->plugin_name . '-settings', '', '', 'manage_options', $this->plugin_name . '-settings');
+        $remove_duplicate_submenu_item = add_submenu_page(self::$plugin_name . '-settings', '', '', 'manage_options', self::$plugin_name . '-settings');
         
         add_action('admin_print_styles-' . $remove_duplicate_submenu_item, array(
             $this,
@@ -428,7 +428,7 @@ class mo_plugin
     {
         $add_new_submenu_page = add_submenu_page(
             // Parent Slug
-            $this->plugin_name . '-settings', 
+            self::$plugin_name . '-settings', 
             // Page Title
             'Templates', 
             // Menu Title
@@ -528,7 +528,7 @@ class mo_plugin
     public function add_settings_link($links)
     {
         return array_merge(array(
-            'settings' => '<a href="options-general.php?page=' . $this->plugin_name . '-settings">' . __("Settings", $this->domain) . '</a>'
+            'settings' => '<a href="options-general.php?page=' . self::$plugin_name . '-settings">' . __("Settings", $this->domain) . '</a>'
         ), $links);
     }
     // Settings Submenu Item
@@ -574,10 +574,10 @@ class mo_plugin
     public function register_admin_scripts()
     {
         // Register plugin CSS file
-        wp_register_style($this->plugin_name . '_admin-settings-css', $this->plugin_url . 'css/admin-settings-styles.css', false, $this->get_version());
-        wp_register_style($this->plugin_name . '_font_awesome_css', $this->plugin_url . 'admin/css/font-awesome.min.css', false, $this->get_version());
+        wp_register_style(self::$plugin_name . '_admin-settings-css', self::$plugin_url . 'css/admin-settings-styles.css', false, $this->get_version());
+        wp_register_style(self::$plugin_name . '_font_awesome_css', self::$plugin_url . 'admin/css/font-awesome.min.css', false, $this->get_version());
         // Register plugin JavaScript file
-        wp_register_script($this->plugin_name . '_admin-settings-js', $this->plugin_url . 'js/admin-settings-scripts.js', false, $this->get_version(), true);
+        wp_register_script(self::$plugin_name . '_admin-settings-js', self::$plugin_url . 'js/admin-settings-scripts.js', false, $this->get_version(), true);
     }
     // End Register Settings Page Scripts
     
@@ -642,27 +642,27 @@ class mo_plugin
     {
         if (is_admin()) {
             wp_enqueue_script('jquery-ui-dialog');
-            wp_enqueue_script('jquery-toggles', $this->plugin_url . 'admin/js/toggles.min.js');
-            wp_enqueue_script('jquery-clone-fix', $this->plugin_url . 'admin/js/jquery.fix.clone.js', 'jquery');
-            wp_enqueue_style('mo_lp_admin_toggles_css', $this->plugin_url . 'admin/css/toggles.css');
-            wp_enqueue_style('mo_lp_admin_toggles_modern_css', $this->plugin_url . 'admin/css/toggles-modern.css');
-            wp_enqueue_style('mo_admin_css', $this->plugin_url . 'admin/css/mo_admin.css');
+            wp_enqueue_script('jquery-toggles', self::$plugin_url . 'admin/js/toggles.min.js');
+            wp_enqueue_script('jquery-clone-fix', self::$plugin_url . 'admin/js/jquery.fix.clone.js', 'jquery');
+            wp_enqueue_style('mo_lp_admin_toggles_css', self::$plugin_url . 'admin/css/toggles.css');
+            wp_enqueue_style('mo_lp_admin_toggles_modern_css', self::$plugin_url . 'admin/css/toggles-modern.css');
+            wp_enqueue_style('mo_admin_css', self::$plugin_url . 'admin/css/mo_admin.css');
             wp_enqueue_style('jquery_ui-css', plugins_url('admin/css/jquery_ui.css', __FILE__));
             wp_enqueue_script('jquery-ui-slider');
-            wp_enqueue_style($this->plugin_name . '_font_awesome_css');
-            wp_enqueue_script('jquery-fancy', $this->plugin_url . 'admin/js/jquery.fancybox-1.3.4.js');
-            wp_enqueue_style('mo_admin_css_fancy', $this->plugin_url . 'admin/css/jquery.fancybox-1.3.4.css');
+            wp_enqueue_style(self::$plugin_name . '_font_awesome_css');
+            wp_enqueue_script('jquery-fancy', self::$plugin_url . 'admin/js/jquery.fancybox-1.3.4.js');
+            wp_enqueue_style('mo_admin_css_fancy', self::$plugin_url . 'admin/css/jquery.fancybox-1.3.4.css');
         }
-        if ($hook == 'post-new.php' && ($_GET['post_type'] === 'mo_landing_page' || $_GET['post_type'] === 'mo_sp' || $_GET['post_type'] === 'mo_ct')) {
+        if ($hook == 'post-new.php' && (isset($_GET['post_type']) && ($_GET['post_type'] === 'mo_landing_page' || $_GET['post_type'] === 'mo_sp' || $_GET['post_type'] === 'mo_ct'))) {
             // Create New Landing Jquery UI
-            wp_enqueue_style('mo_lp_admin_post_new_css', $this->plugin_url . 'admin/css/mo_admin_post_new.css');
-            wp_enqueue_script('mo_lp_mixitup_js', $this->plugin_url . 'admin/js/jquery.mixitup.min.js');
-            wp_enqueue_script('mo_lp_admin_post_new_js', $this->plugin_url . 'admin/js/mo_lp_admin_post_new.js');
+            wp_enqueue_style('mo_lp_admin_post_new_css', self::$plugin_url . 'admin/css/mo_admin_post_new.css');
+            wp_enqueue_script('mo_lp_mixitup_js', self::$plugin_url . 'admin/js/jquery.mixitup.min.js');
+            wp_enqueue_script('mo_lp_admin_post_new_js', self::$plugin_url . 'admin/js/mo_lp_admin_post_new.js');
         }
         if ($hook == 'post.php') {
-            wp_enqueue_style('mo_lp_admin_post_css', $this->plugin_url . 'admin/css/mo_admin_post.css');
-            wp_enqueue_script('mo_lp_mixitup_js', $this->plugin_url . 'admin/js/jquery.mixitup.min.js');
-            wp_enqueue_script('mo_lp_admin_post_new_js', $this->plugin_url . 'admin/js/mo_lp_admin_post_new.js');
+            wp_enqueue_style('mo_lp_admin_post_css', self::$plugin_url . 'admin/css/mo_admin_post.css');
+            wp_enqueue_script('mo_lp_mixitup_js', self::$plugin_url . 'admin/js/jquery.mixitup.min.js');
+            wp_enqueue_script('mo_lp_admin_post_new_js', self::$plugin_url . 'admin/js/mo_lp_admin_post_new.js');
         }
         add_action('admin_footer', array(
             $this,

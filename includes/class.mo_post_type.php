@@ -263,6 +263,8 @@ class mo_post_type {
                     (($conversions === "")) ? $total_conversions = 0 : $total_conversions = $conversions;
 
                     // add variaton visits to total
+                    $total_visits = 0;
+                    $total_impressions = 0;
                     $total_visits += $var_obj->get_visitors();
                     // add variaton impressions to total
                     $total_impressions += $var_obj->get_impressions();
@@ -528,8 +530,8 @@ class mo_post_type {
             $v_id = $mo_obj->get_current_variation();
 
             try {
-                $content = $mo_obj->get_variation_property($v_id, 'content');
-                $content = ($content_tmp=="" && $v_id==0)?$post->post_content:$content;
+                $content_tmp = $mo_obj->get_variation_property($v_id, 'content');
+                $content = ($content_tmp=="" && $v_id==0)?$post->post_content:$content_tmp;
             } catch (Exception $e) {
                 $content = '';
             }
@@ -573,7 +575,7 @@ class mo_post_type {
      */ 
      public function mo_get_variation_meta_title($title, $sep, $seplocation) {
         global $post, $variation_id;
-        if (get_post_type($post->ID) === $this->get_mo_pt_post_type()) {
+        if (isset($post) && (get_post_type($post->ID) === $this->get_mo_pt_post_type())) {
             $mo_obj = $this->get_obj_by_type($post->ID);
             $v_id = $variation_id;
             try {
@@ -999,8 +1001,10 @@ class mo_post_type {
 						$website_tracking_js .= "<!-- End of Asynchronous Tracking Code --> \n";
                                                 
                                                 
-						if (! $mo_obj->mo_bot_detected () || $this->mo_page_track_admin_user ()) {
-							echo $website_tracking_js;
+						// if (! $mo_obj->mo_bot_detected () || $this->mo_page_track_admin_user ()) {
+						// 	echo $website_tracking_js;
+                        if (! $mo_obj->mo_bot_detected () || $this->mo_page_track_admin_user ()) {
+                            echo $website_tracking_js;
 						}
 					}
 				}
@@ -1014,7 +1018,7 @@ class mo_post_type {
      */    
     public function mo_get_template($template) {
         global $post;
-        if ($post->post_type === $this->get_mo_pt_post_type()) {
+        if (isset($post) && ($post->post_type === $this->get_mo_pt_post_type())) {
             $mo_obj = $this->get_obj_by_type($post->ID);
             $v_id = $mo_obj->get_current_variation();
             $mo_lp_template = $mo_obj->get_variation_property($v_id, 'template');
@@ -1039,7 +1043,7 @@ class mo_post_type {
 		$post_id = $_POST ['post_id'];
 		preg_match ( "/\[(.*?)\]/", $_POST ['post_type'], $matches );
 		$post_type = $matches [1];
-		$post_meta_arr = $wpdb->get_results ( 'SELECT post_id FROM wp_postmeta WHERE meta_key = \''.$this->get_mo_pt_short_type().'_post_types\' AND post_id != ' . $post_id );
+		$post_meta_arr = $wpdb->get_results ( 'SELECT post_id FROM '.$wpdb->prefix.'postmeta WHERE meta_key = \''.$this->get_mo_pt_short_type().'_post_types\' AND post_id != ' . $post_id );
 		foreach ( $post_meta_arr as $v ) {
                     $post_types_arr = json_decode ( get_post_meta ( $v->post_id, 'mo_sp_post_types', true ) );
                     if (isset ( $post_types_arr->$post_type ) && $post_types_arr->$post_type) {
@@ -1054,6 +1058,7 @@ class mo_post_type {
      * Get post type object  
      */
     public function get_obj($post){
+        $mo_obj = false;
         if ($post->post_type == "mo_landing_page") {
             $mo_obj = mo_landing_pages::instance($post->ID);
         }else if ($post->post_type == "mo_ct") { 

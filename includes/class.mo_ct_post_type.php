@@ -362,7 +362,7 @@ class mo_ct_post_type extends mo_post_type {
 					$post_type = 'posts';
 					break;
 			}
-			$post_id_arr = $wpdb->get_results ( 'SELECT post_id FROM wp_postmeta WHERE meta_key = \'mo_ct_post_types\' ' );
+			$post_id_arr = $wpdb->get_results ( 'SELECT post_id FROM '.$wpdb->prefix.'postmeta WHERE meta_key = \'mo_ct_post_types\' ' );
 			
 			foreach ( $post_id_arr as $v ) {
 				

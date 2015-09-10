@@ -323,7 +323,7 @@ class mo_sp_post_type extends mo_post_type {
 					$post_type = 'posts';
 					break;
 			}
-			$post_id_arr = $wpdb->get_results ( 'SELECT post_id FROM wp_postmeta WHERE meta_key = \'mo_sp_post_types\' ' );
+			$post_id_arr = $wpdb->get_results ( 'SELECT post_id FROM '.$wpdb->prefix . 'postmeta WHERE meta_key = \'mo_sp_post_types\' ' );
 			
 			foreach ( $post_id_arr as $v ) {
 				
@@ -332,7 +332,7 @@ class mo_sp_post_type extends mo_post_type {
 					$post_id = $v->post_id;
 				}
 			}
-			if ($post_id) {
+			if (isset($post_id)) {
 				$mo_page_obj = mo_pages::instance ( $post_id );
 				$mo_settings_obj = new mo_settings ();
 				$mo_sp_obj = mo_squeeze_pages::instance ( $post_id );

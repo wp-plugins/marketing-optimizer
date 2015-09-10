@@ -162,6 +162,7 @@ class mo_metaboxes {
     
     public function mo_add_bulk_option(){
         global $post;
+        if(!isset($post)) return false;
         if($post->post_type==='page' || $post->post_type==='mo_landing_page' || $post->post_type==='mo_ct'|| $post->post_type==='mo_sp') {
             echo "<script type='text/javascript'>
                     jQuery(document).ready(function() {
@@ -175,7 +176,7 @@ class mo_metaboxes {
      * Bulk reset status  
      */
     public function mo_bulk_reset_status(){
-        if($_REQUEST['action']=='bulk_reset_status' || $_REQUEST['action2']=='bulk_reset_status' ) {
+        if(isset($_REQUEST['action']) && ($_REQUEST['action']=='bulk_reset_status' || $_REQUEST['action2']=='bulk_reset_status' )) {
             $post_array = $_REQUEST['post'];
             foreach ($post_array as $key=>$post_id){
                 $mo_obj = $this->get_obj_by_type($_REQUEST['post_type'],$post_id);
@@ -465,7 +466,7 @@ class mo_metaboxes {
      */
     function mo_display_meta_box_select_template_container() {
         global $post;
-        
+        if(!isset($post)) return false;
         if($post->post_type=='mo_landing_page'){
             $title_page = "Select Your Landing Page Template ";
             $dir_path = $this->get_mo_short_type() . '_landing_pages';
@@ -534,6 +535,7 @@ class mo_metaboxes {
      * Get post type object  
      */
     public function get_obj($post){
+        $mo_obj = false;
         if ($post->post_type == "mo_landing_page") {
             $mo_obj = mo_landing_pages::instance($post->ID);
         }else if ($post->post_type == "mo_ct") { 
@@ -547,6 +549,7 @@ class mo_metaboxes {
     }
     
     public function get_obj_by_type($post_type,$post_id) {
+        $mo_obj = false;
         if ($post_type == "mo_landing_page") {
             $mo_obj = mo_landing_pages::instance($post_id);
         }else if ($post_type == "mo_ct") { 

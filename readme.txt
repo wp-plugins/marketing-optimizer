@@ -95,6 +95,9 @@ You should test as many pages as possible as soon as possible, and all at once. 
 
 == Changelog ==
 = Version 20150731 =
+* #bugFix fixed issue with notice being thrown accessing static property as non static.
+* #bugFix fixed issue with fatal error being thrown by deprecated code.
+= Version 20150731 =
 * #bugFix fixed an issue with content not being shown in editor when activating the plugin.
 * #bugFix fixed an issue when changing marketing optimizer integration login credentials it was not updating the account id.
 = Version 20150710 =

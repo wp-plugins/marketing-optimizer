@@ -121,7 +121,7 @@ class mo_page_post_type extends mo_post_type {
         $this->mo_column($column);
     }
 
-    public function mo_page_sortable_columns(){
+    public function mo_page_sortable_columns($columns){
         return $this->mo_columns($columns,"Page Title");
     }
 
@@ -432,7 +432,7 @@ class mo_page_post_type extends mo_post_type {
    
     public function mo_page_get_variation_meta_title($title, $sep, $seplocation){
         global $post, $variation_id;
-        if (get_post_type($post->ID) == 'page') {
+        if (isset($post) && (get_post_type($post->ID) == 'page')) {
             $mo_page_obj = mo_pages::instance($post->ID);
             $v_id = $variation_id;
             

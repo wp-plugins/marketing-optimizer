@@ -28,7 +28,7 @@ class mo_squeeze_pages extends mo_ab_testing {
             wp_deregister_script( 'site' );
         }
         
-        public function set_current_variation() {
+        public function set_current_variation($current_variation = false) {
 		global $post, $pagenow;
 		if (isset ( $_GET ['mo_sp_variation_id'] )) {
 			$this->current_variation = $_GET ['mo_sp_variation_id'];
