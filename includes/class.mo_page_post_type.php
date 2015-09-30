@@ -1,13 +1,15 @@
 <?php
 
-class mo_page_post_type extends mo_post_type {
+class mo_page_post_type extends mo_post_type
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         $short_type = 'mo_page';
         $post_type = 'page';
         $api_post_type = 'website_page';
-        parent::__construct ( $short_type,$post_type,$api_post_type );
-
+        parent::__construct($short_type, $post_type, $api_post_type);
+        
         add_action('init', array(
             $this,
             'mo_page_add_shortcodes'
@@ -117,20 +119,24 @@ class mo_page_post_type extends mo_post_type {
         ), 10, 3);
     }
 
-    public function mo_page_column($column){
+    public function mo_page_column($column)
+    {
         $this->mo_column($column);
     }
 
-    public function mo_page_sortable_columns($columns){
-        return $this->mo_columns($columns,"Page Title");
+    public function mo_page_sortable_columns($columns)
+    {
+        return $this->mo_columns($columns, "Page Title");
     }
 
-    function mo_page_columns($columns){
+    function mo_page_columns($columns)
+    {
         $columns = $this->insert_before_key($columns, 'author', 'stats', __("Variation Testing Stats", mo_plugin::MO_LP_TEXT_DOMAIN));
         return $columns;
     }
-    
-    function insert_before_key($original_array, $original_key, $insert_key, $insert_value){
+
+    function insert_before_key($original_array, $original_key, $insert_key, $insert_value)
+    {
         $new_array = array();
         $inserted = false;
         
@@ -244,7 +250,8 @@ class mo_page_post_type extends mo_post_type {
         }
     }
 
-    public function mo_page_get_variation_id_to_display(){
+    public function mo_page_get_variation_id_to_display()
+    {
         if (isset($_POST['action']) && isset($_POST['post_id'])) {
             if ($_POST['action'] == 'mo_page_get_variation_id_to_display' && $_POST['post_id'] > 0) {
                 $post_id = $_POST['post_id'];
@@ -267,11 +274,13 @@ class mo_page_post_type extends mo_post_type {
         }
     }
 
-    public  function mo_page_track_impression() {
+    public function mo_page_track_impression()
+    {
         $this->mo_track_impression();
     }
-    
-    public function mo_page_track_conversion() {
+
+    public function mo_page_track_conversion()
+    {
         if (isset($_POST['cookie']) && $_POST['cookie']) {
             $cookieArr = json_decode(stripslashes($_POST['cookie']));
             
@@ -326,7 +335,6 @@ class mo_page_post_type extends mo_post_type {
                                             $mo_landing_page_obj->set_variation_property($v_id, 'conversions', $conversions);
                                             $mo_landing_page_obj->save();
                                         }
-                                        
                                     }
                                 }
                             }
@@ -350,7 +358,6 @@ class mo_page_post_type extends mo_post_type {
                                             $mo_squeeze_page_obj->set_variation_property($v_id, 'conversions', $conversions);
                                             $mo_squeeze_page_obj->save();
                                         }
-                                        
                                     }
                                 }
                             }
@@ -374,7 +381,6 @@ class mo_page_post_type extends mo_post_type {
                                             $mo_ct_obj->set_variation_property($v_id, 'conversions', $conversions);
                                             $mo_ct_obj->save();
                                         }
-                                        
                                     }
                                 }
                             }
@@ -386,11 +392,13 @@ class mo_page_post_type extends mo_post_type {
         return;
     }
 
-    public function mo_page_track_visit(){
+    public function mo_page_track_visit()
+    {
         $this->mo_track_visit();
     }
 
-    public function mo_page_get_variation_title_for_editor($title, $id){
+    public function mo_page_get_variation_title_for_editor($title, $id)
+    {
         global $pagenow;
         if (get_post_type($id) == 'page') {
             $mo_page_obj = mo_pages::instance($id);
@@ -402,35 +410,44 @@ class mo_page_post_type extends mo_post_type {
         return $title;
     }
 
-    public function mo_page_set_variation_id(){
+    public function mo_page_set_variation_id()
+    {
         $this->mo_set_variation_id();
     }
 
-    public function mo_page_get_variation_content_for_editor($content, $post_id){
+    public function mo_page_get_variation_content_for_editor($content, $post_id)
+    {
         return $this->mo_get_variation_content_for_editor($content, $post_id);
     }
 
-    public function mo_page_get_variation_content($content) {
+    public function mo_page_get_variation_content($content)
+    {
         global $post, $variation_id;
         $post_id = $post->ID;
         if (get_post_type($post_id) == 'page') {
             
             $mo_page_obj = mo_pages::instance($post_id);
-            if (is_null($variation_id)) {
-                $v_id = $mo_page_obj->get_current_variation();
-            } else {
-                $v_id = $variation_id;
-            }
             
-            if ((int) $v_id !== 0) {
-                $content = $mo_page_obj->get_variation_property($v_id, 'content') ? $mo_page_obj->get_variation_property($v_id, 'content') : '';
+            if (is_object($mo_page_obj)) {
+                
+                if (is_object($mo_page_obj)) {
+                    if (is_null($variation_id)) {
+                        $v_id = $mo_page_obj->get_current_variation();
+                    } else {
+                        $v_id = $variation_id;
+                    }
+                    
+                    if ((int) $v_id !== 0) {
+                        $content = $mo_page_obj->get_variation_property($v_id, 'content') ? $mo_page_obj->get_variation_property($v_id, 'content') : '';
+                    }
+                }
             }
         }
         return $content;
     }
 
-   
-    public function mo_page_get_variation_meta_title($title, $sep, $seplocation){
+    public function mo_page_get_variation_meta_title($title, $sep, $seplocation)
+    {
         global $post, $variation_id;
         if (isset($post) && (get_post_type($post->ID) == 'page')) {
             $mo_page_obj = mo_pages::instance($post->ID);
@@ -443,7 +460,8 @@ class mo_page_post_type extends mo_post_type {
         return $title;
     }
 
-    public function mo_page_get_variation_title($title, $id){
+    public function mo_page_get_variation_title($title, $id)
+    {
         global $variation_id, $pagenow;
         if (get_post_type($id) == 'page') {
             if ($pagenow != 'edit.php') {
@@ -459,19 +477,23 @@ class mo_page_post_type extends mo_post_type {
         return $title;
     }
 
-    public function mo_page_get_mo_website_tracking_js(){
+    public function mo_page_get_mo_website_tracking_js()
+    {
         $this->mo_get_mo_website_tracking_js();
     }
 
-    public function mo_page_pause_variation(){
+    public function mo_page_pause_variation()
+    {
         $this->mo_pause_variation();
     }
 
-    public function mo_page_delete_variation(){
+    public function mo_page_delete_variation()
+    {
         $this->mo_delete_variation();
     }
-    
-    public function mo_get_tests_from_api_delete($id){
+
+    public function mo_get_tests_from_api_delete($id)
+    {
         if (isset($id)) {
             $mo_api_tests = new mo_api_tests($id);
             $mo_api_tests->set_request_type('DELETE')->execute();
@@ -479,8 +501,9 @@ class mo_page_post_type extends mo_post_type {
             return $response;
         }
     }
-    
-    public function mo_page_is_ab_testing(){
+
+    public function mo_page_is_ab_testing()
+    {
         return $this->mo_is_ab_testing();
     }
 
@@ -488,8 +511,8 @@ class mo_page_post_type extends mo_post_type {
     {
         global $post;
         $mo_page_obj = mo_pages::instance($post->ID);
-        if ($post->post_type === 'page'){
-            define( 'DONOTCACHEPAGE', true );
+        if ($post->post_type === 'page') {
+            define('DONOTCACHEPAGE', true);
         }
         if ($post->post_type == 'page' && $mo_page_obj->mo_is_testing() && ! $mo_page_obj->mo_bot_detected() && (! isset($_GET['mo_page_variation_id']) || ! isset($_GET['t']) || $mo_page_obj->get_current_variation() == 0)) {
             echo '<script type="text/javascript">
@@ -546,17 +569,18 @@ class mo_page_post_type extends mo_post_type {
         }
     }
 
-    
-
-    public function mo_page_add_clear_tracking($actions, $post){
-        return  $this->mo_add_clear_tracking($actions, $post);
+    public function mo_page_add_clear_tracking($actions, $post)
+    {
+        return $this->mo_add_clear_tracking($actions, $post);
     }
 
-    public function mo_page_clear_stats(){
+    public function mo_page_clear_stats()
+    {
         $this->mo_clear_stats();
     }
 
-    public function mo_page_add_shortcodes(){
+    public function mo_page_add_shortcodes()
+    {
         $this->mo_add_shortcodes();
         add_shortcode('mo_conversion', array(
             $this,
@@ -576,15 +600,18 @@ class mo_page_post_type extends mo_post_type {
         ));
     }
 
-    public function mo_page_conversion() {
+    public function mo_page_conversion()
+    {
         $this->mo_conversion_page();
     }
 
-    public function mo_page_get_variation_edit_link($link, $id, $context) {
+    public function mo_page_get_variation_edit_link($link, $id, $context)
+    {
         return $this->mo_get_variation_edit_link($link, $id, $context);
     }
 
-    function mo_phone_shortcode($attributes, $content = null){
+    function mo_phone_shortcode($attributes, $content = null)
+    {
         $mo_settings_obj = new mo_settings();
         if ($mo_settings_obj->get_mo_phone_tracking() == 'true') {
             $defaultPhone = $mo_settings_obj->get_mo_phone_tracking_default_number() ? $mo_settings_obj->get_mo_phone_tracking_default_number() : '';
@@ -599,7 +626,8 @@ class mo_page_post_type extends mo_post_type {
         }
     }
 
-    function mo_form_shortcode($attributes, $content = null){
+    function mo_form_shortcode($attributes, $content = null)
+    {
         if (isset($attributes['id'])) {
             return '<script type="text/javascript" src="//app.marketingoptimizer.com/remote/ap_js.php?f=' . $attributes['id'] . '&o=' . get_option('mo_account_id') . '"></script>';
         } elseif (get_option('mo_form_default_id')) {
