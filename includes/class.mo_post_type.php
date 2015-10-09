@@ -957,6 +957,7 @@ class mo_post_type {
 			if ($mo_settings_obj->get_mo_account_id ()) {
 				if (is_object ( $post ) && $post->post_type === $this->get_mo_pt_post_type()) {
 					$mo_obj = $this->get_obj_by_type($post->ID);
+					if(is_object($mo_obj)){
                                         if ($mo_settings_obj->get_mo_lp_cache_compatible () == 'false' || isset ( $_GET ['mo_page_variation_id'] ) || isset ( $_GET ['t'] ) || count ( $mo_obj->get_variation_ids_arr () ) > 0) {
 						if (is_null ( $variation_id )) {
 							$v_id = $mo_obj->get_current_variation ();
@@ -1007,6 +1008,7 @@ class mo_post_type {
                             echo $website_tracking_js;
 						}
 					}
+				}
 				}
 			}
 		}

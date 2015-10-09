@@ -157,7 +157,9 @@ class mo_page_post_type extends mo_post_type
         global $post;
         if (is_object($post) && $post->post_type == 'page') {
             $mo_page_obj = mo_pages::instance($post->ID);
-            $variation_id = $mo_page_obj->get_current_variation();
+			if(is_object($mo_page_obj)){
+				$variation_id = $mo_page_obj->get_current_variation();
+			
             $mo_settings_obj = new mo_settings();
             if ($mo_settings_obj->get_mo_lp_cache_compatible() == 'false' || isset($_GET['mo_page_variation_id']) || isset($_GET['t']) || count($mo_page_obj->get_variation_ids_arr()) >= 1) {
                 if (($post->post_type == 'page' || is_home() || is_front_page()) && $this->mo_track_admin_user() && ! $mo_page_obj->mo_bot_detected()) {
@@ -246,7 +248,8 @@ class mo_page_post_type extends mo_post_type
 			</script>';
                     }
                 }
-            }
+           } 
+		   }
         }
     }
 
@@ -465,8 +468,13 @@ class mo_page_post_type extends mo_post_type
         global $variation_id, $pagenow;
         if (get_post_type($id) == 'page') {
             if ($pagenow != 'edit.php') {
+			
                 $mo_page_obj = mo_pages::instance($id);
-                $v_id = $mo_page_obj->get_current_variation();
+				if (is_object($mo_page_obj)) {
+					$v_id = $mo_page_obj->get_current_variation();
+				}else{
+					$v_id = 0;
+				}
             } else {
                 $v_id = 0;
             }

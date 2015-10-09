@@ -94,8 +94,10 @@ You should test as many pages as possible as soon as possible, and all at once. 
 6. Landing Pages Templates
 
 == Changelog ==
+= Version 201501009 =
+* #bugFix fixed issue with plugin compatiblilty that create faux pages without a post id was causing an error.
 = Version 20150930 =
-* #bugFix fixed issue with plugin compatiblilty that create pages that are not truly pages was causing an error.
+* #bugFix fixed issue with plugin compatiblilty that create faux pages without a post id was causing an error.
 = Version 20150910 =
 * #bugFix fixed issue with notice being thrown accessing static property as non static.
 * #bugFix fixed issue with fatal error being thrown by deprecated code.
